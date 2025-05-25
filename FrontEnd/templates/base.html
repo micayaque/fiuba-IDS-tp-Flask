@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/style.css', _external=True) }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block tittle %}Archivo Base{% endblock %}</title>
+</head>
+<body>
+    <div id="menu">
+        <ul class="listado">
+            <link rel="stylesheet" href="{{ url_for('static', filename='/images/', _external=True) }}"> <!-- Hay que completar el filename con el logo -->
+            <li>Como funciona</li>
+            <li>Materias</li>
+            <li>Grupos</li>
+            <li>Contactanos</li>
+            <li>Mobile App</li>
+        </ul>
+    </div>
+    {% block body %}
+    {% endblock %}
+    <div id="footer">
+        <div id="logo_footer">
+            <link rel="stylesheet" href="{{ url_for('static', filename='/images/', _external=True) }}"> <!-- Hay que completar el filename con el logo -->
+            <p>TP Buddy</p>
+        </div>
+        <ul class="listado">
+            <li>Inicio</li>
+            <li>Reglas</li>
+            <li>Sobre Nosotros</li>
+        </ul>
+        <p>Terminos y condiciones</p>
+        <p id="txt_footer">2025@</p>
+    </div>
+</body>
+</html>

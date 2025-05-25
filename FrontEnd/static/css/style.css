@@ -1,0 +1,33 @@
+/*Fondo*/
+body {
+    background-color: #1C1C21;
+}
+
+/*Menu de elementos (tanto inicio como final)*/
+
+#footer {
+    background-color: #242424;
+}
+
+#footer p {
+    text-align: center;
+    color: #626262;
+}
+
+#txt_footer {
+    display: block;
+    height: 1.5rem;
+    width: 100%;
+    padding-top: 5px;
+    background-color: #1D1D1D;
+}
+
+.listado {
+    display: flex;
+    flex-direction: row;
+    gap: 3rem;
+    color: #AEABD4;
+    justify-content: center;
+    list-style: none;
+    padding-left: 0;
+}

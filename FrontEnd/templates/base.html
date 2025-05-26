@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="../static/css/style.css"> <!--{{ url_for('static', filename='/css/style.css', _external=True) }}-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/style.css', _external=True) }}"> <!--{{ url_for('static', filename='/css/style.css', _external=True) }}-->
     <!--Fuentes de texto-->
     <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Istok+Web&display=swap" rel="stylesheet">
     <!--Fin fuentes de texto-->
-    <link rel="icon" href="../static/img/icono_pagina.png"> <!--{{ url_for('static', filename='/img/icono_pagina.png', _external=True) }}-->
+    <link rel="icon" href="{{ url_for('static', filename='/img/icono_pagina.png', _external=True) }}"> <!--{{ url_for('static', filename='/img/icono_pagina.png', _external=True) }}-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block tittle %}Archivo Base{% endblock %}</title>
 </head>
@@ -18,7 +18,7 @@
         <a href="" id="registrarse">Registrarse</a>
     </div>
     <div id="menu">
-        <img id="img_menu_header" src="../static/img/logo_header.png"> <!--{{ url_for('static', filename='/img/logo.header.png', _external=True) }}-->
+        <img id="img_menu_header" src="{{ url_for('static', filename='/img/logo_header.png', _external=True) }}"> <!--{{ url_for('static', filename='/img/logo_header.png', _external=True) }}-->
         <ul class="listado" id="listado_header">
             <li><a href="">Como funciona</a></li>
             <li><a href="">Reglas</a></li>
@@ -32,7 +32,7 @@
     {% endblock %}
     <footer>
         <div id="logo_footer">
-            <img id="img_footer" src="../static/img/logo_footer.png"> <!--{{ url_for('static', filename='/img/logo-footer.png', _external=True) }}--> 
+            <img id="img_footer" src="{{ url_for('static', filename='/img/logo_footer.png', _external=True) }}"> <!--{{ url_for('static', filename='/img/logo_footer.png', _external=True) }}--> 
             <p>TP Buddy</p>
         </div>
         <ul class="listado" id="listado_footer">

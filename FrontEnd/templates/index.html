@@ -5,7 +5,7 @@
 {% block body %}
     <div>
         <div id="grupos_formados">
-            <img id="img_grupos_formados" src="../static/img/img_grupos.png"> <!--{{ url_for('static', filename='/img/img_grupos.png', _external=True) }}-->
+            <img id="img_grupos_formados" src="{{ url_for('static', filename='/img/img_grupos.png', _external=True) }}"> <!--{{ url_for('static', filename='/img/img_grupos.png', _external=True) }}-->
             <p>317 grupos formados</p>
         </div>
         <p id="txt_titulo">
@@ -15,7 +15,7 @@
         <p id="txt_subtitulo">
             Nunca fue tan simple armar tu grupo de TP.
         </p>
-        <video id="gif_inicio" src="../static/img/gif_inicio.webm" autoplay muted loop playsinline></video> <!--{{ url_for('static', filename='/img/gif_inicio.webm', _external=True) }}-->
+        <video id="gif_inicio" src="{{ url_for('static', filename='/img/gif_inicio.webm', _external=True) }}" autoplay muted loop playsinline></video> <!--{{ url_for('static', filename='/img/gif_inicio.webm', _external=True) }}-->
         <p id="txt_subtitulo">
             Conectamos estudiantes para que trabajen mejor, juntos!
         </p>

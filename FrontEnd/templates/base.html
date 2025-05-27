@@ -28,8 +28,9 @@
             <li><a href="">Mobile App</a></li>
         </ul>
     </div>
-    {% block body %}
+    {% block content %}
     {% endblock %}
+
     <footer>
         <div id="logo_footer">
             <img id="img_footer" src="{{ url_for('static', filename='/img/logo_footer.png', _external=True) }}"> <!--{{ url_for('static', filename='/img/logo_footer.png', _external=True) }}--> 
@@ -42,8 +43,10 @@
         </ul>
         <div id="terminos_condiciones">
             <p>Términos y condiciones</p>
-            <p id="txt_footer">2025@</p>
         </div>
+        <div id="txt_footer"><p>2025@</p></div>
+
     </footer>
+
 </body>
 </html>

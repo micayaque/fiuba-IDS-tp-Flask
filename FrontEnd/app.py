@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, make_response, jsonify, url_f
 app = Flask(__name__)
 
 @app.route("/")
-def base ():
+def index ():
     return render_template('index.html')
 
 if __name__ == '__main__':

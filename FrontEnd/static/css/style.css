@@ -1,6 +1,8 @@
 /*Fondo*/
 body {
     background-color: #1C1C21;
+    height: 100%;
+    margin: 0;
 }
 
 /*Inicio de Sesión y Registro*/
@@ -117,28 +119,48 @@ footer {
 }
 
 #img_footer {
-    height: 60px;
+    height: 3.75rem;
 }
 
 #listado_footer a {
     color: #F2F2F2;
 }
 
-/*body*/
+#footer_contacto {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    text-align: left;
+    width: 70rem;
+}
+
+#footer_contacto h1 {
+    margin: 0 2.4rem;
+}
+
+#footer_contacto ul {
+    display: flex;
+    gap: 3rem;
+    list-style: none;
+    font-family: 'Istok Web', sans-serif;
+    color: #F2F2F2;
+}
+
+/*Template index*/
 
 #grupos_formados {
     display: flex;
     gap: 1rem;
     justify-content: center;
     align-items: center;
-    height: 20px;
+    height: 1.25rem;
     color: #F2F2F2;
     font-size: 15px;
     font-family: 'Istok Web', sans-serif;;
 }
 
 #img_grupos_formados {
-    height: 22px;
+    height: 1.375rem;
 }
 
 #txt_titulo {
@@ -147,8 +169,9 @@ footer {
     padding: 10px;
     text-align: center;
     font-size: 45px;
-    color: #BEBEBE;
     font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    color: #BEBEBE;
 }
 
 #txt_subtitulo {
@@ -163,4 +186,18 @@ footer {
     display: block;
     margin: auto;
     height: 600px;
+}
+
+.informacion h1 { /*Incluye contacto del footer*/
+    color: #BEBEBE;
+    text-decoration: underline;
+    font-family: 'Poppins', sans-serif;
+    margin-left: 0.5rem;
+} 
+
+.informacion p {
+    margin-left: 0.5rem;
+    color: #FFFFFF;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
 }

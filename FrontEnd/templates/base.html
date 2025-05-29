@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="{{ url_for('static', filename='/css/style.css', _external=True) }}"> <!--{{ url_for('static', filename='/css/style.css', _external=True) }}-->
+    <link rel="stylesheet" href="../static/css/style.css"> <!--{{ url_for('static', filename='/css/style.css', _external=True) }}-->
     <!--Fuentes de texto-->
     <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
@@ -18,28 +18,41 @@
         <a href="" id="registrarse">Registrarse</a>
     </div>
     <div id="menu">
-        <img id="img_menu_header" src="{{ url_for('static', filename='/img/logo_header.png', _external=True) }}"> <!--{{ url_for('static', filename='/img/logo_header.png', _external=True) }}-->
+        <img id="img_menu_header" src="../static/img/logo_header.png"> <!--{{ url_for('static', filename='/img/logo_header.png', _external=True) }}-->
         <ul class="listado" id="listado_header">
-            <li><a href="">Como funciona</a></li>
-            <li><a href="">Reglas</a></li>
+            <li><a href="#como_funciona">Como funciona</a></li>
+            <li><a href="#reglas">Reglas</a></li>
             <li><a href="">Materias</a></li>
             <li><a href="">Grupos</a></li>
-            <li><a href="">Contactanos</a></li>
+            <li><a href="#contacto">Contactanos</a></li>
             <li><a href="">Mobile App</a></li>
         </ul>
     </div>
+
     {% block body %}
     {% endblock %}
+
     <footer>
         <div id="logo_footer">
-            <img id="img_footer" src="{{ url_for('static', filename='/img/logo_footer.png', _external=True) }}"> <!--{{ url_for('static', filename='/img/logo_footer.png', _external=True) }}--> 
+            <img id="img_footer" src="../static/img/logo_footer.png"> <!--{{ url_for('static', filename='/img/logo_footer.png', _external=True) }}--> 
             <p>TP Buddy</p>
         </div>
         <ul class="listado" id="listado_footer">
-            <li><a href="">Inicio</a></li>
-            <li><a href="">Reglas</a></li>
+            <li><a href="#menu">Inicio</a></li>
+            <li><a href="#reglas">Reglas</a></li>
             <li><a href="">Sobre Nosotros</a></li>
         </ul>
+        <div id="footer_contacto" class="informacion">
+            <h1 id="contacto">Contactanos</h1>
+            <ul>
+                <li>sbardina@fi.uba.ar</li>
+                <li>samartin@fi.uba.ar</li>
+                <li>cvperezb@fi.uba.ar</li>
+                <li>myaque@fi.uba.ar</li>
+                <li>aoshiro@fi.uba.ar</li>
+                <li>lcoroq@fi.uba.ar</li>
+            </ul>
+        </div>
         <div id="terminos_condiciones">
             <p>Términos y condiciones</p>
             <p id="txt_footer">2025@</p>

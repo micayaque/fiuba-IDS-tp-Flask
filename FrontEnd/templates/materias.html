@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block tittle %}Materias{% endblock %}
+
+{% block content %}
+<div class="contenedor-materias" class="container mb-5 mt-5">  <!--la clase container hace que el tamaño sea automático dependiendo de la pantalla -->
+
+  <div id="contenedor-buscador-materia" class="row">
+    <div class="col-12 col-md-auto">
+      <p id="txt-buscador" class="mb-0">Buscá tu materia y encontrá a tu grupo ideal</p>
+    </div>
+    <div id="contenedor-buscador-input" class="col-12 col-md-auto">
+      <input type="text" id="buscadorInput" class="form-control" placeholder="Buscar materia..." onkeyup="filtrarMaterias()">
+      <button id="btn-buscar-materia" type="submit">
+        <img src="{{ url_for('static', filename='img/icono_buscar.png') }}" alt="Buscar"/>
+      </button>
+    </div>
+  </div>
+
+  <div id="contenedor-materias" class="row">
+    {% for materia in materias %}
+      <div class="materia-item col-6 col-sm-4 col-md-3 col-lg-2">
+        <a href="/materia/{{ materia.id }}" class="materia-nombre">{{ materia.nombre }}</a>
+      </div>
+    {% endfor %}
+  </div>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/style.css', _external=True) }}"> <!--{{ url_for('static', filename='/css/style.css', _external=True) }}-->
+    <!--Fuentes de texto-->
+    <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Istok+Web&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+    <!--Fin fuentes de texto-->
+    <link rel="icon" href="{{ url_for('static', filename='/img/icono_pagina.png', _external=True) }}"> <!--{{ url_for('static', filename='/img/icono_pagina.png', _external=True) }}-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block tittle %}Archivo Base{% endblock %}</title>
+</head>
+<body>
+    <div id="registro_inicio_sesion">
+        <a href="" id="inicio_sesion">Inicio Sesión</a>
+        <a href="" id="registrarse">Registrarse</a>
+    </div>
+    <div id="menu">
+        <img id="img_menu_header" src="{{ url_for('static', filename='/img/logo_header.png', _external=True) }}"> <!--{{ url_for('static', filename='/img/logo_header.png', _external=True) }}-->
+        <ul class="listado" id="listado_header">
+            <li><a href="">Como funciona</a></li>
+            <li><a href="">Reglas</a></li>
+            <li><a href="">Materias</a></li>
+            <li><a href="">Grupos</a></li>
+            <li><a href="">Contactanos</a></li>
+            <li><a href="">Mobile App</a></li>
+        </ul>
+    </div>
+    {% block content %}
+    {% endblock %}
+
+    <footer>
+        <div id="logo_footer">
+            <img id="img_footer" src="{{ url_for('static', filename='/img/logo_footer.png', _external=True) }}"> <!--{{ url_for('static', filename='/img/logo_footer.png', _external=True) }}--> 
+            <p>TP Buddy</p>
+        </div>
+        <ul class="listado" id="listado_footer">
+            <li><a href="">Inicio</a></li>
+            <li><a href="">Reglas</a></li>
+            <li><a href="">Sobre Nosotros</a></li>
+        </ul>
+        <div id="terminos_condiciones">
+            <p>Términos y condiciones</p>
+        </div>
+        <div id="txt_footer"><p>2025@</p></div>
+
+    </footer>
+
+</body>
+</html>

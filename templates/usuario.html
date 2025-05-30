@@ -1,0 +1,78 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>TPbuddy</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/style.css', _external=True) }}">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="miperfil">
+                <img id="img_perfil_icono"
+                        src="{{ url_for('static', filename='img/perfil_icono.png') }}" alt="Perfil Icono">
+                <button id="botton_miperfil" class="perfil_btn">MI PERFIL</button>
+                <div id="form_perfil" class="desplegable">
+                    <div class="banner_perfil_desplegable">
+                        <img id="img_perfil" src="{{ url_for('static', filename='img/perfil.png') }}" alt="Perfil">
+                        <form class="form_perfil" action="{{ url_for('logout') }}" method="post">
+                            <button type="submit" class="btn_perfil">Cerrar Sesión</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div id="menu">
+                <img id="img_menu_header" src="{{ url_for('static', filename='/img/logo_header.png', _external=True) }}"> <!--{{ url_for('static', filename='/img/logo_header.png', _external=True) }}-->
+                <ul class="listado" id="listado_header">
+                    <li><a href="">Como funciona</a></li>
+                    <li><a href="">Reglas</a></li>
+                    <li><a href="">Materias</a></li>
+                    <li><a href="">Grupos</a></li>
+                    <li><a href="">Contactanos</a></li>
+                    <li><a href="">Mobile App</a></li>
+                </ul>
+
+            </div>
+            <div id="perfil">
+                <div id="banner_perfil">
+                    <form method="POST" enctype="multipart/form-data">
+                        <label for="input-banner">
+                            <img id='img_cambiar_banner'src="{{ url_for('static', filename='img/icono_camara.png') }}" >
+                        </label>
+                        <input type="file" id="input-banner" name="imagen-banner" style="display:none;" onchange="this.form.submit()">
+                    </form>
+                </div>
+
+                <div id="foto_de_perfil">
+                    <img id='foto_perfil_img' src="{{ url_for('static', filename='img/icono_imagen_perfil.png') }}" alt="Foto de Perfil">
+                </div>
+
+                <div class="editar_foto">
+                    <!--agregegar un form que deje editar la foto de perfil-->
+                    <img class='icono_lapiz' src="{{ url_for('static', filename='img/icono_lapiz_edit.png') }}" alt="Foto de Perfil">
+                </div>
+                
+                <div id="datos_usuario">
+                    <div class="fila-datos">
+                        <h2 class="datos">nombre de compañer@</h2>
+                        <span class="datos">Universidad</span>
+                    </div>
+                    <span>Carrera</span>
+                    <h2> Sobre mi</h2>
+                    <div id="sobre_mi">
+                        
+
+                    </div>
+                </div>
+
+                
+
+            </div>
+        </nav>
+    </header>
+
+</body>
+</html>

@@ -1,0 +1,334 @@
+/*Fondo*/
+body {
+    background-color: #1C1C21;
+}
+
+/*Inicio de Sesión y Registro*/
+
+#registro_inicio_sesion {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    padding-right: 10px;
+    padding-top: 5px;
+}
+
+#registro_inicio_sesion a {
+    font-size: 13px;
+    text-decoration: none;
+    color: #CEE5F2;
+}
+
+#registro_inicio_sesion a:hover {
+    text-decoration: underline;
+}
+
+#inicio_sesion {
+    padding: 10px;
+    font-family: 'Inter', sans-serif;
+}
+
+#registrarse {
+    display: inline-block;
+    background-color: #5C95D6;
+    padding: 10px;
+    border-radius: 999px;
+    font-family: 'Poppins', sans-serif;
+}
+
+/*Menu de elementos (tanto inicio como final)*/
+
+.listado {
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    gap: 3rem;
+    justify-content: center;
+    list-style: none;
+    padding-left: 0;
+}
+
+.listado a {
+    text-decoration: none;
+    font-family: 'Istok Web', sans-serif;;
+}
+
+.listado a:hover {
+    text-decoration: underline;
+}
+
+/*Decoración header*/
+
+#img_menu_header {
+    width: 100px;
+    position: absolute;
+    left: 0;
+}
+
+#listado_header a {
+    transform: translate(0px, 20px);
+    color:#AEABD4;;
+}
+
+#menu {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    padding-bottom: 65px;
+    padding-top: 10px;
+}
+
+/*Decoración footer*/
+
+footer {
+    position: absolute;
+    background-color: #242424;
+    width: 100%;
+    border-top-left-radius: 100vmax;
+    border-top-right-radius: 100vmax;
+}
+
+#terminos_condiciones {
+    text-align: center;
+    color: #626262;
+    font-family: 'Istok Web', sans-serif;;
+}
+
+#txt_footer {
+    display: block;
+    width: 100%;
+    background-color: #1D1D1D;
+    margin: 0 0 0 0;
+}
+
+#txt_footer p {
+    color: #626262;
+    text-align: center;
+    font-family: 'Istok Web', sans-serif;
+    margin: 0 0 0 0;
+}
+
+#logo_footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    color: #F2F2F2;
+    font-size: 30px;
+    font-family: 'Istok Web', sans-serif;;
+    gap: 0.5rem;
+}
+
+#img_footer {
+    height: 60px;
+}
+
+#listado_footer a {
+    color: #F2F2F2;
+}
+
+/*body*/
+
+#grupos_formados {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    height: 20px;
+    color: #F2F2F2;
+    font-size: 15px;
+    font-family: 'Istok Web', sans-serif;;
+}
+
+#img_grupos_formados {
+    height: 22px;
+}
+
+#txt_titulo {
+    width: 80%;
+    margin: 0 auto;
+    padding: 10px;
+    text-align: center;
+    font-size: 45px;
+    color: #BEBEBE;
+    font-family: 'Poppins', sans-serif;
+}
+
+#txt_subtitulo {
+    text-align: center;
+    color: #FFFFFF;
+    font-family: 'Istok Web', sans-serif;
+    font-size: 15px;
+    padding: 15px;
+}
+
+#gif_inicio {
+    display: block;
+    margin: auto;
+    height: 600px;
+}
+
+
+/*perfil*/
+
+.miperfil {
+    position: relative;
+    display: flex;
+    justify-content: flex-end
+}
+
+#botton_miperfil {
+    display: flex;
+    justify-content: flex-end;
+    background: none;
+    border: none;
+    color:#d6f1ff;
+    font-family:'Roboto', sans-serif;
+    font-weight: bold;
+    padding: 8px 12px;
+    cursor: pointer;
+
+}
+/*esto es el boton para cerrar secion que se desplega despues de presionar mi perfil*/
+#form_perfil {
+    display: none;
+    position: absolute;
+    top: 40px;
+    right: 0;
+    background: #242424;
+    border-radius: 8px;
+    padding: 10px;
+    z-index: 10;
+}
+
+#img_perfil_icono {
+    height: 32px;
+    width: 32px;
+    object-fit: cover; 
+    justify-content: flex-end;
+    background: #242424;
+}
+
+#perfil {
+    position: relative;
+    display: flex;/* Aumenta el espacio interno */
+    flex-direction: column;
+    min-height: px; /*quitar cuando agrege contenido*/
+    margin: 20px 80px; /* 20px arriba/abajo, 100px izquierda/derecha */
+    
+    
+    
+}
+/*perzonalizacion del banner y foto de perfil*/
+
+#banner_perfil {
+    height: 150px;
+    width: 100%; /* Asegura que ocupe todo el ancho del contenedor */
+    background-color: #A0b3b6;
+    position: relative;
+    border-radius: 16px;
+    z-index: 1;
+
+}
+
+#img_cambiar_banner {
+    position: absolute;
+    right: 16px;   /* Distancia desde el borde derecho */
+    bottom: 16px;  /* Distancia desde el borde inferior */
+    height: 30px;
+    width: 30px;
+    object-fit: cover;
+    background: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+#foto_de_perfil {
+    position: absolute;
+    top: 60px; /* Ajusta para que la foto se superponga al banner */
+    left: 70px; /* Alineado a la izquierda dentro de #perfil */
+    min-width: 150px;
+    min-height: 150px;
+    background-color: #BEBEBE;
+    border-radius: 50%;
+    border: 8px solid #1C1C21;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+
+}
+#foto_perfil_img {
+    height: 50px;
+    width: 50px;
+    
+}
+
+/*los datos del usuario*/
+#datos_usuario {
+    margin-top: 50px; /* Ajusta para dejar espacio debajo de la foto */
+    display: flex;
+    flex-direction: column;
+    color: #F2F2F2;
+    margin-left: 70px;
+    font-family:'Roboto', sans-serif;
+    font-weight: bold;
+}
+
+
+
+.fila-datos {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.datos {
+    margin: 0;
+    margin-right: 30px;
+    margin-bottom: 8px;
+}
+
+span {
+    font-size: 20px;
+    margin: 0;
+    color: #F2F2F2;
+    margin-bottom: 30px;
+}
+
+
+
+.editar_foto {
+    background-color: #36363c;
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-self: flex-end;
+    margin-top: 10px;
+    margin-right: 16px;
+    cursor: pointer;
+    border: 2px solid #1C1C21;
+}
+
+.icono_lapiz {
+    height: 25px;
+    width: 25px;
+    object-fit: contain;
+}
+
+#sobre_mi {
+    background-color: #36363c;
+    min-height: 80px;
+    border-radius: 8px;
+    padding: 10px;
+    margin-right: 30px
+
+    
+}

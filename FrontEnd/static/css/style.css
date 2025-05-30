@@ -1,3 +1,7 @@
+html {
+  scroll-behavior: smooth;
+}
+
 /*Fondo*/
 body {
     background-color: #1C1C21;

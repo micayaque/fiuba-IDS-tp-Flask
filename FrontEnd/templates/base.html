@@ -24,11 +24,32 @@
             <li><a href="#reglas">Reglas</a></li>
             <li><a href="">Materias</a></li>
             <li><a href="">Grupos</a></li>
-            <li><a href="#contacto">Contactanos</a></li>
+            <li><a onclick="mostrarPopup_contacto()" id="contactanos">Contactanos</a></li>
             <li><a href="">Mobile App</a></li>
         </ul>
     </div>
-
+    <div onclick="cerrarPopup_contacto()" id="fondo_popupContacto"></div>
+    <div id="contacto_popup">
+        <h1>Contacto</h1>
+        <div id="lista_correos">
+            <button type="button" onclick="seleccionar('cvperezb@fi.uba.ar')">cvperezb@fi.uba.ar</button>
+            <button type="button" onclick="seleccionar('myaque@fi.uba.ar')">myaque@fi.uba.ar</button>
+            <button type="button" onclick="seleccionar('aoshiro@fi.uba.ar')">aoshiro@fi.uba.ar</button>
+            <button type="button" onclick="seleccionar('lcoroq@fi.uba.ar')">lcoroq@fi.uba.ar</button>
+            <button type="button" onclick="seleccionar('sbardina@fi.uba.ar')">sbardina@fi.uba.ar</button>
+            <button type="button" onclick="seleccionar('samartin@fi.uba.ar')">samartin@fi.uba.ar</button>
+        </div>
+        <form action="">
+            <label for="email">Ingrese su correo: </label><br>
+            <input type="email" id="email" name="email"><br>
+            <label for="mensaje">Mensaje: </label>
+            <textarea type="text" id="mensaje" name="mensaje"></textarea>
+            <div id="botones">
+                <button type="submit">Enviar</button>
+                <button type="button" onclick="cerrarPopup_contacto()">Cerrar</button>
+            </div>
+        </form>
+    </div>
     {% block content %}
     
     {% endblock %}
@@ -43,23 +64,12 @@
             <li><a href="#reglas">Reglas</a></li>
             <li><a href="">Sobre Nosotros</a></li>
         </ul>
-        <div id="footer_contacto" class="informacion">
-            <h1 id="contacto">Contactanos</h1>
-            <ul>
-                <li>sbardina@fi.uba.ar</li>
-                <li>samartin@fi.uba.ar</li>
-                <li>cvperezb@fi.uba.ar</li>
-                <li>myaque@fi.uba.ar</li>
-                <li>aoshiro@fi.uba.ar</li>
-                <li>lcoroq@fi.uba.ar</li>
-            </ul>
-        </div>
         <div id="terminos_condiciones">
             <p>Términos y condiciones</p>
         </div>
         <div id="txt_footer"><p>2025@</p></div>
 
     </footer>
-
+    <script src="../static/js/style.js"></script>
 </body>
 </html>

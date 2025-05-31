@@ -64,6 +64,108 @@ body {
     text-decoration: underline;
 }
 
+/*Contactanos config*/
+
+#contactanos {
+    cursor: pointer;
+}
+
+#fondo_popupContacto {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  backdrop-filter: blur(5px); /* 🔍 Aquí se aplica el difuminado */
+  background-color: rgba(0, 0, 0, 0.4); /* oscuro semi-transparente */
+  z-index: 999;
+}
+
+#contacto_popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: gray solid 1px;
+    border-radius: 50px;
+    height: 450px;
+    width: 350px;
+    background-color: #1C1C21;
+    z-index: 1000;
+}
+
+#contacto_popup h1 {
+    text-align: center;
+    text-decoration: underline;
+    color: #F2F2F2;
+}
+
+/*Se encarga de los correos y seleccionarlos*/
+
+#lista_correos {
+    color: #F2F2F2;
+    font-family: 'Istok Web', sans-serif;
+    margin: 10px;
+}
+
+#lista_correos button {
+    background-color: #222225;
+    color: #F2F2F2;
+    text-align: left;
+    border: solid #5a5959 0.2px;
+    border-radius: 5px;
+    height: 2rem;
+    width: 10rem;
+}
+
+#lista_correos button.seleccionado {
+    background-color: #626262;
+}
+
+/*Fin lista correos*/
+
+/*Controla el form, tamaños y vista*/
+
+#contacto_popup form {
+    display: flex;
+    flex-direction: column;
+    width: 330px;
+    color: #F2F2F2;
+    margin: 10px;
+}
+
+#botones {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    background-color: transparent;
+}
+
+#botones button {
+    margin-top: 1.5rem;
+    background-color: transparent;
+    border: solid #5a5959 0.2px;
+    color: #F2F2F2;
+}
+
+#contacto_popup form input {
+    background-color: transparent;
+    border: #5a5959 solid 1px;
+    border-radius: 5px;
+    color: #F2F2F2;
+}
+
+#mensaje {
+    height: 7rem;
+    background-color: transparent;
+    border: #5a5959 solid 1px;
+    border-radius: 5px;
+    color: #F2F2F2;
+    resize: none;
+}
+
+/*Fin modificación del form*/
+
 /*Decoración header*/
 
 #img_menu_header {
@@ -133,28 +235,9 @@ footer {
 }
 
 #listado_footer a {
-    color: #F2F2F2;
+    color: #f2f2f2;
 }
 
-#footer_contacto {
-    display: flex;
-    flex-direction: column;
-    margin: 0 auto;
-    text-align: left;
-    width: 70rem;
-}
-
-#footer_contacto h1 {
-    margin: 0 2.4rem;
-}
-
-#footer_contacto ul {
-    display: flex;
-    gap: 3rem;
-    list-style: none;
-    font-family: 'Istok Web', sans-serif;
-    color: #F2F2F2;
-}
 
 /*Template index*/
 

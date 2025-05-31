@@ -4,11 +4,11 @@
     <head>
         <meta charset="UTF-8">
         <!--Bootstrap-->
-        <link rel="stylesheet" href="{{ url_for('static', filename='/css/bootstrap.min.css', _external=True) }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
 
         <!--Archivo de estilos CSS-->
-        <link rel="stylesheet" href="{{ url_for('static', filename='/css/style.css', _external=True) }}">
-        
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
         <!--Fuentes de texto, las agregamos online porque es muy dificil que se caiga GoogleFonts, ¿aún así tenemos que hacerlo descargarlas?-->
         <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
@@ -16,29 +16,48 @@
         <!--Fin fuentes de texto-->
 
         <link rel="icon" href="{{ url_for('static', filename='/img/icono_pagina.png', _external=True) }}">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>{% block tittle %}{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>{% block title %}{% endblock %}</title>
     </head>
 
 
     <body>
+        
+        <header>
+            <div id="contenedor_header" class="container">        
 
-        <div id="contenedor_registrarse_iniciar_sesion" class="container">
-            <a href="" id="btn_iniciar_sesion" class="btn btn-sm">INICIAR SESIÓN</a>
-            <a href="" id="btn_registrarse" class="btn btn-sm">REGISTRARSE</a>
+                <div id="contenedor_logo_header" class="start-0">
+                    <img src="{{ url_for('static', filename='img/logo_header.png') }}" alt="Logo">
+                </div>
+                
+                <div id="contenedor_botones_header">
+                    <a href="" id="btn_iniciar_sesion" class="btn btn-sm">INICIAR SESIÓN</a>
+                    <a href="" id="btn_registrarse" class="btn btn-sm">REGISTRARSE</a>
+                </div>
+            </div>
+        </header>
+
+
+        <!-- Menú -->
+
+        <div id="contenedor_menu">
+            
+            <nav class="mt-md-0">
+                <ul class="nav" id="opciones_menu">
+
+                    <li class="nav-item"><a class="nav-link" href="#como_funciona">Cómo funciona</a></li>
+                    <li class="nav-item"><a class="nav-link" href="">Materias</a></li>
+                    <li class="nav-item"><a class="nav-link" href="">Grupos</a></li>
+                    <li class="nav-item"><a class="nav-link" onclick="mostrarPopup_contacto()" id="contactanos">Contactanos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#sobre_nosotros">Mobile app</a></li>
+
+                </ul>
+            </nav>
+
         </div>
 
-        <div id="menu">
-            <img id="img_menu_header" src="{{ url_for('static', filename='/img/logo_header.png', _external=True) }}">
-            <ul class="listado" id="listado_header">
-                <li><a href="#como_funciona"">Como funciona</a></li>
-                <li><a href="#reglas">Reglas</a></li>
-                <li><a href="">Materias</a></li>
-                <li><a href="">Grupos</a></li>
-                <li><a onclick="mostrarPopup_contacto()" id="contactanos">Contactanos</a></li>
-                <li><a href="#sobre_nosotros">Sobre Nosotros</a></li>
-            </ul>
-        </div>
+        <!-- Contacto -->
         <div onclick="cerrarPopup_contacto()" id="fondo_popupContacto"></div>
         <div id="contacto_popup">
             <h1>Contacto</h1>
@@ -61,27 +80,35 @@
                 </div>
             </form>
         </div>
-        {% block content %}
-        
-        {% endblock %}
+        <!--  -->
 
+        <main class="container">
+            {% block content %}{% endblock %}
+        </main>
+
+        <!-- Footer -->
         <footer>
-            <div id="logo_footer">
-                <img id="img_footer" src="../static/img/logo_footer.png"> <!--{{ url_for('static', filename='/img/logo_footer.png', _external=True) }}--> 
-                <p>TP Buddy</p>
-            </div>
-            <ul class="listado" id="listado_footer">
-                <li><a href="#menu">Inicio</a></li>
-                <li><a href="#reglas">Reglas</a></li>
-                <li><a href="">Sobre Nosotros</a></li>
-            </ul>
-            <div id="terminos_condiciones">
-                <p>Términos y condiciones</p>
-            </div>
-            <div id="txt_footer"><p>2025@</p></div>
+            <div class="container" id="contenedor_footer">
 
+                <div id="contenedor_logo_footer" class="flex-md-row">
+                    <img id="img_footer" src="{{ url_for('static', filename='img/logo_footer.png') }}" alt="Logo Footer"> 
+                    <h4>TP Buddy</h4>
+                </div>
+
+                <ul class="nav" id="listado_footer">
+                    <li class="nav-item"><a href="#menu">Inicio</a></li>
+                    <li class="nav-item"><a href="#como_funciona">Cómo funciona</a></li>
+                    <li class="nav-item"><a href="#contactanos">Contactanos</a></li>
+                </ul>
+
+                <p>Términos y condiciones</p>
+                <p>2025@</p>
+
+            </div>
         </footer>
-        <script src="../static/js/style.js"></script>
+            </div>
+
+        <script src="{{ url_for('static', filename='js/style.js') }}"></script>
     </body>
 
 </html>

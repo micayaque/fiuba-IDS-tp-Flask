@@ -5,10 +5,12 @@ body {
 #registro_inicio_sesion {
     display: flex;
     flex-direction: row;
-    justify-content: flex-end;
+    justify-content: end;
+    align-items: center;
     gap: 0.5rem;
-    padding-right: 10px;
-    padding-top: 5px;
+    padding-right: 3rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
 }
 
 #registro_inicio_sesion a {
@@ -17,8 +19,15 @@ body {
     color: #CEE5F2;
 }
 
-#registro_inicio_sesion a:hover {
-    text-decoration: underline;
+#inicio_sesion:hover {
+    color: white;
+    font-weight: bold;
+}
+
+#registrarse:hover {
+    background-color: #4A7BBE;
+    color: white;
+    font-weight: bold;
 }
 
 #inicio_sesion {

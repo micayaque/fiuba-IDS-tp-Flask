@@ -18,11 +18,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block tittle %}{% endblock %}</title>
 </head>
+
 <body>
-    <div id="registro_inicio_sesion">
-        <a href="" id="inicio_sesion">INICIAR SESIÓN</a>
-        <a href="" id="registrarse">REGISTRARSE</a>
+  
+    <div id="registro_inicio_sesion" class="container">
+        <a href="" id="inicio_sesion" class="btn btn-sm">INICIAR SESIÓN</a>
+        <a href="" id="registrarse" class="btn btn-sm">REGISTRARSE</a>
     </div>
+
     <div id="menu">
         <img id="img_menu_header" src="{{ url_for('static', filename='/img/logo_header.png', _external=True) }}"> <!--{{ url_for('static', filename='/img/logo_header.png', _external=True) }}-->
         <ul class="listado" id="listado_header">
@@ -34,6 +37,7 @@
             <li><a href="">Mobile App</a></li>
         </ul>
     </div>
+
     {% block content %}
     {% endblock %}
 

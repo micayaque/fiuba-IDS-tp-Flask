@@ -1,75 +1,87 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="../static/css/style.css"> <!--{{ url_for('static', filename='/css/style.css', _external=True) }}-->
-    <!--Fuentes de texto-->
-    <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Istok+Web&display=swap" rel="stylesheet">
-    <!--Fin fuentes de texto-->
-    <link rel="icon" href="{{ url_for('static', filename='/img/icono_pagina.png', _external=True) }}"> <!--{{ url_for('static', filename='/img/icono_pagina.png', _external=True) }}-->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block tittle %}Archivo Base{% endblock %}</title>
-</head>
-<body>
-    <div id="registro_inicio_sesion">
-        <a href="" id="inicio_sesion">Inicio Sesión</a>
-        <a href="" id="registrarse">Registrarse</a>
-    </div>
-    <div id="menu">
-        <img id="img_menu_header" src="../static/img/logo_header.png"> <!--{{ url_for('static', filename='/img/logo_header.png', _external=True) }}-->
-        <ul class="listado" id="listado_header">
-            <li><a href="#como_funciona"">Como funciona</a></li>
-            <li><a href="#reglas">Reglas</a></li>
-            <li><a href="">Materias</a></li>
-            <li><a href="">Grupos</a></li>
-            <li><a onclick="mostrarPopup_contacto()" id="contactanos">Contactanos</a></li>
-            <li><a href="#sobre_nosotros">Sobre Nosotros</a></li>
-        </ul>
-    </div>
-    <div onclick="cerrarPopup_contacto()" id="fondo_popupContacto"></div>
-    <div id="contacto_popup">
-        <h1>Contacto</h1>
-        <div id="lista_correos">
-            <button type="button" onclick="seleccionar('cvperezb@fi.uba.ar')">cvperezb@fi.uba.ar</button>
-            <button type="button" onclick="seleccionar('myaque@fi.uba.ar')">myaque@fi.uba.ar</button>
-            <button type="button" onclick="seleccionar('aoshiro@fi.uba.ar')">aoshiro@fi.uba.ar</button>
-            <button type="button" onclick="seleccionar('lcoroq@fi.uba.ar')">lcoroq@fi.uba.ar</button>
-            <button type="button" onclick="seleccionar('sbardina@fi.uba.ar')">sbardina@fi.uba.ar</button>
-            <button type="button" onclick="seleccionar('samartin@fi.uba.ar')">samartin@fi.uba.ar</button>
+
+    <head>
+        <meta charset="UTF-8">
+        <!--Bootstrap-->
+        <link rel="stylesheet" href="{{ url_for('static', filename='/css/bootstrap.min.css', _external=True) }}">
+
+        <!--Archivo de estilos CSS-->
+        <link rel="stylesheet" href="{{ url_for('static', filename='/css/style.css', _external=True) }}">
+        
+        <!--Fuentes de texto, las agregamos online porque es muy dificil que se caiga GoogleFonts, ¿aún así tenemos que hacerlo descargarlas?-->
+        <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Istok+Web&display=swap" rel="stylesheet">
+        <!--Fin fuentes de texto-->
+
+        <link rel="icon" href="{{ url_for('static', filename='/img/icono_pagina.png', _external=True) }}">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block tittle %}{% endblock %}</title>
+    </head>
+
+
+    <body>
+
+        <div id="contenedor_registrarse_iniciar_sesion" class="container">
+            <a href="" id="btn_iniciar_sesion" class="btn btn-sm">INICIAR SESIÓN</a>
+            <a href="" id="btn_registrarse" class="btn btn-sm">REGISTRARSE</a>
         </div>
-        <form action="">
-            <label for="email">Ingrese su correo: </label><br>
-            <input type="email" id="email" name="email"><br>
-            <label for="mensaje">Mensaje: </label>
-            <textarea type="text" id="mensaje" name="mensaje"></textarea>
-            <div id="botones">
-                <button type="submit">Enviar</button>
-                <button type="button" onclick="cerrarPopup_contacto()">Cerrar</button>
+
+        <div id="menu">
+            <img id="img_menu_header" src="{{ url_for('static', filename='/img/logo_header.png', _external=True) }}">
+            <ul class="listado" id="listado_header">
+                <li><a href="#como_funciona"">Como funciona</a></li>
+                <li><a href="#reglas">Reglas</a></li>
+                <li><a href="">Materias</a></li>
+                <li><a href="">Grupos</a></li>
+                <li><a onclick="mostrarPopup_contacto()" id="contactanos">Contactanos</a></li>
+                <li><a href="#sobre_nosotros">Sobre Nosotros</a></li>
+            </ul>
+        </div>
+        <div onclick="cerrarPopup_contacto()" id="fondo_popupContacto"></div>
+        <div id="contacto_popup">
+            <h1>Contacto</h1>
+            <div id="lista_correos">
+                <button type="button" onclick="seleccionar('cvperezb@fi.uba.ar')">cvperezb@fi.uba.ar</button>
+                <button type="button" onclick="seleccionar('myaque@fi.uba.ar')">myaque@fi.uba.ar</button>
+                <button type="button" onclick="seleccionar('aoshiro@fi.uba.ar')">aoshiro@fi.uba.ar</button>
+                <button type="button" onclick="seleccionar('lcoroq@fi.uba.ar')">lcoroq@fi.uba.ar</button>
+                <button type="button" onclick="seleccionar('sbardina@fi.uba.ar')">sbardina@fi.uba.ar</button>
+                <button type="button" onclick="seleccionar('samartin@fi.uba.ar')">samartin@fi.uba.ar</button>
             </div>
-        </form>
-    </div>
-    {% block content %}
-    
-    {% endblock %}
-
-    <footer>
-        <div id="logo_footer">
-            <img id="img_footer" src="../static/img/logo_footer.png"> <!--{{ url_for('static', filename='/img/logo_footer.png', _external=True) }}--> 
-            <p>TP Buddy</p>
+            <form action="">
+                <label for="email">Ingrese su correo: </label><br>
+                <input type="email" id="email" name="email"><br>
+                <label for="mensaje">Mensaje: </label>
+                <textarea type="text" id="mensaje" name="mensaje"></textarea>
+                <div id="botones">
+                    <button type="submit">Enviar</button>
+                    <button type="button" onclick="cerrarPopup_contacto()">Cerrar</button>
+                </div>
+            </form>
         </div>
-        <ul class="listado" id="listado_footer">
-            <li><a href="#menu">Inicio</a></li>
-            <li><a href="#reglas">Reglas</a></li>
-            <li><a href="">Sobre Nosotros</a></li>
-        </ul>
-        <div id="terminos_condiciones">
-            <p>Términos y condiciones</p>
-        </div>
-        <div id="txt_footer"><p>2025@</p></div>
+        {% block content %}
+        
+        {% endblock %}
 
-    </footer>
-    <script src="../static/js/style.js"></script>
-</body>
+        <footer>
+            <div id="logo_footer">
+                <img id="img_footer" src="../static/img/logo_footer.png"> <!--{{ url_for('static', filename='/img/logo_footer.png', _external=True) }}--> 
+                <p>TP Buddy</p>
+            </div>
+            <ul class="listado" id="listado_footer">
+                <li><a href="#menu">Inicio</a></li>
+                <li><a href="#reglas">Reglas</a></li>
+                <li><a href="">Sobre Nosotros</a></li>
+            </ul>
+            <div id="terminos_condiciones">
+                <p>Términos y condiciones</p>
+            </div>
+            <div id="txt_footer"><p>2025@</p></div>
+
+        </footer>
+        <script src="../static/js/style.js"></script>
+    </body>
+
 </html>

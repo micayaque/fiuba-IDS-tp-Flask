@@ -2,48 +2,45 @@ html {
   scroll-behavior: smooth;
 }
 
-/*Fondo*/
 body {
     background-color: #1C1C21;
-    height: 100%;
-    margin: 0;
 }
 
-/*Inicio de Sesión y Registro*/
-
-#registro_inicio_sesion {
+#contenedor_registrarse_iniciar_sesion {
     display: flex;
     flex-direction: row;
-    justify-content: flex-end;
+    align-items: center;
+    justify-content: end;
     gap: 0.5rem;
-    padding-right: 10px;
-    padding-top: 5px;
+    padding-right: 1rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
 }
 
-#registro_inicio_sesion a {
-    font-size: 13px;
+#contenedor_registrarse_iniciar_sesion a {
     text-decoration: none;
     color: #CEE5F2;
-}
-
-#registro_inicio_sesion a:hover {
-    text-decoration: underline;
-}
-
-#inicio_sesion {
-    padding: 10px;
-    font-family: 'Inter', sans-serif;
-}
-
-#registrarse {
-    display: inline-block;
-    background-color: #5C95D6;
-    padding: 10px;
-    border-radius: 999px;
     font-family: 'Poppins', sans-serif;
+    font-weight: bold
 }
 
-/*Menu de elementos (tanto inicio como final)*/
+#btn_registrarse {
+    background-color: #5C95D6;
+    border-radius: 1rem;
+}
+
+#btn_iniciar_sesion:hover {
+    color: white;
+    font-weight: bold;
+}
+
+#btn_registrarse:hover {
+    background-color: #4A7BBE;
+    color: white;
+    font-weight: bold;
+}
+
+/* Header */
 
 .listado {
     margin: 0 auto;

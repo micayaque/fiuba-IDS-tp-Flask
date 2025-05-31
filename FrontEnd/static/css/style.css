@@ -134,20 +134,6 @@ body {
     margin: 10px;
 }
 
-#botones {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    background-color: transparent;
-}
-
-#botones button {
-    margin-top: 1.5rem;
-    background-color: transparent;
-    border: solid #5a5959 0.2px;
-    color: #F2F2F2;
-}
-
 #contacto_popup form input {
     background-color: transparent;
     border: #5a5959 solid 1px;
@@ -162,6 +148,22 @@ body {
     border-radius: 5px;
     color: #F2F2F2;
     resize: none;
+}
+
+#botones {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    background-color: transparent;
+}
+
+#botones button {
+    margin-top: 1.5rem;
+    padding: 5px;
+    background-color: transparent;
+    border: solid #5a5959 0.2px;
+    border-radius: 999px;
+    color: #F2F2F2;
 }
 
 /*Fin modificación del form*/
@@ -193,6 +195,7 @@ body {
 
 footer {
     position: absolute;
+    bottom: 0;
     background-color: #242424;
     width: 100%;
     border-top-left-radius: 100vmax;

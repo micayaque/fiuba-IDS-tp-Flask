@@ -32,7 +32,7 @@
             <div id="contenedor_header" class="container">        
 
                 <div id="contenedor_logo_header" class="start-0">
-                    <img src="{{ url_for('static', filename='img/logo_header.png') }}" alt="Logo">
+                    <a href="/"><img src="{{ url_for('static', filename='img/logo_header.png') }}" alt="Logo"></a>
                 </div>
                 
                 <div id="contenedor_botones_header">
@@ -50,11 +50,11 @@
             <nav class="mt-md-0">
                 <ul class="nav" id="opciones_menu">
 
-                    <li class="nav-item"><a class="nav-link" href="#como_funciona">Cómo funciona</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/#como-funciona">Cómo funciona</a></li>
                     <li class="nav-item"><a class="nav-link" href="">Materias</a></li>
                     <li class="nav-item"><a class="nav-link" href="">Grupos</a></li>
-                    <li class="nav-item"><a class="nav-link" onclick="mostrarPopup_contacto()" id="contactanos">Contactanos</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#sobre_nosotros">Mobile app</a></li>
+                    <li class="nav-item" onclick="mostrarPopupContacto()" ><a class="nav-link">Contactanos</a></li>
+                    <li class="nav-item"><a class="nav-link">Mobile app</a></li>
 
                 </ul>
             </nav>
@@ -62,29 +62,31 @@
         </div>
 
         <!-- Contacto -->
-        <div onclick="cerrarPopup_contacto()" id="fondo_popupContacto"></div>
-        <div id="contacto_popup">
-            <h1>Contacto</h1>
-            <div id="lista_correos">
-                <button type="button" onclick="seleccionar('cvperezb@fi.uba.ar')">cvperezb@fi.uba.ar</button>
-                <button type="button" onclick="seleccionar('myaque@fi.uba.ar')">myaque@fi.uba.ar</button>
-                <button type="button" onclick="seleccionar('aoshiro@fi.uba.ar')">aoshiro@fi.uba.ar</button>
-                <button type="button" onclick="seleccionar('lcoroq@fi.uba.ar')">lcoroq@fi.uba.ar</button>
-                <button type="button" onclick="seleccionar('sbardina@fi.uba.ar')">sbardina@fi.uba.ar</button>
-                <button type="button" onclick="seleccionar('samartin@fi.uba.ar')">samartin@fi.uba.ar</button>
+        <div onclick="cerrarPopupContacto()" id="fondo_popup_contacto"></div>
+
+        <div id="contenedor_contacto_popup">
+            <h3>Contacto</h3>
+            <div id="contenedor_lista_correos">
+                <div class="mail">cvperezb@fi.uba.ar</div>
+                <div class="mail">myaque@fi.uba.ar</div>
+                <div class="mail">aoshiro@fi.uba.ar</div>
+                <div class="mail">lcoroq@fi.uba.ar</div>
+                <div class="mail">sbardina@fi.uba.ar</div>
+                <div class="mail">samartin@fi.uba.ar</div>
             </div>
             <form action="">
                 <label for="email">Ingrese su correo: </label><br>
-                <input type="email" id="email" name="email"><br>
+                <input type="email" name="email" id="email" autocomplete="email"><br>
+
                 <label for="mensaje">Mensaje: </label>
-                <textarea type="text" id="mensaje" name="mensaje"></textarea>
-                <div id="botones">
-                    <button type="submit">Enviar</button>
-                    <button type="button" onclick="cerrarPopup_contacto()">Cerrar</button>
+                <textarea type="text" name="mensaje" id="mensaje"></textarea>
+
+                <div id="contenedor_botones_enviar_cerrar">
+                    <button type="submit" id="btn_enviar">Enviar</button>
+                    <button type="button" id="btn_cerrar" onclick="cerrarPopupContacto()">Cerrar</button>
                 </div>
             </form>
         </div>
-        <!--  -->
 
         <main class="container">
             {% block content %}{% endblock %}
@@ -100,9 +102,9 @@
                 </div>
 
                 <ul class="nav" id="listado_footer">
-                    <li class="nav-item"><a href="#menu">Inicio</a></li>
-                    <li class="nav-item"><a href="#como_funciona">Cómo funciona</a></li>
-                    <li class="nav-item"><a href="#contactanos">Contactanos</a></li>
+                    <li class="nav-item"><a href="/">Inicio</a></li>
+                    <li class="nav-item"><a href="/#como-funciona">Cómo funciona</a></li>
+                    <li class="nav-item"><a onclick="mostrarPopupContacto()">Contactanos</a></li>
                 </ul>
 
                 <p>Términos y condiciones</p>
@@ -110,16 +112,11 @@
 
             </div>
         </footer>
-            </div>
 
-        <script src="{{ url_for('static', filename='js/style.js') }}"></script>
-
-
-    <!-- Bootstrap Bundle with Popper -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-    
-
+        <!-- Bootstrap-->
+        <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+        
     </body>
 
 </html>

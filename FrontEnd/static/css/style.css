@@ -1,16 +1,23 @@
+html {
+  scroll-behavior: smooth;
+}
+
+/*Fondo*/
 body {
     background-color: #1C1C21;
+    height: 100%;
+    margin: 0;
 }
+
+/*Inicio de Sesión y Registro*/
 
 #registro_inicio_sesion {
     display: flex;
     flex-direction: row;
-    justify-content: end;
-    align-items: center;
+    justify-content: flex-end;
     gap: 0.5rem;
-    padding-right: 3rem;
-    padding-top: 2rem;
-    padding-bottom: 2rem;
+    padding-right: 10px;
+    padding-top: 5px;
 }
 
 #registro_inicio_sesion a {
@@ -19,21 +26,13 @@ body {
     color: #CEE5F2;
 }
 
-#inicio_sesion:hover {
-    color: white;
-    font-weight: bold;
-}
-
-#registrarse:hover {
-    background-color: #4A7BBE;
-    color: white;
-    font-weight: bold;
+#registro_inicio_sesion a:hover {
+    text-decoration: underline;
 }
 
 #inicio_sesion {
     padding: 10px;
     font-family: 'Inter', sans-serif;
-    font-weight: bold;
 }
 
 #registrarse {
@@ -42,8 +41,9 @@ body {
     padding: 10px;
     border-radius: 999px;
     font-family: 'Poppins', sans-serif;
-    font-weight: bold;
 }
+
+/*Menu de elementos (tanto inicio como final)*/
 
 .listado {
     margin: 0 auto;
@@ -52,19 +52,123 @@ body {
     gap: 3rem;
     justify-content: center;
     list-style: none;
-    padding-left: 50px;
+    padding-left: 0;
 }
 
 .listado a {
     text-decoration: none;
-    font-family: 'Poppins';
-    font-weight: bold;
-    font-size: 22px;
+    font-family: 'Istok Web', sans-serif;;
 }
 
 .listado a:hover {
-    text-decoration: underline white;
+    text-decoration: underline;
 }
+
+/*Contactanos config*/
+
+#contactanos {
+    cursor: pointer;
+}
+
+#fondo_popupContacto {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  backdrop-filter: blur(5px); /* 🔍 Aquí se aplica el difuminado */
+  background-color: rgba(0, 0, 0, 0.4); /* oscuro semi-transparente */
+  z-index: 999;
+}
+
+#contacto_popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: gray solid 1px;
+    border-radius: 50px;
+    height: 450px;
+    width: 350px;
+    background-color: #1C1C21;
+    z-index: 1000;
+}
+
+#contacto_popup h1 {
+    text-align: center;
+    text-decoration: underline;
+    color: #F2F2F2;
+}
+
+/*Se encarga de los correos y seleccionarlos*/
+
+#lista_correos {
+    color: #F2F2F2;
+    font-family: 'Istok Web', sans-serif;
+    margin: 10px;
+}
+
+#lista_correos button {
+    background-color: #222225;
+    color: #F2F2F2;
+    text-align: left;
+    border: solid #5a5959 0.2px;
+    border-radius: 5px;
+    height: 2rem;
+    width: 10rem;
+}
+
+#lista_correos button.seleccionado {
+    background-color: #626262;
+}
+
+/*Fin lista correos*/
+
+/*Controla el form, tamaños y vista*/
+
+#contacto_popup form {
+    display: flex;
+    flex-direction: column;
+    width: 330px;
+    color: #F2F2F2;
+    margin: 10px;
+}
+
+#contacto_popup form input {
+    background-color: transparent;
+    border: #5a5959 solid 1px;
+    border-radius: 5px;
+    color: #F2F2F2;
+}
+
+#mensaje {
+    height: 7rem;
+    background-color: transparent;
+    border: #5a5959 solid 1px;
+    border-radius: 5px;
+    color: #F2F2F2;
+    resize: none;
+}
+
+#botones {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    background-color: transparent;
+}
+
+#botones button {
+    margin-top: 1.5rem;
+    padding: 5px;
+    background-color: transparent;
+    border: solid #5a5959 0.2px;
+    border-radius: 999px;
+    color: #F2F2F2;
+}
+
+/*Fin modificación del form*/
+
+/*Decoración header*/
 
 #img_menu_header {
     width: 100px;
@@ -86,6 +190,8 @@ body {
     padding-bottom: 65px;
     padding-top: 10px;
 }
+
+/*Decoración footer*/
 
 footer {
     position: absolute;
@@ -127,26 +233,29 @@ footer {
 }
 
 #img_footer {
-    height: 60px;
+    height: 3.75rem;
 }
 
 #listado_footer a {
-    color: #F2F2F2;
+    color: #f2f2f2;
 }
+
+
+/******************************************* ESTILOS PARA TEMPLATE INDEX ************************************************/
 
 #grupos_formados {
     display: flex;
     gap: 1rem;
     justify-content: center;
     align-items: center;
-    height: 20px;
+    height: 1.25rem;
     color: #F2F2F2;
     font-size: 15px;
     font-family: 'Istok Web', sans-serif;;
 }
 
 #img_grupos_formados {
-    height: 22px;
+    height: 1.375rem;
 }
 
 #txt_titulo {
@@ -155,8 +264,9 @@ footer {
     padding: 10px;
     text-align: center;
     font-size: 45px;
-    color: #BEBEBE;
     font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    color: #BEBEBE;
 }
 
 #txt_subtitulo {
@@ -172,6 +282,22 @@ footer {
     margin: auto;
     height: 600px;
 }
+
+.informacion h1 { /*Incluye contacto del footer*/
+    color: #BEBEBE;
+    text-decoration: underline;
+    font-family: 'Poppins', sans-serif;
+    margin-left: 0.5rem;
+} 
+
+.informacion p {
+    margin-left: 0.5rem;
+    color: #FFFFFF;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+}
+
+/******************************************* FIN ESTILO INDEX ************************************************/
 
 /******************************************* ESTILOS PARA MATERIAS ************************************************/
 
@@ -263,3 +389,41 @@ footer {
 
 
 /*******************************FIN DE ESTILOS PARA MATERIAS ***************************************/
+
+/******************************* ESTILOS PARA GRUPOS ***************************************/
+
+.barra_desplazamiento_grupos {
+    display: flex;
+    flex-direction: row;
+    padding: 10px 10px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border: 1px solid #ccc;
+    height: 30rem;
+    border: #303030 solid 0.3rem;
+    border-radius: 1rem;
+    background-color: transparent;
+}
+
+.barra_desplazamiento_grupos::-webkit-scrollbar {
+    border-radius: 1rem;
+}
+
+.barra_desplazamiento_grupos::-webkit-scrollbar-thumb {
+    background: #5a5959;
+    border-radius: 1rem;
+}
+
+.barra_desplazamiento_grupos::-webkit-scrollbar-thumb:hover {
+    background: #444444;
+}
+
+
+#items_barra_desplazamiento_grupos div {
+    min-width: 200px;
+    height: 60px;
+}
+
+
+
+/*******************************FIN DE ESTILOS PARA GRUPOS ***************************************/

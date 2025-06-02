@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block tittle %}Grupos{% endblock %}
+
+{% block content %}
+<div class="container my-5 text-light">
+   <h2 class="text-center mb-4">Grupos disponibles</h2>
+   <div class="barra_desplazamiento_grupos">
+      <div class="row justify-content-left g-4">
+         {% for grupo in grupos %}
+         <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <div class="card bg-dark text-light border-secondary rounded-4 shadow-sm h-100">
+                  <div id="items_barra_desplazamiento_grupos" class="card-body d-flex flex-column justify-content-between">
+                     <div class="text-center">
+                        <h5 class="card-title fw-semibold">{{ grupo.nombre }}</h5>
+                        <p class="card-text text-white-muted small">{{ grupo.materia }}</p>
+                     </div>
+                     <div class="text-center mt-3">
+                        <a href="/grupo/{{ grupo.id }}" class="btn btn-primary rounded-pill px-4">INFO</a>
+                     </div>
+                  </div>
+            </div>
+         </div>
+         {% endfor %}
+      </div>
+   </div>
+</div>
+{% endblock %}

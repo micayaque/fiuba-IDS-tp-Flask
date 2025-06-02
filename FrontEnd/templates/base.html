@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+
+    <head>
+        <meta charset="UTF-8">
+        <!--Bootstrap-->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+
+        <!--Archivo de estilos CSS-->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+        <!--Fuentes de texto, las agregamos online porque es muy dificil que se caiga GoogleFonts, ¿aún así tenemos que hacerlo descargarlas?-->
+        <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Istok+Web&display=swap" rel="stylesheet">    
+        <link href="https://fonts.googleapis.com/css2?family=Poetsen+One&display=swap" rel="stylesheet">
+
+        <link rel="icon" href="{{ url_for('static', filename='/img/icono_pagina.png', _external=True) }}">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>{% block title %}{% endblock %}</title>
+
+
+        <!-- Font Awesome-->
+        <script src="https://kit.fontawesome.com/75c8b9e0f6.js" crossorigin="anonymous"></script>
+    </head>
+
+
+    <body>
+        
+        <header>
+            <div id="contenedor_header" class="container">        
+
+                <div id="contenedor_logo_header" class="start-0">
+                    <a href="/"><img src="{{ url_for('static', filename='img/logo_header.png') }}" alt="Logo"></a>
+                </div>
+                
+                <div id="contenedor_botones_header">
+                    <a href="" id="btn_iniciar_sesion" class="btn btn-sm">INICIAR SESIÓN</a>
+                    <a href="" id="btn_registrarse" class="btn btn-sm">REGISTRARSE</a>
+                </div>
+            </div>
+        </header>
+
+
+        <!-- Menú -->
+
+        <div id="contenedor_menu">
+            
+            <nav class="mt-md-0">
+                <ul class="nav" id="opciones_menu">
+
+                    <li class="nav-item"><a class="nav-link" href="/#como-funciona">Cómo funciona</a></li>
+                    <li class="nav-item"><a class="nav-link" href="">Materias</a></li>
+                    <li class="nav-item"><a class="nav-link" href="">Grupos</a></li>
+                    <li class="nav-item" onclick="mostrarPopupContacto()" ><a class="nav-link">Contactanos</a></li>
+                    <li class="nav-item"><a class="nav-link">Mobile app</a></li>
+
+                </ul>
+            </nav>
+
+        </div>
+
+        <!-- Contacto -->
+        <div onclick="cerrarPopupContacto()" id="fondo_popup_contacto"></div>
+
+        <div id="contenedor_contacto_popup">
+            <h3>Contacto</h3>
+            <div id="contenedor_lista_correos">
+                <div class="mail">cvperezb@fi.uba.ar</div>
+                <div class="mail">myaque@fi.uba.ar</div>
+                <div class="mail">aoshiro@fi.uba.ar</div>
+                <div class="mail">lcoroq@fi.uba.ar</div>
+                <div class="mail">sbardina@fi.uba.ar</div>
+                <div class="mail">samartin@fi.uba.ar</div>
+            </div>
+            <form action="">
+                <label for="email">Ingrese su correo: </label><br>
+                <input type="email" name="email" id="email" autocomplete="email"><br>
+
+                <label for="mensaje">Mensaje: </label>
+                <textarea type="text" name="mensaje" id="mensaje"></textarea>
+
+                <div id="contenedor_botones_enviar_cerrar">
+                    <button type="submit" id="btn_enviar">Enviar</button>
+                    <button type="button" id="btn_cerrar" onclick="cerrarPopupContacto()">Cerrar</button>
+                </div>
+            </form>
+        </div>
+
+        <main class="container">
+            {% block content %}{% endblock %}
+        </main>
+
+        <!-- Footer -->
+        <footer>
+            <div class="container" id="contenedor_footer">
+
+                <div id="contenedor_logo_footer" class="flex-md-row">
+                    <img id="img_footer" src="{{ url_for('static', filename='img/logo_footer.png') }}" alt="Logo Footer"> 
+                    <h4>TP Buddy</h4>
+                </div>
+
+                <ul class="nav" id="listado_footer">
+                    <li class="nav-item"><a href="/">Inicio</a></li>
+                    <li class="nav-item"><a href="/#como-funciona">Cómo funciona</a></li>
+                    <li class="nav-item"><a onclick="mostrarPopupContacto()">Contactanos</a></li>
+                </ul>
+
+                <p>Términos y condiciones</p>
+                <p>2025@</p>
+
+            </div>
+        </footer>
+
+        <!-- Bootstrap-->
+        <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    </body>
+
+</html>

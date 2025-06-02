@@ -1,0 +1,364 @@
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+    background-color: #1C1C21;
+}
+
+/* Logo y Botones de registro e inicio de sesión */
+
+#contenedor_logo_header img{
+    display: flex;
+    height: 5rem;
+    margin: 1rem;
+}
+
+#contenedor_header {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+    padding-right: 1rem;
+    padding-bottom: 1rem;
+    width: 100%;
+}
+
+#contenedor_botones_header a {
+    text-decoration: none;
+    color: #CEE5F2;
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold
+}
+
+#btn_registrarse {
+    background-color: #5C95D6;
+    border-radius: 1rem;
+}
+
+#btn_iniciar_sesion:hover {
+    color: white;
+    font-weight: bold;
+}
+
+#btn_registrarse:hover {
+    background-color: #4A7BBE;
+    color: white;
+    font-weight: bold;
+}
+
+/* Navbar */
+
+#contenedor_menu {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+nav {
+    margin-top: 1rem;
+
+}
+
+#opciones_menu {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 3rem;
+}
+
+#opciones_menu a:hover {
+    cursor: pointer;
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  #opciones_menu {
+    gap: 0;
+  }
+}
+
+#opciones_menu a {
+    text-decoration: none;
+    color: #AEABD4;
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    padding: 2rem;
+}
+
+/* Footer */
+
+footer {
+    background-color: #242424;
+    width: 100%;
+    border-top-left-radius: 100vmax;
+    border-top-right-radius: 100vmax;
+}
+
+#contenedor_footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* width: 100%; */
+}
+
+#contenedor_logo_footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    padding-top: 1rem;
+}
+
+#contenedor_logo_footer img {
+    height: 3.75rem;
+}
+
+#contenedor_logo_footer h4 {
+    font-family: 'Istok Web', sans-serif;
+    color: #F2F2F2;
+    font-weight: bold;
+}
+
+#listado_footer {
+    justify-content: center;
+    margin-bottom: 1rem;
+    color: #f2f2f2;
+    gap: 2rem;
+}
+
+#listado_footer a {
+    text-decoration: none;
+    color: #F2F2F2;
+    font-family: 'Poppins';
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#contenedor_footer p {
+    text-align: center;
+    color: #626262;
+    font-family: 'Poltawski Nowy';
+    font-weight: bold;
+    width: 100%;
+}
+
+#logo_footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    color: #F2F2F2;
+    font-size: 30px;
+    font-family: 'Istok Web', sans-serif;;
+    gap: 0.5rem;
+}
+
+#img_footer {
+    height: 3.75rem;
+}
+
+
+/********************************ESTILOS PARA CONTACTO********************************/
+
+#fondo_popup_contacto {
+  display: none;
+  position: fixed;
+  top: 0; 
+  left: 0;
+  width: 100%; 
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9); /* oscuro semi-transparente */
+}
+
+#contenedor_contacto_popup {
+    display: none;
+    flex-direction: column;
+    padding: 0.5rem;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 10%;
+    background-color: #1C1C21;
+    align-items: center;
+    color: #F2F2F2;
+    font-family: 'Poppins';
+
+    width: 95vw;               /* Usamos % del viewport para evitar que se achique demasiado */
+  max-width: 500px;          /* Limita en pantallas grandes */
+}
+
+#contenedor_lista_correos {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin: 1rem;
+    width: 100%;
+}
+
+.mail {
+    border: solid #F2F2F2 0.2px;
+    border-radius: 1rem;
+    padding: 0.4rem;
+    width: 40%;
+    text-align: center;
+}
+
+@media (max-width: 415px) {
+  
+  #contenedor_contacto_popup {
+    font-size: small;
+  }
+
+  .mail {
+    font-size: smaller;
+    font-size:xx-small;
+  }
+}
+
+/*Controla el form, tamaños y vista*/
+
+#contenedor_contacto_popup form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+#contenedor_contacto_popup form input {
+    background-color: transparent;
+    border: #F2F2F2 solid 1px;
+    border-radius: 0.3rem;
+    color: #F2F2F2;
+}
+
+#contenedor_contacto_popup form textarea {
+    height: 7rem;
+    background-color: transparent;
+    border: #F2F2F2 solid 1px;
+    border-radius: 0.3rem;
+    color: #F2F2F2;
+}
+
+#contenedor_botones_enviar_cerrar {
+    display: flex;
+    flex-direction: row;
+    background-color: transparent;
+    gap: 3rem;
+    justify-content: center;
+}
+
+#contenedor_botones_enviar_cerrar button {
+    margin-top: 1.5rem;
+    padding: 0.5rem;
+    border-radius: 1rem;
+    color: #F2F2F2;
+    border: none;
+}
+
+#btn_enviar {
+    background-color: #6B066F;
+}
+
+#btn_cerrar {
+    background-color: #6C0000;
+}
+
+/****************************** ESTILOS PARA INDEX.HTML ******************************/
+
+#contenedor_inicio {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+}
+
+#contenedor_cantidad_grupos_formados {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    justify-content: center;
+    align-content: center;
+    color: #F2F2F2;
+    font-family: 'Istok Web', sans-serif;
+    font-weight: bold;
+}
+
+#img_grupos_formados {
+    height: 1.5rem;
+}
+
+#txt_titulo {
+    text-align: center;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    color: #BEBEBE;
+
+    font-size: 2.5rem;
+}
+
+@media (max-width: 992px) {
+  #txt_titulo {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 576px) {
+  #txt_titulo {
+    font-size: 1.5rem;
+  }
+}
+
+#txt_subtitulo {
+    text-align: center;
+    color: #FFFFFF;
+    font-family: 'Istok Web', sans-serif;
+    font-size: 1rem;
+    font-weight: bold;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+#contenedor_video {
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+}
+
+#gif_inicio {
+    height: auto;
+    width: 100%;
+}
+
+#contenedor_como_funciona {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    margin-top: 2rem;
+    color: #f2f2f2;
+    font-family: 'Poppins', sans-serif;
+}
+
+#contenedor_como_funciona h2 {
+    text-align: center;
+    margin-bottom: 1rem;
+    font-weight: bold;
+    font-size: 1.3rem;
+}
+
+#contenedor_como_funciona li {
+    list-style: none;
+}
+
+.item_como_funciona {
+    margin-top:3rem;
+}
+
+#contenedor_como_funciona i {
+    margin-right: 1rem;
+}

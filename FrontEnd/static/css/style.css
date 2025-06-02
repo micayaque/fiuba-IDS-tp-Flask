@@ -397,16 +397,12 @@ footer {
 }
 
 .contentido_bottom_buscador_grupos {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 30px;
-    justify-items: center;
-    align-items: center;
-    width: 80%;
+    width: 100%;
+    max-width: 900px;
 }
 
 .contentido_bottom_buscador_grupos .carta {
-    width: 300px;
+    width: 280px;
     height: 110px;
     background-color: #303030;
     display: flex;

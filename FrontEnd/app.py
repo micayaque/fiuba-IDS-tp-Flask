@@ -9,26 +9,26 @@ def index ():
 @app.route("/materias")
 def mostrar_materias():
     materias = [
-        {"id": 1, "nombre": "Fundamentos de la programación"},
-        {"id": 2, "nombre": "Introducción al desarrollo de software"},
-        {"id": 3, "nombre": "Organización del computador"},
-        {"id": 4, "nombre": "Probabilidad y estadística"},
-        {"id": 5, "nombre": "Sistemas operativos"},
-        {"id": 6, "nombre": "Paradigmas de programación"},
-        {"id": 7, "nombre": "Base de datos"},
-        {"id": 8, "nombre": "Ciencia de datos"},
-        {"id": 9, "nombre": "Algoritmos y estructuras de datos"},
-        {"id": 10, "nombre": "Teoría de algoritmos"},
-        {"id": 11, "nombre": "Modelación numérica"},
-        {"id": 12, "nombre": "Ingeniería de software"},
-        {"id": 13, "nombre": "Física"},
-        {"id": 14, "nombre": "Taller de programación"},
-        {"id": 15, "nombre": "Programación concurrente"},
-        {"id": 16, "nombre": "Seguridad informática"},
-        {"id": 17, "nombre": "Gestión del desarrollo de sistemas informáticos"},
-        {"id": 18, "nombre": "Redes"},
-        {"id": 19, "nombre": "Sistemas distribuidos"},
-        {"id": 20, "nombre": "EBT"}
+        {"codigo_materia": 1, "nombre": "Fundamentos de la programación"},
+        {"codigo_materia": 2, "nombre": "Introducción al desarrollo de software"},
+        {"codigo_materia": 3, "nombre": "Organización del computador"},
+        {"codigo_materia": 4, "nombre": "Probabilidad y estadística"},
+        {"codigo_materia": 5, "nombre": "Sistemas operativos"},
+        {"codigo_materia": 6, "nombre": "Paradigmas de programación"},
+        {"codigo_materia": 7, "nombre": "Base de datos"},
+        {"codigo_materia": 8, "nombre": "Ciencia de datos"},
+        {"codigo_materia": 9, "nombre": "Algoritmos y estructuras de datos"},
+        {"codigo_materia": 10, "nombre": "Teoría de algoritmos"},
+        {"codigo_materia": 11, "nombre": "Modelación numérica"},
+        {"codigo_materia": 12, "nombre": "Ingeniería de software"},
+        {"codigo_materia": 13, "nombre": "Física"},
+        {"codigo_materia": 14, "nombre": "Taller de programación"},
+        {"codigo_materia": 15, "nombre": "Programación concurrente"},
+        {"codigo_materia": 16, "nombre": "Seguridad informática"},
+        {"codigo_materia": 17, "nombre": "Gestión del desarrollo de sistemas informáticos"},
+        {"codigo_materia": 18, "nombre": "Redes"},
+        {"codigo_materia": 19, "nombre": "Sistemas distribuidos"},
+        {"codigo_materia": 20, "nombre": "EBT"}
     ]
     return render_template("materias.html", materias=materias)
 

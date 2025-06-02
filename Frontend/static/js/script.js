@@ -1,11 +1,6 @@
 //script para modals
 const modalCerrarSesion = document.getElementById("modal_cerrar_sesion");
-const botonMiPerfil = document.getElementById("botton_miperfil");
 const botonCerrarModal = document.getElementById("close_modal");
-
-botonMiPerfil.addEventListener("click", function() {
-    modalCerrarSesion.style.display = "flex";
-});
 
 botonCerrarModal.addEventListener("click", function() {
     modalCerrarSesion.style.display = "none";

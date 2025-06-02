@@ -1,39 +1,845 @@
 /*Fondo*/
+html {
+  scroll-behavior: smooth;
+}
+
 body {
     background-color: #1C1C21;
 }
 
-html {
-    height: 100%;
+/* Logo y Botones de registro e inicio de sesión */
+
+#contenedor_logo_header img{
+    display: flex;
+    height: 5rem;
+    margin: 1rem;
 }
 
-/*Menu de elementos (tanto inicio como final)*/
+#contenedor_header {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+    padding-right: 1rem;
+    padding-bottom: 1rem;
+    width: 100%;
+}
 
-#footer {
+#contenedor_botones_header a {
+    text-decoration: none;
+    color: #CEE5F2;
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold
+}
+
+#btn_registrarse {
+    background-color: #5C95D6;
+    border-radius: 1rem;
+}
+
+#btn_iniciar_sesion:hover {
+    color: white;
+    font-weight: bold;
+}
+
+#btn_registrarse:hover {
+    background-color: #4A7BBE;
+    color: white;
+    font-weight: bold;
+}
+
+/* Navbar */
+
+#contenedor_menu {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+nav {
+    margin-top: 1rem;
+
+}
+
+#opciones_menu {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 3rem;
+}
+
+#opciones_menu a:hover {
+    cursor: pointer;
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  #opciones_menu {
+    gap: 0;
+  }
+}
+
+#opciones_menu a {
+    text-decoration: none;
+    color: #AEABD4;
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    padding: 2rem;
+}
+
+/* Footer */
+
+footer {
     background-color: #242424;
+    width: 100%;
+    border-top-left-radius: 100vmax;
+    border-top-right-radius: 100vmax;
 }
 
-#footer p {
+#contenedor_footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* width: 100%; */
+}
+
+#contenedor_logo_footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    padding-top: 1rem;
+}
+
+#contenedor_logo_footer img {
+    height: 3.75rem;
+}
+
+#contenedor_logo_footer h4 {
+    font-family: 'Istok Web', sans-serif;
+    color: #F2F2F2;
+    font-weight: bold;
+}
+
+#listado_footer {
+    justify-content: center;
+    margin-bottom: 1rem;
+    color: #f2f2f2;
+    gap: 2rem;
+}
+
+#listado_footer a {
+    text-decoration: none;
+    color: #F2F2F2;
+    font-family: 'Poppins';
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#contenedor_footer p {
     text-align: center;
     color: #626262;
-}
-
-#txt_footer {
-    display: block;
-    height: 1.5rem;
+    font-family: 'Poltawski Nowy';
+    font-weight: bold;
     width: 100%;
-    padding-top: 5px;
-    background-color: #1D1D1D;
 }
 
-.listado {
+#logo_footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    color: #F2F2F2;
+    font-size: 30px;
+    font-family: 'Istok Web', sans-serif;;
+    gap: 0.5rem;
+}
+
+#img_footer {
+    height: 3.75rem;
+}
+
+/********************************ESTILOS PARA CONTACTO********************************/
+
+#fondo_popup_contacto {
+  display: none;
+  position: fixed;
+  top: 0; 
+  left: 0;
+  width: 100%; 
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9); /* oscuro semi-transparente */
+}
+
+#contenedor_contacto_popup {
+    display: none;
+    flex-direction: column;
+    padding: 0.5rem;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 10%;
+    background-color: #1C1C21;
+    align-items: center;
+    color: #F2F2F2;
+    font-family: 'Poppins';
+
+    width: 95vw;               /* Usamos % del viewport para evitar que se achique demasiado */
+  max-width: 500px;          /* Limita en pantallas grandes */
+}
+
+#contenedor_lista_correos {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin: 1rem;
+    width: 100%;
+}
+
+.mail {
+    border: solid #F2F2F2 0.2px;
+    border-radius: 1rem;
+    padding: 0.4rem;
+    width: 40%;
+    text-align: center;
+}
+
+@media (max-width: 415px) {
+  
+  #contenedor_contacto_popup {
+    font-size: small;
+  }
+
+  .mail {
+    font-size: smaller;
+    font-size:xx-small;
+  }
+}
+
+/*Controla el form, tamaños y vista*/
+
+#contenedor_contacto_popup form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+#contenedor_contacto_popup form input {
+    background-color: transparent;
+    border: #F2F2F2 solid 1px;
+    border-radius: 0.3rem;
+    color: #F2F2F2;
+}
+
+#contenedor_contacto_popup form textarea {
+    height: 7rem;
+    background-color: transparent;
+    border: #F2F2F2 solid 1px;
+    border-radius: 0.3rem;
+    color: #F2F2F2;
+}
+
+#contenedor_botones_enviar_cerrar {
     display: flex;
     flex-direction: row;
+    background-color: transparent;
     gap: 3rem;
-    color: #AEABD4;
     justify-content: center;
+}
+
+#contenedor_botones_enviar_cerrar button {
+    margin-top: 1.5rem;
+    padding: 0.5rem;
+    border-radius: 1rem;
+    color: #F2F2F2;
+    border: none;
+}
+
+#btn_enviar {
+    background-color: #6B066F;
+}
+
+#btn_cerrar {
+    background-color: #6C0000;
+}
+
+/****************************** ESTILOS PARA INDEX.HTML ******************************/
+
+#contenedor_inicio {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+}
+
+#contenedor_cantidad_grupos_formados {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    justify-content: center;
+    align-content: center;
+    color: #F2F2F2;
+    font-family: 'Istok Web', sans-serif;
+    font-weight: bold;
+}
+
+#img_grupos_formados {
+    height: 1.5rem;
+}
+
+#txt_titulo {
+    text-align: center;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    color: #BEBEBE;
+
+    font-size: 2.5rem;
+}
+
+@media (max-width: 992px) {
+  #txt_titulo {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 576px) {
+  #txt_titulo {
+    font-size: 1.5rem;
+  }
+}
+
+#txt_subtitulo {
+    text-align: center;
+    color: #FFFFFF;
+    font-family: 'Istok Web', sans-serif;
+    font-size: 1rem;
+    font-weight: bold;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+#contenedor_video {
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+}
+
+#gif_inicio {
+    height: auto;
+    width: 100%;
+}
+
+#contenedor_como_funciona {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    margin-top: 2rem;
+    color: #f2f2f2;
+    font-family: 'Poppins', sans-serif;
+}
+
+#contenedor_como_funciona h2 {
+    text-align: center;
+    margin-bottom: 1rem;
+    font-weight: bold;
+    font-size: 1.3rem;
+}
+
+#contenedor_como_funciona li {
     list-style: none;
-    padding-left: 0;
+}
+
+.item_como_funciona {
+    margin-top:3rem;
+}
+
+#contenedor_como_funciona i {
+    margin-right: 1rem;
+}
+
+
+
+/******************************* ESTILOS PARA PERFIL.HTML *******************************/
+
+/*perfil*/
+
+.miperfil {
+    position: relative;
+    display: flex;
+    justify-content: flex-end
+}
+
+#botton_miperfil {
+    display: flex;
+    justify-content: flex-end;
+    background: none;
+    border: none;
+    color:#d6f1ff;
+    font-family:'Roboto', sans-serif;
+    font-weight: bold;
+    padding: 8px 12px;
+    cursor: pointer;
+
+}
+/*esto es el boton para cerrar secion que se desplega despues de presionar mi perfil*/
+
+
+#img_perfil_icono {
+    height: 32px;
+    width: 32px;
+    object-fit: cover; 
+    justify-content: flex-end;
+    background: #242424;
+}
+
+#perfil {
+    position: relative;
+    display: flex;/* Aumenta el espacio interno */
+    flex-direction: column;
+    min-height: px; /*quitar cuando agrege contenido*/
+    margin: 20px 80px; /* 20px arriba/abajo, 100px izquierda/derecha */
+    font-family: 'Roboto', sans-serif;
+    
+    
+}
+
+/*perzonalizacion del banner y foto de perfil*/
+
+#banner_perfil {
+    height: 150px;
+    width: 100%; /* Asegura que ocupe todo el ancho del contenedor */
+    background-color: #A0b3b6;
+    position: relative;
+    border-radius: 16px;
+    z-index: 1;
+
+}
+
+#img_cambiar_banner {
+    position: absolute;
+    right: 16px;   /* Distancia desde el borde derecho */
+    bottom: 16px;  /* Distancia desde el borde inferior */
+    height: 30px;
+    width: 30px;
+    object-fit: cover;
+    background: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+#foto_de_perfil {
+    position: absolute;
+    top: 60px; /* Ajusta para que la foto se superponga al banner */
+    left: 70px; /* Alineado a la izquierda dentro de #perfil */
+    min-width: 150px;
+    min-height: 150px;
+    background-color: #BEBEBE;
+    border-radius: 50%;
+    border: 8px solid #1C1C21;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+
+}
+.foto_perfil_img {
+    height: 50px;
+    width: 50px;
+    
+}
+
+/*los datos del usuario*/
+#datos_usuario {
+    margin-top: 50px; /* Ajusta para dejar espacio debajo de la foto */
+    display: flex;
+    flex-direction: column;
+    color: #F2F2F2;
+    margin-left: 70px;
+    font-family:'Roboto', sans-serif;
+    font-weight: bold;
+}
+
+
+
+.fila-datos {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.datos {
+    margin: 0;
+    margin-right: 30px;
+    margin-bottom: 8px;
+}
+
+span {
+    font-size: 20px;
+    margin: 0;
+    color: #F2F2F2;
+    margin-bottom: 30px;
+}
+
+
+
+.editar_foto {
+    background-color: #36363c;
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-self: flex-end;
+    margin-top: 10px;
+    margin-right: 16px;
+    cursor: pointer;
+    border: 2px solid #1C1C21;
+}
+
+.button_editar_foto_de_perfil {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.icono_lapiz {
+    height: 20px;
+    width: 20px;
+    object-fit: contain;
+    vertical-align: middle;
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+
+
+.contenedor_textarea {
+    position: relative;
+    width: 95%;
+    border-bottom: 30px solid transparent;
+}
+
+#sobre_mi {
+    background-color: #36363c;
+    min-height: 80px;
+    border-radius: 8px;
+    padding: 10px 2% 0px 10px; /* espacio a la derecha para el botón */
+    color: #F2F2F2;
+    border: none;
+    box-shadow: none;
+    outline: none;
+    resize: vertical;
+    width: 100%;
+}
+
+#editar_bio {
+    position: absolute;
+    bottom: 10px;
+    right: -2%;
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    padding: 0;
+    background-color: #36363c;
+    border: none;
+
+}
+
+.fila_info {
+    min-height: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch; /* Cambia esto para que las columnas ocupen toda la altura */
+    width: 100%;
+    padding-left: 10px;
+    padding-right: 10px;
+
+}
+
+
+.info_relevante {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;   /* Centra verticalmente */
+    align-items: center;       /* Centra horizontalmente */
+    text-align: center;        /* Centra el texto */
+    flex: 1;                   /* Que cada división ocupe el mismo ancho */
+    margin-top: 0;  
+    margin-bottom: 0;           /* Opcional: elimina margen superior si no lo quieres */
+    font-weight: bolder;
+    font-size: 26px;
+    opacity: 0.8;
+ 
+}
+
+
+
+.caja_de_texto_info {
+    display: flex;
+    min-height: 150px;
+    flex-direction: column; /* Centra verticalmente */
+    align-items: center;       /* Centra horizontalmente */       /* Centra el texto */
+    flex: 1;                   /* Que cada división ocupe el mismo ancho */
+    margin-top: 0;             /* Opcional: elimina margen superior si no lo quieres */
+    font-weight: bolder;
+    padding: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
+    background-color: transparent;
+    border: transparent;
+    color: #b3b3b3;
+    border-right: 4px solid #838383;
+
+    font-size: 20px;
+}
+
+.grupos_del_usuario {
+    padding: 30px;
+    justify-content: center;
+    flex-direction:row; /* Centra verticalmente */
+    display: flex;
+    align-items: center; 
+    width: 100%;      /* Centra horizontalmente */
+    
+}
+
+.grupos_actuales_del_usuario {
+    display: flex;
+    flex-direction: column;
+    background-color: #36363c;
+    min-height: 150px;
+    width: 100%;
+    border-radius: 12px;
+    padding: 12px 8px;     /* Padding más pequeño y responsivo */
+}
+
+.nombre_del_grupo_perteneciente {
+    display: flex;
+    align-items: center;         /* Alinea verticalmente el texto y el botón */
+    justify-content: space-between;
+    font-size: 20px;
+    color: #AEABD4;
+    font-weight: bold;
+    margin-bottom: 2px;          /* Menos espacio debajo */
+    border-radius: 12px;
+    padding: 4px 10px;
+    min-height: unset;
+
+    
+}
+
+.cantidad_de_integrantes_numero {
+    font-size: 14px;
+    color: #F2F2F2;
+    display: block;
+    margin-top: 2px;             /* Menos espacio arriba */
+    margin-bottom: 0;
+    margin-left: 8px;
+    font-weight: bold;
+}
+
+.button_trasparente_editar {
+    background: none;
+    border: none;
+    padding: 0 0 0 8px; /* Espacio a la izquierda del ícono */
+    margin: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;         /* Centra el ícono verticalmente */
+    height: auto;                /* Asegura que no tenga altura extra */
+}
+
+
+
+
+.nombre_del_grupo {
+    margin: 0;
+    padding: 0;
+    line-height: 1;
+    color: #AEABD4;              /* Ajusta la altura de línea */
+}
+
+.informacion_inicial_grupo {
+    background-color: #1C1C21;
+    margin: 4px;
+    border-radius: 12px;
+    min-height: 90px;
+    padding: 8px;
+    
+}
+
+.button_usuario_info_grupo {
+    font-weight: bold;
+    margin-bottom: 5px;
+    background-color: #5C95D6;
+    border-radius: 12px;
+    margin-top: 5px;
+    align-items: center;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+
+}
+
+.button_usuario_entregado_grupo {
+    font-weight: bold;
+    margin-bottom: 5px;
+    background-color: #167B56;
+    border-radius: 12px;
+    margin-top: 5px;
+    align-items: center;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+
+}
+
+/*modals*/
+
+/*diseño de los modals*/
+
+.desplegable {
+    display: none;
+    position: fixed;
+    top: 0px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(93, 92, 92, 0.8);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    font-family: 'Roboto', sans-serif;
+}
+
+.banner_perfil_desplegable {
+    background-color: #1C1C21;
+    padding: 15px;
+    border-radius: 16px;
+    width: 80%;
+    max-width: 600px;
+    position: relative;
+    color: #F2F2F2;
+}
+
+.close_modal {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 15px;
+    cursor: pointer;
+    background-color: black;
+    border: none;
+    color: #F2F2F2;
+    font-weight: bold;
+    border-radius: 50%;
+    padding: 2px 6px;
+}
+
+/*boton cerrar sesion*/
+
+.btn_de_los_modals {
+    background-color: #AEABD4;
+    padding: 10px;
+    border-radius: 999px;
+    font-family: 'Poppins', sans-serif;
+    color: #F2F2F2;
+    border: none;
+    cursor: pointer;
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+.form_perfil {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin-top: 20px; /* Opcional: separa el botón del título */
+}
+
+.contenido_de_modal {
+    margin: 2px 0; /* menos espacio vertical */
+    background-color: transparent; /* o quita el fondo rojo */
+    font-weight: bold;
+    margin: 10px;
+}
+
+
+#circulo_de_foto_de_perfil {
+    background-color: #BEBEBE;
+    height: 150px;
+    width: 150px;
+    border-radius: 50%;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin: 10px;
+}
+
+#contenedor_de_circulo_de_foto_de_perfil {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin: 20px 0;
+    border-bottom: #36363c solid 8px;
+
+}
+
+.botones_editar_perfil {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.boton_editar_perfil_modal {
+    width: 60px;
+    height: 60px;
+    opacity: 0.8;
+}
+
+.introducir_informacion_cuadro {
+    width: 80%;
+    height: 30px;
+    border-radius: 999px;
+    background-color: #36363c;
+    color: #F2F2F2;
+    padding: 10px;
+    border: none;
+}
+
+.btn_agregar_materia {
+    border: none;
+    font-weight: bold;
+    margin-top: 0px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+#texto_de_horarios {
+    color: #F2F2F2;
+    font-size: 16px;
+    font-weight: bold;
+    opacity: 0.8;
+}
+
+#texto_de_horarios h5 {
+    margin-top: 10px; /* 10px de espacio debajo, ajusta a tu gusto */
 }
 
 .container_buscador_grupos {
@@ -141,3 +947,4 @@ html {
     margin-bottom: 6px;
     padding: 3px;
 }
+    

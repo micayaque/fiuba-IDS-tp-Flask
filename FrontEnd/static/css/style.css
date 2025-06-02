@@ -1,36 +1,380 @@
-/*Fondo*/
+html {
+  scroll-behavior: smooth;
+}
+
 body {
     background-color: #1C1C21;
 }
 
-/*Menu de elementos (tanto inicio como final)*/
+/* Logo y Botones de registro e inicio de sesión */
 
-#footer {
-    background-color: #242424;
+#contenedor_logo_header {
+    display: flex;
+    height: 5rem;
+    margin: 1rem;
+    /* position: absolute; */
 }
 
-#footer p {
+#contenedor_header {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+    padding-right: 1rem;
+    padding-bottom: 1rem;
+    width: 100%;
+}
+
+#contenedor_botones_header a {
+    text-decoration: none;
+    color: #CEE5F2;
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold
+}
+
+#btn_registrarse {
+    background-color: #5C95D6;
+    border-radius: 1rem;
+}
+
+#btn_iniciar_sesion:hover {
+    color: white;
+    font-weight: bold;
+}
+
+#btn_registrarse:hover {
+    background-color: #4A7BBE;
+    color: white;
+    font-weight: bold;
+}
+
+/* Navbar */
+
+#contenedor_menu {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+nav {
+    margin-top: 1rem;
+
+}
+
+#opciones_menu {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 3rem;
+}
+
+@media (max-width: 768px) {
+  #opciones_menu {
+    gap: 0;
+  }
+}
+
+#opciones_menu a {
+    text-decoration: none;
+    color: #AEABD4;
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    padding: 2rem;
+}
+
+/* Footer */
+
+footer {
+    background-color: #242424;
+    width: 100%;
+    border-top-left-radius: 100vmax;
+    border-top-right-radius: 100vmax;
+}
+
+#contenedor_footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* width: 100%; */
+}
+
+#contenedor_logo_footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    padding-top: 1rem;
+}
+
+#contenedor_logo_footer img {
+    height: 3.75rem;
+}
+
+#contenedor_logo_footer h4 {
+    font-family: 'Istok Web', sans-serif;
+    color: #F2F2F2;
+    font-weight: bold;
+}
+
+#listado_footer {
+    justify-content: center;
+    margin-bottom: 1rem;
+    color: #f2f2f2;
+    gap: 2rem;
+}
+
+#listado_footer a {
+    text-decoration: none;
+    color: #F2F2F2;
+    font-family: 'Poppins';
+    font-weight: bold;
+}
+
+#contenedor_footer p {
     text-align: center;
     color: #626262;
-}
-
-#txt_footer {
-    display: block;
-    height: 1.5rem;
+    font-family: 'Poltawski Nowy';
+    font-weight: bold;
     width: 100%;
-    padding-top: 5px;
-    background-color: #1D1D1D;
 }
 
-.listado {
+#logo_footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    color: #F2F2F2;
+    font-size: 30px;
+    font-family: 'Istok Web', sans-serif;;
+    gap: 0.5rem;
+}
+
+#img_footer {
+    height: 3.75rem;
+}
+
+
+/********************************ESTILOS PARA CONTACTO********************************/
+
+/*Contactanos config*/
+
+#contactanos {
+    cursor: pointer;
+}
+
+#fondo_popupContacto {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  backdrop-filter: blur(5px); /* 🔍 Aquí se aplica el difuminado */
+  background-color: rgba(0, 0, 0, 0.4); /* oscuro semi-transparente */
+  z-index: 999;
+}
+
+#contacto_popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: gray solid 1px;
+    border-radius: 50px;
+    height: 450px;
+    width: 350px;
+    background-color: #1C1C21;
+    z-index: 1000;
+}
+
+#contacto_popup h1 {
+    text-align: center;
+    text-decoration: underline;
+    color: #F2F2F2;
+}
+
+/*Se encarga de los correos y seleccionarlos*/
+
+#lista_correos {
+    color: #F2F2F2;
+    font-family: 'Istok Web', sans-serif;
+    margin: 10px;
+}
+
+#lista_correos button {
+    background-color: #222225;
+    color: #F2F2F2;
+    text-align: left;
+    border: solid #5a5959 0.2px;
+    border-radius: 5px;
+    height: 2rem;
+    width: 10rem;
+}
+
+#lista_correos button.seleccionado {
+    background-color: #626262;
+}
+
+/*Fin lista correos*/
+
+/*Controla el form, tamaños y vista*/
+
+#contacto_popup form {
+    display: flex;
+    flex-direction: column;
+    width: 330px;
+    color: #F2F2F2;
+    margin: 10px;
+}
+
+#contacto_popup form input {
+    background-color: transparent;
+    border: #5a5959 solid 1px;
+    border-radius: 5px;
+    color: #F2F2F2;
+}
+
+#mensaje {
+    height: 7rem;
+    background-color: transparent;
+    border: #5a5959 solid 1px;
+    border-radius: 5px;
+    color: #F2F2F2;
+    resize: none;
+}
+
+#botones {
     display: flex;
     flex-direction: row;
-    gap: 3rem;
-    color: #AEABD4;
-    justify-content: center;
-    list-style: none;
-    padding-left: 0;
+    justify-content: space-around;
+    background-color: transparent;
 }
+
+#botones button {
+    margin-top: 1.5rem;
+    padding: 5px;
+    background-color: transparent;
+    border: solid #5a5959 0.2px;
+    border-radius: 999px;
+    color: #F2F2F2;
+}
+
+/*Fin modificación del form*/
+
+
+/****************************** ESTILOS PARA INDEX.HTML ******************************/
+
+#contenedor_inicio {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+}
+
+#contenedor_cantidad_grupos_formados {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    justify-content: center;
+    align-content: center;
+    color: #F2F2F2;
+    font-family: 'Istok Web', sans-serif;
+    font-weight: bold;
+}
+
+#img_grupos_formados {
+    height: 1.5rem;
+}
+
+#txt_titulo {
+    text-align: center;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    color: #BEBEBE;
+
+    font-size: 2.5rem;
+}
+
+@media (max-width: 992px) {
+  #txt_titulo {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 576px) {
+  #txt_titulo {
+    font-size: 1.5rem;
+  }
+}
+
+#txt_subtitulo {
+    text-align: center;
+    color: #FFFFFF;
+    font-family: 'Istok Web', sans-serif;
+    font-size: 1rem;
+    font-weight: bold;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+#contenedor_video {
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+}
+
+#gif_inicio {
+    height: auto;
+    width: 100%;
+}
+
+#contenedor_como_funciona {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    margin-top: 2rem;
+    color: #f2f2f2;
+    font-family: 'Poppins', sans-serif;
+}
+
+#contenedor_como_funciona h2 {
+    text-align: center;
+    margin-bottom: 1rem;
+    font-weight: bold;
+    font-size: 1.3rem;
+}
+
+#contenedor_como_funciona li {
+    list-style: none;
+}
+
+.item_como_funciona {
+    margin-top:3rem;
+}
+
+#contenedor_como_funciona i {
+    margin-right: 1rem;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -3,13 +3,9 @@ from flask import Flask, render_template, request, redirect, url_for, session
 app = Flask(__name__)
 app.secret_key = 'clave-secreta'  # Necesaria para usar sesión
 
-@app.route("/")
-def index():
-    return render_template("index.html")
-
 @app.route("/usuario")
 def usuario():
-    return render_template("usuario.html", usuario=usuario)
+    return render_template("perfil_de_usuario.html", usuario=usuario)
 
 @app.route("/logout", methods=["POST"])
 def logout():

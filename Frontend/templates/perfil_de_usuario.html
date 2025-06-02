@@ -1,25 +1,22 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>TPbuddy</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='/css/style.css', _external=True) }}">
-</head>
-<body>
-    <!--modals-->
+{% extends "base.html" %}
 
+
+{% block tittle %}Perfil de Usuario{% endblock %}
+
+{% block content %}
+
+    <!--modals-->
     <div id="modal_cerrar_sesion" class="desplegable">
         <div class="banner_perfil_desplegable">
             <span id="close_modal" class="close_modal">x</span>
             <h2 class="titulo_perfil">¿Desea cerrar sesion?</h2>
-                <form class="form_perfil" action="{{ url_for('logout') }}" method="post">
-                    <button type="submit" id="btn_cerrar_perfil" class="btn_de_los_modals">CERRAR SESION</button>
-                </form>
+            <form class="form_perfil" action="{{ url_for('logout') }}" method="post">
+                <button type="submit" id="btn_cerrar_perfil" class="btn_de_los_modals">CERRAR SESION</button>
+            </form>
         </div>
     </div>
 
-<!--modal para editar la foto de perfil-->
-
+    <!--modal para editar la foto de perfil-->
     <div id="modal_editar_perfil" class="desplegable">
         <div class="banner_perfil_desplegable">
             <span id="close_modal" class="close_modal">x</span>
@@ -27,37 +24,31 @@
             <div id="contenedor_de_circulo_de_foto_de_perfil">
                 <div id="circulo_de_foto_de_perfil">
                     <img class="foto_perfil_img" src="{{ url_for('static', filename='img/icono_imagen_perfil.png') }}" alt="Foto de Perfil">
-                </div>
-
-                
+                </div>                
             </div>
             <div class="fila_info">
                 <div class="botones_editar_perfil">
                     <button class="button_trasparente_editar"> 
                         <img class="boton_editar_perfil_modal" src="{{ url_for('static', filename='img/icono_editar_imagen.png') }}">
-                     </button>
+                    </button>
                 </div>
 
                 <div class="botones_editar_perfil">
                     <button class="button_trasparente_editar"> 
                         <img class="boton_editar_perfil_modal" src="{{ url_for('static', filename='img/icono_eliminar.png') }}">
-                     </button>
+                    </button>
                 </div> 
-
             </div>
-                
         </div>
     </div>
 
-<!--modal para editar las materias que estan cursando-->
-    
+    <!--modal para editar las materias que estan cursando-->
     <div id="modal_materias_cursando" class="desplegable">
         <div class="banner_perfil_desplegable">
             <span id="close_modal" class="close_modal">x</span>
             <span class="contenido_de_modal">Añadir materia</span>
             <div class="contenido_de_modal">
-                <input type="text" class="introducir_informacion_cuadro" id="materia_cursando" placeholder="Escribe el nombre de la materia"></input>
-                
+                <input type="text" class="introducir_informacion_cuadro" id="materia_cursando" placeholder="Escribe el nombre de la materia"></input>                
             </div>
             <div>
                 <span class="contenido_de_modal">¿Estas en un grupo?</span>
@@ -66,9 +57,7 @@
             </div>
             <div class="btn_agregar_materia">
                 <button type="submit" class="btn_de_los_modals">AGREGAR</button>
-            </div>
-            
-                
+            </div>                
         </div>
     </div>
 
@@ -77,8 +66,7 @@
             <span id="close_modal" class="close_modal">x</span>
             <span class="contenido_de_modal">Añadir materia</span>
             <div class="contenido_de_modal">
-                <input type="text" class="introducir_informacion_cuadro" id="materia_cursando" placeholder="Escribe el nombre de la materia"></input>
-                
+                <input type="text" class="introducir_informacion_cuadro" id="materia_cursando" placeholder="Escribe el nombre de la materia"></input>                
             </div>
             <div>
                 <span class="contenido_de_modal">¿Estas en un grupo?</span>
@@ -91,42 +79,16 @@
         </div>
     </div>
 
-<!--modal para editar los horarios disponibles-->
-
+    <!--modal para editar los horarios disponibles-->
     <div id="modal_horarios_disponibles" class="desplegable">
         <div class="banner_perfil_desplegable">
             <span id="close_modal" class="close_modal">x</span>
             <span class="contenido_de_modal">Añadir horario</span>
             <div id="texto_de_horarios">
                 <h5>¿Durante que horario estas disponible?</h5>
-            </div>
-            
+            </div>            
         </div>
     </div>
-
-
-    <header>
-        <nav>
-            <div class="miperfil">
-                <img id="img_perfil_icono"
-                        src="{{ url_for('static', filename='img/perfil_icono.png') }}" alt="Perfil Icono">
-                <button id="botton_miperfil" class="perfil_btn">MI PERFIL</button>
-                
-            </div>
-
-            <div id="menu">
-                <img id="img_menu_header" src="{{ url_for('static', filename='/img/logo_header.png', _external=True) }}"> <!--{{ url_for('static', filename='/img/logo_header.png', _external=True) }}-->
-                <ul class="listado" id="listado_header">
-                    <li><a href="">Como funciona</a></li>
-                    <li><a href="">Reglas</a></li>
-                    <li><a href="">Materias</a></li>
-                    <li><a href="">Grupos</a></li>
-                    <li><a href="">Contactanos</a></li>
-                    <li><a href="">Mobile App</a></li>
-                </ul>
-            </div>    
-        </nav>
-    </header>  
 
     <div id="perfil">
         <div id="banner_perfil">
@@ -146,7 +108,6 @@
 
         <div class="editar_foto">
             <!--agregegar un modulo que deje editar la foto de perfil-->
-
             <button  class="button_editar_foto_de_perfil"><img class='icono_lapiz' src="{{ url_for('static', filename='img/icono_lapiz_edit.png') }}" alt="Foto de Perfil"></button>
         </div>
                 
@@ -163,8 +124,7 @@
                 <button id="editar_bio">
                     <img class="icono_lapiz" src="{{ url_for('static', filename='img/icono_lapiz_edit.png') }}" alt="editar sobre mi">
                     <!--deberia dejar editar la bio cuando presione este botton-->
-                </button>
-                        
+                </button>                    
             </div>
         </div>
 
@@ -194,12 +154,8 @@
                 <textarea class="caja_de_texto_info" type="text" placeholder="Escribe tus Horarios"></textarea>
             </div>
                     
-
-                
-
             <div>
-                <div class="fila_info">
-                    
+                <div class="fila_info">                    
                     <div class="grupos_del_usuario">
                         <div class="grupos_actuales_del_usuario">
                             <div class="informacion_inicial_grupo">
@@ -253,6 +209,4 @@
             </div>
         </div>   
 
-    <script src="{{ url_for('static', filename='js/script.js', _external=True) }}"></script>
-</body>
-</html>
+{% endblock %}

@@ -31,3 +31,161 @@ body {
     list-style: none;
     padding-left: 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Fondo negro del formulario */
+.modal-dark {
+    background-color: #1C1C21 !important;  /* 🔷 Fondo negro */
+    border-radius: 35px !important;
+    color: #fff;
+    border: none;
+  }
+  
+  /* Título a la izquierda con color celeste */
+  .custom-title {
+    color: #A4A2C9 !important; /* Celeste Bootstrap */
+    font-size: 1.5rem;
+    text-align: left;
+    margin-bottom: 1.2rem;
+  }
+  
+  /* Etiquetas (label) visibles */
+  label,
+  .form-label {
+    color: #0dcaf0 !important;  /* Celeste claro */
+    font-weight: 500;
+    font-size: 14px;
+    margin-bottom: 4px;
+    display: block;
+  }
+  
+  /* Contenedor relativo para inputs con íconos */
+  .form-group.position-relative {
+    position: relative; /* necesario para posicionar los íconos */
+  }
+  
+  /* Inputs */
+  .form-control,
+  .input-dark {
+    background-color: #1E1B1F !important;
+    color: #fff !important;
+    border: 1px solid #444 !important;
+    border-radius: 15px !important;
+    height: 45px;
+    font-size: 14px;
+  
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+  
+    padding-left: 40px !important; /* espacio para icono izquierdo */
+    padding-right: 40px !important; /* espacio para icono derecho */
+  
+    line-height: 1.2;
+    margin-bottom: 0.6rem;
+    width: 100%;
+    display: block;
+  }
+  
+  /* Placeholders */
+  .form-control::placeholder,
+  .input-dark::placeholder {
+    color: rgba(255, 255, 255, 0.6) !important;
+  }
+  
+  /* Botón */
+  .btn-submit {
+    border-radius: 30px !important;
+    height: 45px;
+    font-weight: 600;
+    background-color: #292929 !important;
+    color: #fff !important;
+    transition: background-color 0.3s ease;
+    margin-top: 0.8rem;
+  }
+  
+  .btn-submit:hover {
+    background-color: #495057 !important;
+  }
+  
+  /* Íconos dentro de los inputs */
+  .icon-left,
+  .icon-right {
+    position: absolute;
+    top: 70%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    color: #aaa;
+    z-index: 2;
+    line-height: 1;
+  }
+  
+  .icon-left {
+    left: 15px;
+    pointer-events: none;
+  }
+  
+  .icon-right {
+    right: 15px;
+    cursor: pointer;
+    pointer-events: auto;
+  }
+
+/* Tamaño personalizado del modal */
+.modal-lg-custom {
+    max-width: 600px !important; /* Podés subirlo a 700px u 800px si querés más ancho */
+    width: 100%;
+  }
+
+
+
+
+  
+  /* Responsive */
+  @media (max-width: 576px) {
+    .modal-content {
+      padding: 1.5rem !important;
+    }
+  
+    .custom-title {
+      font-size: 1.3rem;
+    }
+  }
+  

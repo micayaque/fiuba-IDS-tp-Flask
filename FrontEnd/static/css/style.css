@@ -8,11 +8,10 @@ body {
 
 /* Logo y Botones de registro e inicio de sesión */
 
-#contenedor_logo_header {
+#contenedor_logo_header img{
     display: flex;
     height: 5rem;
     margin: 1rem;
-    /* position: absolute; */
 }
 
 #contenedor_header {
@@ -67,6 +66,11 @@ nav {
     justify-content: center;
     flex-wrap: wrap;
     gap: 3rem;
+}
+
+#opciones_menu a:hover {
+    cursor: pointer;
+    font-weight: bold;
 }
 
 @media (max-width: 768px) {
@@ -132,6 +136,7 @@ footer {
     color: #F2F2F2;
     font-family: 'Poppins';
     font-weight: bold;
+    cursor: pointer;
 }
 
 #contenedor_footer p {
@@ -160,110 +165,110 @@ footer {
 
 /********************************ESTILOS PARA CONTACTO********************************/
 
-/*Contactanos config*/
-
-#contactanos {
-    cursor: pointer;
-}
-
-#fondo_popupContacto {
+#fondo_popup_contacto {
   display: none;
   position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
-  backdrop-filter: blur(5px); /* 🔍 Aquí se aplica el difuminado */
-  background-color: rgba(0, 0, 0, 0.4); /* oscuro semi-transparente */
-  z-index: 999;
+  top: 0; 
+  left: 0;
+  width: 100%; 
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9); /* oscuro semi-transparente */
 }
 
-#contacto_popup {
+#contenedor_contacto_popup {
     display: none;
+    flex-direction: column;
+    padding: 0.5rem;
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    border: gray solid 1px;
-    border-radius: 50px;
-    height: 450px;
-    width: 350px;
+    border-radius: 10%;
     background-color: #1C1C21;
-    z-index: 1000;
+    align-items: center;
+    color: #F2F2F2;
+    font-family: 'Poppins';
+
+    width: 95vw;               /* Usamos % del viewport para evitar que se achique demasiado */
+  max-width: 500px;          /* Limita en pantallas grandes */
 }
 
-#contacto_popup h1 {
+#contenedor_lista_correos {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin: 1rem;
+    width: 100%;
+}
+
+.mail {
+    border: solid #F2F2F2 0.2px;
+    border-radius: 1rem;
+    padding: 0.4rem;
+    width: 40%;
     text-align: center;
-    text-decoration: underline;
-    color: #F2F2F2;
 }
 
-/*Se encarga de los correos y seleccionarlos*/
+@media (max-width: 415px) {
+  
+  #contenedor_contacto_popup {
+    font-size: small;
+  }
 
-#lista_correos {
-    color: #F2F2F2;
-    font-family: 'Istok Web', sans-serif;
-    margin: 10px;
+  .mail {
+    font-size: smaller;
+    font-size:xx-small;
+  }
 }
-
-#lista_correos button {
-    background-color: #222225;
-    color: #F2F2F2;
-    text-align: left;
-    border: solid #5a5959 0.2px;
-    border-radius: 5px;
-    height: 2rem;
-    width: 10rem;
-}
-
-#lista_correos button.seleccionado {
-    background-color: #626262;
-}
-
-/*Fin lista correos*/
 
 /*Controla el form, tamaños y vista*/
 
-#contacto_popup form {
+#contenedor_contacto_popup form {
     display: flex;
     flex-direction: column;
-    width: 330px;
-    color: #F2F2F2;
-    margin: 10px;
+    width: 100%;
 }
 
-#contacto_popup form input {
+#contenedor_contacto_popup form input {
     background-color: transparent;
-    border: #5a5959 solid 1px;
-    border-radius: 5px;
+    border: #F2F2F2 solid 1px;
+    border-radius: 0.3rem;
     color: #F2F2F2;
 }
 
-#mensaje {
+#contenedor_contacto_popup form textarea {
     height: 7rem;
     background-color: transparent;
-    border: #5a5959 solid 1px;
-    border-radius: 5px;
+    border: #F2F2F2 solid 1px;
+    border-radius: 0.3rem;
     color: #F2F2F2;
-    resize: none;
 }
 
-#botones {
+#contenedor_botones_enviar_cerrar {
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
     background-color: transparent;
+    gap: 3rem;
+    justify-content: center;
 }
 
-#botones button {
+#contenedor_botones_enviar_cerrar button {
     margin-top: 1.5rem;
-    padding: 5px;
-    background-color: transparent;
-    border: solid #5a5959 0.2px;
-    border-radius: 999px;
+    padding: 0.5rem;
+    border-radius: 1rem;
     color: #F2F2F2;
+    border: none;
 }
 
-/*Fin modificación del form*/
+#btn_enviar {
+    background-color: #6B066F;
+}
 
+#btn_cerrar {
+    background-color: #6C0000;
+}
 
 /****************************** ESTILOS PARA INDEX.HTML ******************************/
 
@@ -359,58 +364,7 @@ footer {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/********************************** ESTILOS PARA EL FORMULARIO DE REGISTRO E INICIO DE SESION*********************************/
 
 /* CSS Formulario de Register and Login */
 

@@ -412,12 +412,12 @@ footer {
 
 
 
-
+/* CSS Formulario de Register and Login */
 
 
 /* Fondo negro del formulario */
 .modal-dark {
-    background-color: #1C1C21 !important;  /* 🔷 Fondo negro */
+    background-color: #1C1C21 !important;  
     border-radius: 35px !important;
     color: #fff;
     border: none;
@@ -425,7 +425,7 @@ footer {
   
   /* Título a la izquierda con color celeste */
   .custom-title {
-    color: #A4A2C9 !important; /* Celeste Bootstrap */
+    color: #A4A2C9 !important; 
     font-size: 1.5rem;
     text-align: left;
     margin-bottom: 1.2rem;
@@ -434,7 +434,7 @@ footer {
   /* Etiquetas (label) visibles */
   label,
   .form-label {
-    color: #0dcaf0 !important;  /* Celeste claro */
+    color: #0dcaf0 !important;  
     font-weight: 500;
     font-size: 14px;
     margin-bottom: 4px;
@@ -443,7 +443,7 @@ footer {
   
   /* Contenedor relativo para inputs con íconos */
   .form-group.position-relative {
-    position: relative; /* necesario para posicionar los íconos */
+    position: relative; 
   }
   
   /* Inputs */
@@ -459,8 +459,8 @@ footer {
     padding-top: 10px !important;
     padding-bottom: 10px !important;
   
-    padding-left: 40px !important; /* espacio para icono izquierdo */
-    padding-right: 40px !important; /* espacio para icono derecho */
+    padding-left: 40px !important; 
+    padding-right: 40px !important; 
   
     line-height: 1.2;
     margin-bottom: 0.6rem;
@@ -514,13 +514,9 @@ footer {
 
 /* Tamaño personalizado del modal */
 .modal-lg-custom {
-    max-width: 600px !important; /* Podés subirlo a 700px u 800px si querés más ancho */
+    max-width: 600px !important; 
     width: 100%;
   }
-
-
-
-
   
   /* Responsive */
   @media (max-width: 576px) {

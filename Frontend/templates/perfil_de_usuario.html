@@ -1,9 +1,130 @@
 {% extends "base.html" %}
 
-
 {% block tittle %}Perfil de Usuario{% endblock %}
 
 {% block content %}
+
+    <div id="perfil">
+        <div id="banner_perfil">
+            <div>
+                <i id="img_cambiar_banner" class="fa-solid fa-camera"></i>
+                <input type="color" id="color_selector_banner" style="display:none;">
+            </div>
+        </div>
+
+        <div id="foto_de_perfil">
+            <button id="boton_editar_foto_de_perfil" class="button_editar_foto_de_perfil">
+                <i class="foto_perfil_img fa-regular fa-image"></i>
+            </button> 
+        </div>
+
+        <div class="editar_foto">
+            <!--agregar un modulo que deje editar la foto de perfil-->
+            <button id="boton_editar_carrera" class="button_editar_foto_de_perfil">
+                <img class='icono_lapiz' src="{{ url_for('static', filename='img/icono_lapiz_edit.png') }}" alt="">
+            </button>
+        </div>
+                
+        <div id="datos_usuario">
+            <div class="fila-datos">
+                <h2 class="datos">Nombre de compañer@</h2>
+                <span class="datos">Universidad</span>
+            </div>
+
+            <span id="nombre_de_la_carrera">Carrera</span>
+            <h2> Sobre mi</h2>
+            <div class="contenedor_textarea">
+                <textarea id="sobre_mi" type="text" placeholder="Escribe algo sobre ti..."></textarea>
+                <button id="editar_bio">
+                    <img class="icono_lapiz" src="{{ url_for('static', filename='img/icono_lapiz_edit.png') }}" alt="editar sobre mi">
+                    <!--deberia dejar editar la bio cuando presione este botton-->
+                </button>                    
+            </div>
+        </div>
+
+        <div>
+            <div class="fila_info">
+                <span class="info_relevante">
+                    Materias cursando 
+                    <button id="boton_editar_materias_cursando" class="button_trasparente_editar">
+                        <img class="icono_lapiz" src="{{ url_for('static', filename='img/icono_lapiz_edit.png') }}" alt="editar sobre mi">
+                    </button>
+                </span>
+                <span class="info_relevante">Materias aprobadas
+                    <button id="boton_editar_materias_Aprobadas" class="button_trasparente_editar">
+                        <img class="icono_lapiz" src="{{ url_for('static', filename='img/icono_lapiz_edit.png') }}" alt="editar sobre mi">
+                    </button>
+                </span>
+                <span class="info_relevante">Horarios disponibles
+                    <button id="boton_editar_horarios_disponibles" class="button_trasparente_editar">
+                        <img class="icono_lapiz" src="{{ url_for('static', filename='img/icono_lapiz_edit.png') }}" alt="editar sobre mi">
+                    </button>
+                </span>
+            </div>
+
+            <div class="fila_info">
+                <textarea class="caja_de_texto_info" type="text" placeholder=""></textarea>
+                <textarea class="caja_de_texto_info" type="text" placeholder=""></textarea>
+                <textarea class="caja_de_texto_info" type="text" placeholder=""></textarea>
+            </div>
+                    
+            <div>
+                <div class="fila_info">                    
+                    <div class="grupos_del_usuario">
+                        <div class="grupos_actuales_del_usuario">
+                            <div class="informacion_inicial_grupo">
+                                <div class="nombre_del_grupo_perteneciente">
+                                    <span class="nombre_del_grupo">Nombre del grupo</span>
+                                    <button id="button_editar_informacion_grupo" class="button_trasparente_editar">
+                                        <img class="icono_lapiz" src="{{ url_for('static', filename='img/icono_lapiz_edit.png') }}" alt="editar grupo">
+                                    </button>
+                                </div>
+                                <span class="cantidad_de_integrantes_numero">Cantidad de integrantes</span>
+                            </div>
+                            <button class="button_usuario_info_grupo">INFO</button>
+                            <button class="button_usuario_entregado_grupo">ENTREGADO</button>
+                        </div>
+                    </div>    
+                        
+                    <div class="grupos_del_usuario">
+                        <div class="grupos_actuales_del_usuario">
+                            <div class="informacion_inicial_grupo">
+                                <div class="nombre_del_grupo_perteneciente">
+                                    <span class="nombre_del_grupo">Nombre del grupo</span>
+                                    <button id="button_editar_informacion_grupo_2" class="button_trasparente_editar">
+                                        <img class="icono_lapiz" src="{{ url_for('static', filename='img/icono_lapiz_edit.png') }}" alt="editar grupo">
+                                    </button>
+                                </div>
+                                <span class="cantidad_de_integrantes_numero">Cantidad de integrantes</span>
+                            </div>
+                            <button class="button_usuario_info_grupo">INFO</button>
+                            <button class="button_usuario_entregado_grupo">ENTREGADO</button>
+                        </div>
+                    </div>
+
+                    <div class="grupos_del_usuario">
+                        <div class="grupos_actuales_del_usuario">
+                            <div class="informacion_inicial_grupo">
+                                <div class="nombre_del_grupo_perteneciente">
+                                    <span class="nombre_del_grupo">Nombre del grupo</span>
+                                    <button id="button_editar_informacion_grupo_3" class="button_trasparente_editar">
+                                        <img class="icono_lapiz" src="{{ url_for('static', filename='img/icono_lapiz_edit.png') }}" alt="editar grupo">
+                                    </button>
+                                </div>
+                                <span class="cantidad_de_integrantes_numero">Cantidad de integrantes</span>
+                            </div>
+                            <button class="button_usuario_info_grupo">INFO</button>
+                            <button class="button_usuario_entregado_grupo">ENTREGADO</button>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>   
+    </div>
+
+
 
     <!--modals-->
     <div id="modal_cerrar_sesion" class="desplegable">
@@ -290,128 +411,4 @@
 
         </div>
     </div>
-
-
-
-<!--EDICION DEL PERFIL-->
-
-    <div id="perfil">
-        <div id="banner_perfil">
-            <div>
-                <img id="img_cambiar_banner" src="{{ url_for('static', filename='img/icono_lapiz_edit.png') }}" alt="Cambiar color del banner">
-                <input type="color" id="color_selector_banner" style="display:none;">
-            </div>
-        </div>
-
-        <div id="foto_de_perfil">
-            <button id="boton_editar_foto_de_perfil" class="button_editar_foto_de_perfil">
-                <img class='foto_perfil_img' src="{{ url_for('static', filename='img/icono_imagen_perfil.png') }}" alt="Foto de Perfil">
-            </button> 
-        </div>
-
-        <div class="editar_foto">
-            <!--agregegar un modulo que deje editar la foto de perfil-->
-            <button id="boton_editar_carrera" class="button_editar_foto_de_perfil">
-                <img class='icono_lapiz' src="{{ url_for('static', filename='img/icono_lapiz_edit.png') }}" alt="Foto de Perfil">
-            </button>
-        </div>
-                
-        <div id="datos_usuario">
-            <div class="fila-datos">
-                <h2 class="datos">nombre de compañer@</h2>
-                <span class="datos">Universidad</span>
-            </div>
-
-            <span id="nombre_de_la_carrera">Carrera</span>
-            <h2> Sobre mi</h2>
-            <div class="contenedor_textarea">
-                <textarea id="sobre_mi" type="text" placeholder="Escribe algo sobre ti..."></textarea>
-                <button id="editar_bio">
-                    <img class="icono_lapiz" src="{{ url_for('static', filename='img/icono_lapiz_edit.png') }}" alt="editar sobre mi">
-                    <!--deberia dejar editar la bio cuando presione este botton-->
-                </button>                    
-            </div>
-        </div>
-
-        <div>
-            <div class="fila_info">
-                <span class="info_relevante">
-                    Materias cursando 
-                    <button id="boton_editar_materias_cursando" class="button_trasparente_editar">
-                        <img class="icono_lapiz" src="{{ url_for('static', filename='img/icono_lapiz_edit.png') }}" alt="editar sobre mi">
-                    </button>
-                </span>
-                <span class="info_relevante">Materias aprobadas
-                    <button id="boton_editar_materias_Aprobadas" class="button_trasparente_editar">
-                        <img class="icono_lapiz" src="{{ url_for('static', filename='img/icono_lapiz_edit.png') }}" alt="editar sobre mi">
-                    </button>
-                </span>
-                <span class="info_relevante">Horarios disponibles
-                    <button id="boton_editar_horarios_disponibles" class="button_trasparente_editar">
-                        <img class="icono_lapiz" src="{{ url_for('static', filename='img/icono_lapiz_edit.png') }}" alt="editar sobre mi">
-                    </button>
-                </span>
-            </div>
-
-            <div class="fila_info">
-                <textarea class="caja_de_texto_info" type="text" placeholder="Escribe las materias cursando..."></textarea>
-                <textarea class="caja_de_texto_info" type="text" placeholder="Escribe las materias las aprobadas..."></textarea>
-                <textarea class="caja_de_texto_info" type="text" placeholder="Escribe tus Horarios"></textarea>
-            </div>
-                    
-            <div>
-                <div class="fila_info">                    
-                    <div class="grupos_del_usuario">
-                        <div class="grupos_actuales_del_usuario">
-                            <div class="informacion_inicial_grupo">
-                                <div class="nombre_del_grupo_perteneciente">
-                                    <span class="nombre_del_grupo">Nombre del grupo</span>
-                                    <button id="button_editar_informacion_grupo" class="button_trasparente_editar">
-                                        <img class="icono_lapiz" src="{{ url_for('static', filename='img/icono_lapiz_edit.png') }}" alt="editar grupo">
-                                    </button>
-                                </div>
-                                <span class="cantidad_de_integrantes_numero">Cantidad de integrantes</span>
-                            </div>
-                            <button class="button_usuario_info_grupo">INFO</button>
-                            <button class="button_usuario_entregado_grupo">ENTREGADO</button>
-                        </div>
-                    </div>    
-                        
-                    <div class="grupos_del_usuario">
-                        <div class="grupos_actuales_del_usuario">
-                            <div class="informacion_inicial_grupo">
-                                <div class="nombre_del_grupo_perteneciente">
-                                    <span class="nombre_del_grupo">Nombre del grupo</span>
-                                    <button id="button_editar_informacion_grupo_2" class="button_trasparente_editar">
-                                        <img class="icono_lapiz" src="{{ url_for('static', filename='img/icono_lapiz_edit.png') }}" alt="editar grupo">
-                                    </button>
-                                </div>
-                                <span class="cantidad_de_integrantes_numero">Cantidad de integrantes</span>
-                            </div>
-                            <button class="button_usuario_info_grupo">INFO</button>
-                            <button class="button_usuario_entregado_grupo">ENTREGADO</button>
-                        </div>
-                    </div>
-
-                    <div class="grupos_del_usuario">
-                        <div class="grupos_actuales_del_usuario">
-                            <div class="informacion_inicial_grupo">
-                                <div class="nombre_del_grupo_perteneciente">
-                                    <span class="nombre_del_grupo">Nombre del grupo</span>
-                                    <button id="button_editar_informacion_grupo_3" class="button_trasparente_editar">
-                                        <img class="icono_lapiz" src="{{ url_for('static', filename='img/icono_lapiz_edit.png') }}" alt="editar grupo">
-                                    </button>
-                                </div>
-                                <span class="cantidad_de_integrantes_numero">Cantidad de integrantes</span>
-                            </div>
-                            <button class="button_usuario_info_grupo">INFO</button>
-                            <button class="button_usuario_entregado_grupo">ENTREGADO</button>
-                        </div>
-                    </div>
-
-                </div>
-
-            </div>
-        </div>   
-
 {% endblock %}

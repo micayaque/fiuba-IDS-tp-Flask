@@ -366,46 +366,13 @@ footer {
 
 /******************************* ESTILOS PARA PERFIL.HTML *******************************/
 
-/*perfil*/
-
-.miperfil {
-    position: relative;
-    display: flex;
-    justify-content: flex-end
-}
-
-#botton_miperfil {
-    display: flex;
-    justify-content: flex-end;
-    background: none;
-    border: none;
-    color:#d6f1ff;
-    font-family:'Roboto', sans-serif;
-    font-weight: bold;
-    padding: 8px 12px;
-    cursor: pointer;
-
-}
-/*esto es el boton para cerrar secion que se desplega despues de presionar mi perfil*/
-
-
-#img_perfil_icono {
-    height: 32px;
-    width: 32px;
-    object-fit: cover; 
-    justify-content: flex-end;
-    background: #242424;
-}
-
 #perfil {
     position: relative;
     display: flex;/* Aumenta el espacio interno */
     flex-direction: column;
     min-height: px; /*quitar cuando agrege contenido*/
     margin: 20px 80px; /* 20px arriba/abajo, 100px izquierda/derecha */
-    font-family: 'Roboto', sans-serif;
-    
-    
+    font-family: 'Roboto', sans-serif;    
 }
 
 /*perzonalizacion del banner y foto de perfil*/
@@ -413,11 +380,11 @@ footer {
 #banner_perfil {
     height: 150px;
     width: 100%; /* Asegura que ocupe todo el ancho del contenedor */
-    background-color: #A0b3b6;
+    background-color: #A0B4B7;
     position: relative;
-    border-radius: 16px;
     z-index: 1;
 
+    border-radius: 16px 16px 0 0;
 }
 
 #img_cambiar_banner {
@@ -427,9 +394,14 @@ footer {
     height: 30px;
     width: 30px;
     object-fit: cover;
-    background: none;
     cursor: pointer;
     padding: 0;
+
+    color: #CEE5F2;
+    background-color: #1c1c1c;
+    border-radius: 100%;
+    align-content: center;
+    text-align: center;
 }
 
 #foto_de_perfil {
@@ -440,30 +412,24 @@ footer {
     height: 150px;
     background-color: #BEBEBE;
     border-radius: 50%;
-    border: 8px solid #1C1C21;
+    border: 5px solid #626262;
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 2;
 
 }
-.foto_perfil_img {
-    height: 100%;
-    width: 100%;
-    border-radius: 50%;
-    object-fit: cover; /* Asegura que la imagen cubra todo el círculo */
-    
-}
 
 /*los datos del usuario*/
 #datos_usuario {
-    margin-top: 50px; /* Ajusta para dejar espacio debajo de la foto */
     display: flex;
     flex-direction: column;
     color: #F2F2F2;
-    margin-left: 70px;
-    font-family:'Roboto', sans-serif;
+    margin: 3rem;
+    font-family: 'Inter';
     font-weight: bold;
+
+    gap: 1rem;
 }
 
 
@@ -473,12 +439,6 @@ footer {
     justify-content: space-between;
     align-items: center;
     width: 100%;
-}
-
-.datos {
-    margin: 0;
-    margin-right: 30px;
-    margin-bottom: 8px;
 }
 
 span {
@@ -491,7 +451,7 @@ span {
 
 
 .editar_foto {
-    background-color: #36363c;
+    background-color: #303030;
     height: 30px;
     width: 30px;
     border-radius: 50%;
@@ -519,6 +479,8 @@ span {
     vertical-align: middle;
     opacity: 0.5;
     cursor: pointer;
+
+    color: #CEE5F2;
 }
 
 
@@ -531,8 +493,8 @@ span {
 
 #sobre_mi {
     background-color: #36363c;
-    min-height: 80px;
-    border-radius: 8px;
+    min-height: 130px;
+    border-radius: 1rem;
     padding: 10px 2% 0px 10px; /* espacio a la derecha para el botón */
     color: #F2F2F2;
     border: none;

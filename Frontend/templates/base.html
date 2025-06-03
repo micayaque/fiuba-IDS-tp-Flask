@@ -34,13 +34,101 @@
                 <div id="contenedor_logo_header" class="start-0">
                     <a href="/"><img src="{{ url_for('static', filename='img/logo_header.png') }}" alt="Logo"></a>
                 </div>
-                
+
                 <div id="contenedor_botones_header">
-                    <a href="" id="btn_iniciar_sesion" class="btn btn-sm">INICIAR SESIÓN</a>
-                    <a href="" id="btn_registrarse" class="btn btn-sm">REGISTRARSE</a>
+                    {% if session.usuario %}
+                        <a  href="{{ url_for('perfil_de_usuario') }}"><i class="fa-solid fa-user"></i></a>
+                        <a href="{{ url_for('perfil_de_usuario') }}" class="btn btn-sm">MI PERFIL</a>
+                        <a href="#"><i class="fa-regular fa-bell"></i></a>
+                        <a href="{{ url_for('cerrar_sesion') }}" id="btn_cerrar_sesion" class="btn btn-sm">CERRAR SESIÓN</a>
+                        {% else %}
+                        <a href="#" id="btn_iniciar_sesion" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#loginModal">INICIAR SESIÓN</a>
+                        <a href="#" id="btn_registrarse" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#registroModal">REGISTRARSE</a>
+                    {% endif %}
                 </div>
+
             </div>
         </header>
+
+        
+        <!-- Modal de Registro -->
+        <div class="modal fade" id="registroModal" tabindex="-1" aria-labelledby="registroModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg-custom">
+            <div class="modal-content modal-dark p-4">
+                <div class="modal-body">
+                <h5 class="custom-title fw-bold mb-4">¡Bienvenid@!</h5>
+        
+                <form>
+                    <!-- Número de padrón -->
+                    <div class="mb-3 w-100">
+                    <label for="padron" class="text-white">Número de padrón</label>
+                    <input type="text" class="form-control form-dark" id="padron" placeholder="Escribí acá tu número de padrón">
+                    </div>
+        
+                    <!-- Contraseña -->
+                    <div class="mb-3 position-relative w-100">
+                    <label for="register-password" class="text-white">Contraseña</label>
+                    <input type="password" class="form-control input-dark ps-5 pe-5" id="register-password" placeholder="Contraseña">
+                    <i class="fas fa-lock icon-left"></i>
+                    <i class="far fa-eye icon-right" id="togglePassword" onclick="togglePasswordVisibility()"></i>
+                    </div>
+        
+                    <!-- Nombre -->
+                    <div class="mb-3 w-100">
+                    <label for="nombre" class="text-white">Nombre</label>
+                    <input type="text" class="form-control form-dark" id="nombre" placeholder="Escribí acá tu nombre">
+                    </div>
+        
+                    <!-- Apellido -->
+                    <div class="mb-3 w-100">
+                    <label for="apellido" class="text-white">Apellido</label>
+                    <input type="text" class="form-control form-dark" id="apellido" placeholder="Escribí acá tu apellido">
+                    </div>
+        
+                    <!-- Botón -->
+                    <div class="d-grid w-100">
+                    <button type="submit" class="btn btn-dark btn-submit">Registrate</button>
+                    </div>
+                </form>
+                </div>
+            </div>
+            </div>
+        </div>
+
+
+        <!-- Modal de Login -->
+        <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content modal-dark p-4">
+            <div class="modal-body">
+                <h5 class="custom-title fw-bold mb-4">¡Bienvenid@!</h5>
+
+                <!-- <form> -->
+                <form">
+                <!-- Número de padrón -->
+                <div class="mb-3 w-100">
+                    <label for="login-padron" class="text-white">Número de padrón</label>
+                    <input type="text" class="form-control form-dark" name="padron" id="login-padron" placeholder="Escribí acá tu número de padrón">
+                    <input type="hidden" name="next" value="{{ request.path }}">
+                </div>
+
+                <!-- Contraseña -->
+                <div class="mb-3 position-relative w-100">
+                    <label for="login-password" class="text-white">Contraseña</label>
+                    <input type="password" class="form-control input-dark ps-5 pe-5" id="login-password" placeholder="Contraseña">
+                    <i class="fas fa-lock icon-left"></i>
+                    <i class="far fa-eye icon-right" id="toggleLoginPassword" onclick="toggleLoginPasswordVisibility()"></i>
+                </div>
+
+                <!-- Botón -->
+                <div class="d-grid w-100">
+                    <button type="submit" class="btn btn-dark btn-submit">Iniciar sesión</button>
+                </div>
+                </form>
+            </div>
+            </div>
+        </div>
+        </div>
 
 
         <!-- Menú -->
@@ -76,9 +164,10 @@
             </div>
             <form action="">
                 <label for="email">Ingrese su correo: </label><br>
-                <input type="email" name="email"><br>
+                <input type="email" name="email" id="email" autocomplete="email"><br>
+
                 <label for="mensaje">Mensaje: </label>
-                <textarea type="text" name="mensaje"></textarea>
+                <textarea type="text" name="mensaje" id="mensaje"></textarea>
 
                 <div id="contenedor_botones_enviar_cerrar">
                     <button type="submit" id="btn_enviar">Enviar</button>
@@ -112,6 +201,8 @@
             </div>
         </footer>
 
+        <!-- Bootstrap-->
+        <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
         <script src="{{ url_for('static', filename='js/script.js') }}"></script>
     </body>
 

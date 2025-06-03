@@ -441,7 +441,7 @@ footer {
 }
 
 .nombre_de_usuario {
-    font-size: clamp(1rem, 2vw, 1rem);
+    font-size: clamp(1.5rem, 2vw, 1rem);
     font-weight: bold;
     color: #F2F2F2;
     margin-bottom: 0.5rem;
@@ -558,7 +558,7 @@ footer {
     margin-top: 0;  
     margin-bottom: 0;           /* Opcional: elimina margen superior si no lo quieres */
     font-weight: bolder;
-    font-size: clamp(1rem, 1.5vw, 1rem);
+    font-size: clamp(1.5rem, 1.5vw, 1rem);
     color: #F2F2F2;
  
 }
@@ -724,8 +724,8 @@ footer {
     background-color: #1C1C21;
     padding: 15px;
     border-radius: 16px;
-    width: 80%;
-    max-width: 600px;
+    width: 60%;
+    max-height: 70%;
     position: relative;
     color: #F2F2F2;
 }
@@ -748,7 +748,7 @@ footer {
 
 .btn_de_los_modals {
     background-color: #AEABD4;
-    padding: 10px;
+    padding: clamp(8px, 2vw, 10px);
     border-radius: 999px;
     font-family: 'Poppins', sans-serif;
     color: #F2F2F2;
@@ -809,14 +809,16 @@ footer {
 }
 
 .introducir_informacion_cuadro {
-    width: 80%;
-    height: 6%;
+    width: 100%;
+    height: 2px;
+    display: flex;
+    max-width: 80%;
     border-radius: 999px;
     background-color: #36363c;
     color: #F2F2F2;
-    padding: 20px;
+    padding: clamp(8px, 2vw, 20px);;
     border: none;
-    margin: 6px;
+    margin-top: 2px;
     font-size: clamp(0.8rem, 1vw, 1rem);
 }
 
@@ -840,7 +842,7 @@ footer {
 }
 
 #nombres_de_integrantes {
-    margin: 15px;
+    margin: 10px;
     border-bottom: #626262 solid 6px;
     width: 90%;
     display: flex;
@@ -869,8 +871,8 @@ footer {
 .btn_guardar_cambios {
     background-color: #73198c;
     color: #F2F2F2;
-    padding: 10px 10px;
-    font-size: 12px;
+    padding: clamp(8px, 2vw, 15px);
+    font-size: clamp(0.75rem, 1vw, 1rem);
     border-radius: 500px;
     border: none;
     font-weight: bold;
@@ -880,8 +882,8 @@ footer {
 .btn_eliminar_grupo {
     background-color: #6C0000;
     color: #F2F2F2;
-    padding: 10px 10px;
-    font-size: 12px;
+    padding: clamp(8px, 2vw, 15px);
+    font-size: clamp(0.75rem, 1vw, 1rem);
     border-radius: 500px;
     border: none;
     font-weight: bold;

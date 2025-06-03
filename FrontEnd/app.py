@@ -48,7 +48,22 @@ def mostrar_materias():
         {"codigo_materia": 19, "nombre": "Sistemas distribuidos"},
         {"codigo_materia": 20, "nombre": "EBT"}
     ]
-    return render_template("materias.html", materias=materias)
+    return render_template('materias.html', materias=materias)
+
+@app.route("/grupos")
+def mostrar_grupos():
+    grupos = [
+    {'id': 1, 'nombre': 'Nombre de grupo 1', 'materia': 'Fundamentos de la programación'},
+    {'id': 2, 'nombre': 'Nombre de grupo 2', 'materia': 'Base de datos'},
+    {'id': 3, 'nombre': 'Nombre de grupo 3', 'materia': 'Sistemas operativos'},
+    {'id': 4, 'nombre': 'Nombre de grupo 4', 'materia': 'Teoría de algoritmos'},
+    {'id': 5, 'nombre': 'Nombre de grupo 5', 'materia': 'Organización del Computador'},
+    {'id': 6, 'nombre': 'Nombre de grupo 6', 'materia': 'Programación concurrente'},
+    {'id': 7, 'nombre': 'Nombre de grupo 7', 'materia': 'EBT'},
+    {'id': 8, 'nombre': 'Nombre de grupo 8', 'materia': 'Paradigmas de programación'},
+    {'id': 9, 'nombre': 'Nombre de grupo 9', 'materia': 'Seguridad informática'}
+    ]
+    return render_template("grupos.html", grupos=grupos)
 
 if __name__ == '__main__':
     app.run('localhost', port=8000, debug=True)

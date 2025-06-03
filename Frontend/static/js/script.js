@@ -5,13 +5,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const modalCerrarSesion = document.getElementById("modal_cerrar_sesion");
     const botonCerrarModal = document.getElementById("close_modal");
 
-    botonCerrarModal.addEventListener("click", function() {
-        modalCerrarSesion.style.display = "none";
-        modalEditarPerfil.style.display = "none";
-        modalMateriasCursando.style.display = "none";
-        modalMateriasAprobadas.style.display = "none";
-        modalHorariosDisponibles.style.display = "none";
-    });
 
 
     //modal editarfoto de perfil
@@ -81,6 +74,14 @@ document.addEventListener("DOMContentLoaded", function () {
     modalEditarInfoGrupos3.style.display = "flex";
     });
 
+    //modal para editar carrera
+    const modalEditarCarrera = document.getElementById("modificar_carrera");
+    const botonEditarCarrera = document.getElementById("boton_editar_carrera");
+
+    botonEditarCarrera.addEventListener("click", function() {
+    modalEditarCarrera.style.display = "flex";
+    });
+
 
     // Universal close for all modals
     document.querySelectorAll('.close_modal').forEach(btn => {
@@ -89,6 +90,8 @@ document.addEventListener("DOMContentLoaded", function () {
             this.closest('.desplegable').style.display = 'none';
         });
     });
+
+
     // cambiar color del banner
     const iconoCamara = document.getElementById('img_cambiar_banner');
     const selectorColor = document.getElementById('color_selector_banner');
@@ -114,7 +117,9 @@ document.addEventListener("DOMContentLoaded", function () {
             modalElegirFotoDePerfil.style.display = "none";  
             modalEditarPerfil.style.display = "none";// cerrar modal
         });
-    }
+    } 
+
+    //cambiar foto de perfil violeta
 
     const botonvioleta = document.getElementById("foto_perfil_violeta");
     const imagenPerfilv = document.querySelector("#boton_editar_foto_de_perfil .foto_perfil_img");
@@ -126,6 +131,35 @@ document.addEventListener("DOMContentLoaded", function () {
             modalEditarPerfil.style.display = "none";// cerrar modal
         });
     }
+
+    const botonGuardarCarrera = document.getElementById("guardar_carrera");
+    const spanCarrera = document.getElementById("nombre_de_la_carrera");
+    const inputCarrera = document.querySelector("#informacion_carrera_usuario input");
+    const modalCarrera = document.getElementById("modificar_carrera");
+
+    if (botonGuardarCarrera && spanCarrera && inputCarrera && modalCarrera) {
+        botonGuardarCarrera.addEventListener("click", function () {
+            const nuevaCarrera = inputCarrera.value.trim();
+            if (nuevaCarrera !== "") {
+                spanCarrera.textContent = nuevaCarrera;
+                modalCarrera.style.display = "none";
+                inputCarrera.value = "";
+            }
+        });
+    }
+
+    // Cambiar botón de "ENTREGADO" a "EN CURSO"
+    const botonesEntregado = document.querySelectorAll(".button_usuario_entregado_grupo");
+
+    botonesEntregado.forEach(boton => {
+        boton.addEventListener("click", function () {
+            if (boton.textContent.trim().toUpperCase() === "ENTREGADO") {
+                boton.textContent = "EN CURSO";
+                boton.classList.add("boton-en-curso");
+            }
+        });
+    });
+
 
 
 });

@@ -708,6 +708,19 @@ span {
 
 }
 
+.boton-en-curso {
+    font-weight: bold;
+    margin-bottom: 5px;
+    background-color: #727c78;
+    border-radius: 12px;
+    margin-top: 5px;
+    align-items: center;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+
 /*modals*/
 
 /*diseño de los modals*/
@@ -820,7 +833,7 @@ span {
     border-radius: 999px;
     background-color: #36363c;
     color: #F2F2F2;
-    padding: 10px;
+    padding: 20px;
     border: none;
     margin: 6px;
 }

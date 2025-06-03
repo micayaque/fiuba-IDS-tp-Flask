@@ -65,6 +65,21 @@
         </div>
     </div>
 
+    <!--modal para Cambiar la carrera-->
+    <div id="modificar_carrera" class="desplegable">
+        <div class="banner_perfil_desplegable">
+            <span id="close_modal" class="close_modal">x</span>
+            <span class="contenido_de_modal">Carrera</span>
+            <div id="texto_de_horarios">
+                <h5>¿que carrera estudias?</h5>
+            </div>
+            <form id="informacion_carrera_usuario">
+                <input type="text" class="introducir_informacion_cuadro" placeholder="Escribe el nombre de la carrera"></input>
+                <button type="button" id="guardar_carrera" class="btn_de_los_modals">GUARDAR</button>
+            </form>
+        </div>
+    </div>
+
     <!--modal para editar las info personal de las materias-->
     <div id="modal_materias_cursando" class="desplegable">
         <div class="banner_perfil_desplegable">
@@ -296,7 +311,9 @@
 
         <div class="editar_foto">
             <!--agregegar un modulo que deje editar la foto de perfil-->
-            <button  class="button_editar_foto_de_perfil"><img class='icono_lapiz' src="{{ url_for('static', filename='img/icono_lapiz_edit.png') }}" alt="Foto de Perfil"></button>
+            <button id="boton_editar_carrera" class="button_editar_foto_de_perfil">
+                <img class='icono_lapiz' src="{{ url_for('static', filename='img/icono_lapiz_edit.png') }}" alt="Foto de Perfil">
+            </button>
         </div>
                 
         <div id="datos_usuario">
@@ -305,7 +322,7 @@
                 <span class="datos">Universidad</span>
             </div>
 
-            <span>Carrera</span>
+            <span id="nombre_de_la_carrera">Carrera</span>
             <h2> Sobre mi</h2>
             <div class="contenedor_textarea">
                 <textarea id="sobre_mi" type="text" placeholder="Escribe algo sobre ti..."></textarea>

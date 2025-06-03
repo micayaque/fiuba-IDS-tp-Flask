@@ -441,12 +441,6 @@ footer {
     width: 100%;
 }
 
-span {
-    font-size: 20px;
-    margin: 0;
-    color: #F2F2F2;
-    margin-bottom: 30px;
-}
 
 
 
@@ -524,11 +518,11 @@ span {
 .fila_info {
     min-height: 50px;
     display: flex;
-    justify-content: space-between;
+    flex-direction: row;
     align-items: stretch; /* Cambia esto para que las columnas ocupen toda la altura */
     width: 100%;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 1%;
+    padding-right: 1%;
 
 }
 
@@ -543,8 +537,8 @@ span {
     margin-top: 0;  
     margin-bottom: 0;           /* Opcional: elimina margen superior si no lo quieres */
     font-weight: bolder;
-    font-size: 26px;
-    opacity: 0.8;
+    font-size: 2vw;
+    color: #F2F2F2;
  
 }
 
@@ -570,12 +564,15 @@ span {
 }
 
 .grupos_del_usuario {
-    padding: 30px;
+    padding: 3%;
     justify-content: center;
     flex-direction:row; /* Centra verticalmente */
     display: flex;
     align-items: center; 
     width: 100%;      /* Centra horizontalmente */
+    background-color: #1f352d;
+    min-width: 0; /* Permite que se reduzca */
+    box-sizing: border-box;      /* Centra horizontalmente */
     
 }
 
@@ -593,7 +590,7 @@ span {
     display: flex;
     align-items: center;         /* Alinea verticalmente el texto y el botón */
     justify-content: space-between;
-    font-size: 20px;
+    font-size: 2vw;
     color: #AEABD4;
     font-weight: bold;
     margin-bottom: 2px;          /* Menos espacio debajo */
@@ -605,7 +602,7 @@ span {
 }
 
 .cantidad_de_integrantes_numero {
-    font-size: 14px;
+    font-size: 1vw;
     color: #F2F2F2;
     display: block;
     margin-top: 2px;             /* Menos espacio arriba */
@@ -651,7 +648,7 @@ span {
     border-radius: 12px;
     margin-top: 5px;
     align-items: center;
-    font-size: 16px;
+    font-size: 1vw;
     border: none;
     cursor: pointer;
 
@@ -664,7 +661,7 @@ span {
     border-radius: 12px;
     margin-top: 5px;
     align-items: center;
-    font-size: 16px;
+    font-size: 1vw;
     border: none;
     cursor: pointer;
 

@@ -452,3 +452,41 @@ footer {
 
 
 /*******************************FIN DE ESTILOS PARA MATERIAS ***************************************/
+
+/******************************* ESTILOS PARA GRUPOS ***************************************/
+
+.barra_desplazamiento_grupos {
+    display: flex;
+    flex-direction: row;
+    padding: 10px 10px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border: 1px solid #ccc;
+    height: 30rem;
+    border: #303030 solid 0.3rem;
+    border-radius: 1rem;
+    background-color: transparent;
+}
+
+.barra_desplazamiento_grupos::-webkit-scrollbar {
+    border-radius: 1rem;
+}
+
+.barra_desplazamiento_grupos::-webkit-scrollbar-thumb {
+    background: #5a5959;
+    border-radius: 1rem;
+}
+
+.barra_desplazamiento_grupos::-webkit-scrollbar-thumb:hover {
+    background: #444444;
+}
+
+
+#items_barra_desplazamiento_grupos div {
+    min-width: 200px;
+    height: 60px;
+}
+
+
+
+/*******************************FIN DE ESTILOS PARA GRUPOS ***************************************/

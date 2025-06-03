@@ -366,8 +366,10 @@ footer {
 
 /********************************** ESTILOS PARA EL FORMULARIO DE REGISTRO E INICIO DE SESION*********************************/
 
-/* CSS Formulario de Register and Login */
-
+#btn_cerrar_sesion {
+  background-color: #6C0000;
+  margin: 1rem;
+}
 
 /* Fondo negro del formulario */
 .modal-dark {

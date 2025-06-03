@@ -371,7 +371,7 @@ footer {
     display: flex;/* Aumenta el espacio interno */
     flex-direction: column;
     min-height: px; /*quitar cuando agrege contenido*/
-    margin: 20px 80px; /* 20px arriba/abajo, 100px izquierda/derecha */
+    margin: 2% 6%; /* 20px arriba/abajo, 100px izquierda/derecha */
     font-family: 'Roboto', sans-serif;    
 }
 
@@ -407,8 +407,7 @@ footer {
     position: absolute;
     top: 60px; /* Ajusta para que la foto se superponga al banner */
     left: 70px; /* Alineado a la izquierda dentro de #perfil */
-    width: 150px;
-    height: 150px;
+    width: 13%;
     background-color: #BEBEBE;
     border-radius: 50%;
     border: 5px solid #626262;
@@ -430,15 +429,23 @@ footer {
     display: flex;
     flex-direction: column;
     color: #F2F2F2;
-    margin: 3rem;
+    margin: 3%;
     font-family: 'Inter';
     font-weight: bold;
 
     gap: 1rem;
 }
 
+.datos {
+    font-size: clamp(1rem, 1.5vw, 1rem);
+}
 
-
+.nombre_de_usuario {
+    font-size: clamp(1rem, 2vw, 1rem);
+    font-weight: bold;
+    color: #F2F2F2;
+    margin-bottom: 0.5rem;
+}
 .fila-datos {
     display: flex;
     justify-content: space-between;
@@ -527,8 +534,18 @@ footer {
     width: 100%;
     padding-left: 1%;
     padding-right: 1%;
+    flex-wrap: wrap;
 
 }
+
+.info_relevante,
+.caja_de_texto_info {
+  flex: 1 1 30%; /* 30% del ancho, pero se puede achicar si hace falta */
+  min-width: 250px; /* Evita que se hagan muy chicos */
+  box-sizing: border-box;
+}
+
+
 
 
 .info_relevante {
@@ -541,7 +558,7 @@ footer {
     margin-top: 0;  
     margin-bottom: 0;           /* Opcional: elimina margen superior si no lo quieres */
     font-weight: bolder;
-    font-size: 2vw;
+    font-size: clamp(1rem, 1.5vw, 1rem);
     color: #F2F2F2;
  
 }
@@ -569,13 +586,15 @@ footer {
 
 .grupos_del_usuario {
     padding: 3%;
-    justify-content: center;
-    flex-direction:row; /* Centra verticalmente */
     display: flex;
-    align-items: center; 
-    width: 100%;      /* Centra horizontalmente */
-    min-width: 0; /* Permite que se reduzca */
-    box-sizing: border-box;      /* Centra horizontalmente */
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    flex: 1 1 30%;         /* ✅ permite que se distribuyan horizontalmente */
+    min-width: 250px;      /* ✅ se rompe a la siguiente fila si no entra */
+    max-width: 100%;       /* ✅ no se pasa del ancho del contenedor */
+    box-sizing: border-box;     /* Centra horizontalmente */
     
 }
 
@@ -593,7 +612,7 @@ footer {
     display: flex;
     align-items: center;         /* Alinea verticalmente el texto y el botón */
     justify-content: space-between;
-    font-size: 2vw;
+    font-size: clamp(1rem, 2vw, 2rem);;
     color: #AEABD4;
     font-weight: bold;
     margin-bottom: 2px;          /* Menos espacio debajo */
@@ -605,7 +624,7 @@ footer {
 }
 
 .cantidad_de_integrantes_numero {
-    font-size: 1vw;
+    font-size: clamp(0.8rem, 1vw, 1rem);
     color: #F2F2F2;
     display: block;
     margin-top: 2px;             /* Menos espacio arriba */
@@ -651,7 +670,7 @@ footer {
     border-radius: 12px;
     margin-top: 5px;
     align-items: center;
-    font-size: 1vw;
+    font-size: clamp(0.8rem, 1vw, 1rem);
     border: none;
     cursor: pointer;
 
@@ -664,7 +683,7 @@ footer {
     border-radius: 12px;
     margin-top: 5px;
     align-items: center;
-    font-size: 1vw;
+    font-size: clamp(0.8rem, 1vw, 1rem);
     border: none;
     cursor: pointer;
 
@@ -791,13 +810,14 @@ footer {
 
 .introducir_informacion_cuadro {
     width: 80%;
-    height: 30px;
+    height: 6%;
     border-radius: 999px;
     background-color: #36363c;
     color: #F2F2F2;
     padding: 20px;
     border: none;
     margin: 6px;
+    font-size: clamp(0.8rem, 1vw, 1rem);
 }
 
 .btn_agregar_materia {

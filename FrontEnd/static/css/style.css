@@ -458,10 +458,7 @@ footer {
     padding: 0.625rem 0.625rem;
     overflow-y: auto;
     overflow-x: hidden;
-    border: 1px solid #ccc;
     height: 30rem;
-    border: #303030 solid 0.3rem;
-    border-radius: 1rem;
     background-color: transparent;
 }
 

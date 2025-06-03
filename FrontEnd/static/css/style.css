@@ -812,15 +812,18 @@ footer {
 #contenedor_compañerxs_sin_grupo {
   margin-bottom: 5rem;
   margin-top: 5rem;
+  max-width: 900px;
 }
 
 #contenedor_compañerxs_sin_grupo > div:first-child {
   justify-content: center;
+  border-radius: 13px;
 }
 
 #compañerx_sin_grupo {
   background-color: #303030;
   border: none;
+  margin-bottom: 1rem;
 }
 
 #contenedor_compañerx_sin_grupo_nombre {

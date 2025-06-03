@@ -8,7 +8,6 @@ function cerrarPopupContacto() {
     document.getElementById("fondo_popup_contacto").style.display = "none";
 };
 
-
 function filtrarMaterias() {
   const input = document.getElementById('buscadorInput').value.toLowerCase();
   

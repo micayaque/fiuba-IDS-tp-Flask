@@ -79,7 +79,7 @@ def grupos_por_materia(codigo_materia):
 
     return render_template("grupos_por_materia.html", materia=materia, grupos=grupos_de_materia)
 
-@app.route("/materias/<int:codigo_materia>/sin-grupo")
+@app.route("/materias/<int:codigo_materia>/companieros-sin-grupo")
 def companieros_sin_grupo_por_materia(codigo_materia):
     materia = None
     for m in materias:
@@ -95,7 +95,6 @@ def companieros_sin_grupo_por_materia(codigo_materia):
     ]
 
     return render_template("compañerxs_sin_grupo.html", materia=materia, compañeros=compañeros_sin_grupo)
-
 
 if __name__ == '__main__':
     app.run('localhost', port=8000, debug=True)

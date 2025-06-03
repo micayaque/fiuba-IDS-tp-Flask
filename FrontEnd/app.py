@@ -26,14 +26,14 @@ def perfil_de_usuario():
 
 grupos = [
     {'id': 1, 'nombre': 'Nombre de grupo 1', 'codigo_materia': 1},
-    {'id': 2, 'nombre': 'Nombre de grupo 2', 'codigo_materia': 7},
-    {'id': 3, 'nombre': 'Nombre de grupo 3', 'codigo_materia': 5},
-    {'id': 4, 'nombre': 'Nombre de grupo 4', 'codigo_materia': 10},
-    {'id': 5, 'nombre': 'Nombre de grupo 5', 'codigo_materia': 3},
-    {'id': 6, 'nombre': 'Nombre de grupo 6', 'codigo_materia': 15},
-    {'id': 7, 'nombre': 'Nombre de grupo 7', 'codigo_materia': 20},
-    {'id': 8, 'nombre': 'Nombre de grupo 8', 'codigo_materia': 6},
-    {'id': 9, 'nombre': 'Nombre de grupo 9', 'codigo_materia': 16}
+    {'id': 2, 'nombre': 'Nombre de grupo 2', 'codigo_materia': 1},
+    {'id': 3, 'nombre': 'Nombre de grupo 3', 'codigo_materia': 1},
+    {'id': 4, 'nombre': 'Nombre de grupo 4', 'codigo_materia': 1},
+    {'id': 5, 'nombre': 'Nombre de grupo 5', 'codigo_materia': 1},
+    {'id': 6, 'nombre': 'Nombre de grupo 6', 'codigo_materia': 1},
+    {'id': 7, 'nombre': 'Nombre de grupo 7', 'codigo_materia': 1},
+    {'id': 8, 'nombre': 'Nombre de grupo 8', 'codigo_materia': 1},
+    {'id': 9, 'nombre': 'Nombre de grupo 9', 'codigo_materia': 1}
 ]
 
 materias = [

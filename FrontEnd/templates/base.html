@@ -26,24 +26,40 @@
     </head>
 
 
-<body>
-  
-    <div id="registro_inicio_sesion" class="container">
-        <a href="" id="inicio_sesion" class="btn btn-sm">INICIAR SESIÓN</a>
-        <a href="" id="registrarse" class="btn btn-sm">REGISTRARSE</a>
-    </div>
+    <body>
+        
+        <header>
+            <div id="contenedor_header" class="container">        
 
-    <div id="menu">
-        <img id="img_menu_header" src="{{ url_for('static', filename='/img/logo_header.png', _external=True) }}"> <!--{{ url_for('static', filename='/img/logo_header.png', _external=True) }}-->
-        <ul class="listado" id="listado_header">
-            <li><a href="">Como funciona</a></li>
-            <li><a href="">Reglas</a></li>
-            <li><a href="{{ url_for('mostrar_materias') }}">Materias</a></li>
-            <li><a href="">Grupos</a></li>
-            <li><a href="">Contactanos</a></li>
-            <li><a href="">Mobile App</a></li>
-        </ul>
-    </div>
+                <div id="contenedor_logo_header" class="start-0">
+                    <a href="/"><img src="{{ url_for('static', filename='img/logo_header.png') }}" alt="Logo"></a>
+                </div>
+                
+                <div id="contenedor_botones_header">
+                    <a href="" id="btn_iniciar_sesion" class="btn btn-sm">INICIAR SESIÓN</a>
+                    <a href="" id="btn_registrarse" class="btn btn-sm">REGISTRARSE</a>
+                </div>
+            </div>
+        </header>
+
+
+        <!-- Menú -->
+
+        <div id="contenedor_menu">
+            
+            <nav class="mt-md-0">
+                <ul class="nav" id="opciones_menu">
+
+                    <li class="nav-item"><a class="nav-link" href="/#como-funciona">Cómo funciona</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('mostrar_materias') }}">Materias</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('mostrar_grupos') }}">Grupos</a></li>
+                    <li class="nav-item" onclick="mostrarPopupContacto()" ><a class="nav-link">Contactanos</a></li>
+                    <li class="nav-item"><a class="nav-link">Mobile app</a></li>
+
+                </ul>
+            </nav>
+
+        </div>
 
         <!-- Contacto -->
         <div onclick="cerrarPopupContacto()" id="fondo_popup_contacto"></div>

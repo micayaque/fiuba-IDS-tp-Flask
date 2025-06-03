@@ -1,10 +1,10 @@
-body {
-    background-color: #1C1C21;
-    height: 100%;
-    margin: 0;
+html {
+  scroll-behavior: smooth;
 }
 
-/*Inicio de Sesión y Registro*/
+body {
+    background-color: #1C1C21;
+}
 
 /* Logo y Botones de registro e inicio de sesión */
 
@@ -18,12 +18,11 @@ body {
     display: flex;
     justify-content: space-between;
     flex-direction: row;
-    justify-content: end;
     align-items: center;
     gap: 0.5rem;
-    padding-right: 3rem;
-    padding-top: 2rem;
-    padding-bottom: 2rem;
+    padding-right: 1rem;
+    padding-bottom: 1rem;
+    width: 100%;
 }
 
 #contenedor_botones_header a {
@@ -38,75 +37,53 @@ body {
     border-radius: 1rem;
 }
 
-#inicio_sesion:hover {
+#btn_iniciar_sesion:hover {
     color: white;
     font-weight: bold;
 }
 
-#registrarse:hover {
+#btn_registrarse:hover {
     background-color: #4A7BBE;
     color: white;
     font-weight: bold;
 }
 
-#inicio_sesion {
-    padding: 10px;
-    font-family: 'Inter', sans-serif;
-    font-weight: bold;
-}
+/* Navbar */
 
-#registrarse {
-    display: inline-block;
-    background-color: #5C95D6;
-    padding: 10px;
-    border-radius: 999px;
-    font-family: 'Poppins', sans-serif;
-    font-weight: bold;
+#contenedor_menu {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 2rem;
 }
-
-/*Menu de elementos (tanto inicio como final)*/
 
 nav {
     margin-top: 1rem;
-
 }
 
 #opciones_menu {
     justify-content: center;
-    list-style: none;
-    padding-left: 50px;
+    flex-wrap: wrap;
+    gap: 3rem;
 }
 
-.listado a {
-    text-decoration: none;
-    font-family: 'Poppins';
+#opciones_menu a:hover {
+    cursor: pointer;
     font-weight: bold;
-    font-size: 22px;
 }
 
-.listado a:hover {
-    text-decoration: underline white;
+@media (max-width: 768px) {
+  #opciones_menu {
+    gap: 0;
+  }
 }
 
-#img_menu_header {
-    width: 100px;
-    position: absolute;
-    left: 0;
-}
-
-#listado_header a {
-    transform: translate(0px, 20px);
-    color:#AEABD4;;
-}
-
-#menu {
-    position: relative;
-    display: flex;
-    align-items: center;
-    height: 100%;
-    width: 100%;
-    padding-bottom: 65px;
-    padding-top: 10px;
+#opciones_menu a {
+    text-decoration: none;
+    color: #AEABD4;
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    padding: 2rem;
 }
 
 footer {
@@ -182,12 +159,37 @@ footer {
     height: 3.75rem;
 }
 
-#listado_footer a {
-    color: #F2F2F2;
+
+/********************************ESTILOS PARA CONTACTO********************************/
+
+#fondo_popup_contacto {
+  display: none;
+  position: fixed;
+  top: 0; 
+  left: 0;
+  width: 100%; 
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9); /* oscuro semi-transparente */
+  z-index: 999;
 }
 
-
-/******************************************* ESTILOS PARA TEMPLATE INDEX ************************************************/
+#contenedor_contacto_popup {
+    display: none;
+    flex-direction: column;
+    padding: 0.5rem;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 10%;
+    background-color: #1C1C21;
+    align-items: center;
+    color: #F2F2F2;
+    font-family: 'Poppins';
+    width: 95vw;               /* Usamos % del viewport para evitar que se achique demasiado */
+    max-width: 500px;          /* Limita en pantallas grandes */
+    z-index: 1000;             /* Da prioridad para que este por delante de todo*/
+}
 
 #contenedor_lista_correos {
     display: flex;
@@ -278,15 +280,14 @@ footer {
     gap: 0.5rem;
     margin-bottom: 1.5rem;
     justify-content: center;
-    align-items: center;
-    height: 20px;
+    align-content: center;
     color: #F2F2F2;
     font-family: 'Istok Web', sans-serif;
     font-weight: bold;
 }
 
 #img_grupos_formados {
-    height: 22px;
+    height: 1.5rem;
 }
 
 #txt_titulo {
@@ -294,9 +295,23 @@ footer {
     padding-left: 0.5rem;
     padding-right: 0.5rem;
     text-align: center;
-    font-size: 45px;
-    color: #BEBEBE;
     font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    color: #BEBEBE;
+
+    font-size: 2.5rem;
+}
+
+@media (max-width: 992px) {
+  #txt_titulo {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 576px) {
+  #txt_titulo {
+    font-size: 1.5rem;
+  }
 }
 
 #txt_subtitulo {
@@ -345,22 +360,6 @@ footer {
 #contenedor_como_funciona i {
     margin-right: 1rem;
 }
-
-.informacion h1 { /*Incluye contacto del footer*/
-    color: #BEBEBE;
-    text-decoration: underline;
-    font-family: 'Poppins', sans-serif;
-    margin-left: 0.5rem;
-} 
-
-.informacion p {
-    margin-left: 0.5rem;
-    color: #FFFFFF;
-    font-family: 'Poppins', sans-serif;
-    font-size: 1rem;
-}
-
-/******************************************* FIN ESTILO INDEX ************************************************/
 
 /******************************************* ESTILOS PARA MATERIAS ************************************************/
 
@@ -417,7 +416,7 @@ footer {
 /**GRILLA**/
 
 #contenedor-materias {
-  margin: 4rem;
+  margin: 2rem;
   display: flex;
   justify-content: center;
 }
@@ -456,9 +455,7 @@ footer {
 /******************************* ESTILOS PARA GRUPOS ***************************************/
 
 .barra_desplazamiento_grupos {
-    display: flex;
-    flex-direction: row;
-    padding: 10px 10px;
+    padding: 0.625rem 0.625rem;
     overflow-y: auto;
     overflow-x: hidden;
     border: 1px solid #ccc;
@@ -466,6 +463,11 @@ footer {
     border: #303030 solid 0.3rem;
     border-radius: 1rem;
     background-color: transparent;
+}
+
+.barra_desplazamiento_grupos div {
+    padding-top: 0;
+    padding-right: 0.1875rem;
 }
 
 .barra_desplazamiento_grupos::-webkit-scrollbar {
@@ -483,10 +485,35 @@ footer {
 
 
 #items_barra_desplazamiento_grupos div {
-    min-width: 200px;
-    height: 60px;
+    border-radius: 0.625rem;
+    width: 100%;
+    max-width: 100%;
+    transform: translate(-5px, 10px);
 }
 
 
+#contenedor_nombre_grupo_nombre_materia {
+    background-color: #1C1C21;
+    padding: 0.625rem;
+    height: 5.4375rem;
+}
+
+#contenedor_nombre_grupo_nombre_materia h5 {
+    color: #AEABD4;
+    font-size: 1.05em;
+}
+
+#contenedor_boton_informacion_grupo {
+    margin-top: 0.625rem;
+    padding-bottom: 0.1875rem;
+}
+
+#contenedor_boton_informacion_grupo a {
+    font-weight: bold;
+    color: #FFFFFF;
+    background-color: #5C95D6;
+    height: 1.875rem;
+    width: 100%;
+}
 
 /*******************************FIN DE ESTILOS PARA GRUPOS ***************************************/

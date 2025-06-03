@@ -8,13 +8,13 @@
       <div class="row justify-content-left g-4">
          {% for grupo in grupos %}
          <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div class="card bg-dark text-light border-secondary rounded-4 shadow-sm h-100">
+            <div class="card bg-dark text-light rounded-4 shadow-sm h-90">
                   <div id="items_barra_desplazamiento_grupos" class="card-body d-flex flex-column justify-content-between">
-                     <div class="text-center">
+                     <div id="contenedor_nombre_grupo_nombre_materia" class="text-left">
                         <h5 class="card-title fw-semibold">{{ grupo.nombre }}</h5>
                         <p class="card-text text-white-muted small">{{ grupo.materia }}</p>
                      </div>
-                     <div class="text-center mt-3">
+                     <div id="contenedor_boton_informacion_grupo" class="text-center">
                         <a href="/grupo/{{ grupo.id }}" class="btn btn-primary rounded-pill px-4">INFO</a>
                      </div>
                   </div>

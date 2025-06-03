@@ -80,7 +80,7 @@ def grupos_por_materia(codigo_materia):
     return render_template("grupos_por_materia.html", materia=materia, grupos=grupos_de_materia)
 
 @app.route("/materias/<int:codigo_materia>/sin-grupo")
-def ver_sin_grupo(codigo_materia):
+def companieros_sin_grupo_por_materia(codigo_materia):
     materia = None
     for m in materias:
         if m["codigo_materia"] == codigo_materia:

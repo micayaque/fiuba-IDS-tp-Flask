@@ -781,11 +781,12 @@ footer {
 /************************* ESTILOS PARA COMPAÑEROS SIN GRUPO *************************/
 
 .titulo_nombre_materia {
-  text-align: center;
-    margin: 4rem;
+    margin: 3rem;
     color: #FFFFFF;
     font-family: Gentium Book Basic;
     font-weight: bold;
+    text-align: center;
+    font-size: 25px;
 }
 
 .contenedor_btn_ver_grupos_compañerxs {
@@ -797,6 +798,10 @@ footer {
 .contenedor_btn_ver_grupos_compañerxs a {
   background-color: #167B56;
   color: #F2F2F2;
+  border-radius: 15px;
+  padding: 5px 15px;
+  font-size: 14px;
+  font-weight: 600;
 }
 
 .contenedor_btn_ver_grupos_compañerxs a:hover {

@@ -570,7 +570,6 @@ footer {
     display: flex;
     align-items: center; 
     width: 100%;      /* Centra horizontalmente */
-    background-color: #1f352d;
     min-width: 0; /* Permite que se reduzca */
     box-sizing: border-box;      /* Centra horizontalmente */
     

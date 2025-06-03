@@ -5,7 +5,7 @@ app = Flask(__name__)
 app.secret_key = 'clave-secreta'  # necesaria para usar session
 
 @app.route("/")
-def base():
+def inicio():
     return render_template("index.html")
 
 # endpoint para prueba de iniciar sesión (sin validación de usuario) 
@@ -18,7 +18,7 @@ def iniciar_sesion():
 @app.route("/cerrar_sesion")
 def cerrar_sesion():
     session.pop("usuario", None)                    # para cerrar la sesión, eliminamos al usuario de session
-    return redirect(url_for("base"))                # volvemos a la página principal
+    return redirect(url_for("inicio"))                # volvemos a la página principal
 
 @app.route("/perfil_de_usuario")
 def perfil_de_usuario():

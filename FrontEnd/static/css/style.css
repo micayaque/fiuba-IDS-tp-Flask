@@ -1,5 +1,5 @@
 html {
-  scroll-behavior: smooth;
+    scroll-behavior: smooth;
 }
 
 body {
@@ -8,7 +8,7 @@ body {
 
 /* Logo y Botones de registro e inicio de sesión */
 
-#contenedor_logo_header img{
+#contenedor_logo_header img {
     display: flex;
     height: 5rem;
     margin: 1rem;
@@ -74,9 +74,9 @@ nav {
 }
 
 @media (max-width: 768px) {
-  #opciones_menu {
-    gap: 0;
-  }
+    #opciones_menu {
+        gap: 0;
+    }
 }
 
 #opciones_menu a {
@@ -154,7 +154,8 @@ footer {
     flex-direction: row;
     color: #F2F2F2;
     font-size: 30px;
-    font-family: 'Istok Web', sans-serif;;
+    font-family: 'Istok Web', sans-serif;
+    ;
     gap: 0.5rem;
 }
 
@@ -166,13 +167,14 @@ footer {
 /********************************ESTILOS PARA CONTACTO********************************/
 
 #fondo_popup_contacto {
-  display: none;
-  position: fixed;
-  top: 0; 
-  left: 0;
-  width: 100%; 
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.9); /* oscuro semi-transparente */
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    /* oscuro semi-transparente */
 }
 
 #contenedor_contacto_popup {
@@ -189,8 +191,10 @@ footer {
     color: #F2F2F2;
     font-family: 'Poppins';
 
-    width: 95vw;               /* Usamos % del viewport para evitar que se achique demasiado */
-  max-width: 500px;          /* Limita en pantallas grandes */
+    width: 95vw;
+    /* Usamos % del viewport para evitar que se achique demasiado */
+    max-width: 500px;
+    /* Limita en pantallas grandes */
 }
 
 #contenedor_lista_correos {
@@ -212,15 +216,15 @@ footer {
 }
 
 @media (max-width: 415px) {
-  
-  #contenedor_contacto_popup {
-    font-size: small;
-  }
 
-  .mail {
-    font-size: smaller;
-    font-size:xx-small;
-  }
+    #contenedor_contacto_popup {
+        font-size: small;
+    }
+
+    .mail {
+        font-size: smaller;
+        font-size: xx-small;
+    }
 }
 
 /*Controla el form, tamaños y vista*/
@@ -305,15 +309,15 @@ footer {
 }
 
 @media (max-width: 992px) {
-  #txt_titulo {
-    font-size: 2rem;
-  }
+    #txt_titulo {
+        font-size: 2rem;
+    }
 }
 
 @media (max-width: 576px) {
-  #txt_titulo {
-    font-size: 1.5rem;
-  }
+    #txt_titulo {
+        font-size: 1.5rem;
+    }
 }
 
 #txt_subtitulo {
@@ -356,7 +360,7 @@ footer {
 }
 
 .item_como_funciona {
-    margin-top:3rem;
+    margin-top: 3rem;
 }
 
 #contenedor_como_funciona i {
@@ -374,7 +378,7 @@ footer {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: 60px 0px;
+    margin: 80px 0px;
 }
 
 .contentido_top_buscador_grupos {
@@ -458,4 +462,32 @@ footer {
     font-weight: 600;
     margin-bottom: 6px;
     padding: 3px;
+}
+
+.modal-title {
+    font-weight: 800;
+}
+
+.modal-content {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 600;
+    background-color: #1C1C21 !important;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+
+
+}
+
+.modal-dialog {
+    max-width: 900px;
+}
+
+.boton_solicitar_unirse {
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+
 }

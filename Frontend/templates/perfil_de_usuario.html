@@ -28,7 +28,7 @@
             </div>
             <div class="fila_info">
                 <div class="botones_editar_perfil">
-                    <button class="button_trasparente_editar"> 
+                    <button id="boton_elegir_foto_de_perfil" class="button_trasparente_editar"> 
                         <img class="boton_editar_perfil_modal" src="{{ url_for('static', filename='img/icono_editar_imagen.png') }}">
                     </button>
                 </div>
@@ -42,7 +42,30 @@
         </div>
     </div>
 
-    <!--modal para editar las materias que estan cursando-->
+    <div id="modal_ejegir_foto_de_perfil" class="desplegable">
+        <div class="banner_perfil_desplegable">
+            <span id="close_modal" class="close_modal">x</span>
+            <span class="contenido_de_modal">Elegi una foto de perfil</span>
+            <div class="fila_info">
+               <div class="opciones_para_icono_perfil">
+                <button id="foto_perfil_rosa" class="button_editar_foto_de_perfil">
+                    <img class="foto_perfil_img" src="{{ url_for('static', filename='img/foto_de_perfil_rosa.png') }}" alt="Foto de Perfil" >
+                </button>
+                </div> 
+
+                <div class="opciones_para_icono_perfil">
+                <button id="foto_perfil_violeta" class="button_editar_foto_de_perfil">
+                    <img class="foto_perfil_img" src="{{ url_for('static', filename='img/foto_de_perfil_violeta.png') }}" alt="Foto de Perfil" >
+                </button>
+                </div>
+
+            </div>
+            
+            
+        </div>
+    </div>
+
+    <!--modal para editar las info personal de las materias-->
     <div id="modal_materias_cursando" class="desplegable">
         <div class="banner_perfil_desplegable">
             <span id="close_modal" class="close_modal">x</span>
@@ -87,17 +110,182 @@
             <div id="texto_de_horarios">
                 <h5>¿Durante que horario estas disponible?</h5>
             </div>            
+            <div class="fila_info">
+                <div>
+                    <h5>Día:</h5>
+                    <input type="text" class="introducir_informacion_cuadro" placeholder="Escribe un dia..."></input>
+                </div>
+                <div>
+                    <h5>Horario:</h5>
+                    <input type="text" class="introducir_informacion_cuadro" placeholder="Escribe el horario..."></input>
+                </div>
+                
+            </div>
+
+            <div class="btn_agregar_materia">
+                <button type="submit" class="btn_de_los_modals">EDITAR</button>
+            </div>
         </div>
     </div>
 
+    <!--modulo para editar info de grupo-->
+    <div id="modal_editar_informacion_de_grupo" class="desplegable">
+        <div class="banner_perfil_desplegable">
+            <span id="close_modal" class="close_modal">x</span>
+            <span class="contenido_de_modal">Nombre del grupo:</span>
+            <input type="text" class="introducir_informacion_cuadro" placeholder="Escribe el Nombre del grupo..."></input>
+            <span class="contenido_de_modal">Integrantes:</span>
+            <div id= "nombres_de_integrantes" class="fila_info">
+                <div>
+                    <input type="text" class="introducir_informacion_cuadro" placeholder="Integrante"></input>
+                    <input type="text" class="introducir_informacion_cuadro" placeholder="Integrante"></input>
+                </div>
+                <div>
+                    <input type="text" class="introducir_informacion_cuadro" placeholder="Integrante"></input>
+                    <input type="text" class="introducir_informacion_cuadro" placeholder="Integrante"></input>
+                </div>
+                <div>
+                    <input type="text" class="introducir_informacion_cuadro" placeholder="Integrante"></input>
+                    <input type="text" class="introducir_informacion_cuadro" placeholder="Integrante"></input>
+                </div>
+                
+            </div>
+            <span class="contenido_de_modal">Agregar Integrante</span>
+            <div>
+                <span class="contenido_de_modal">Padron del Integrante x:</span>
+                <input type="text" class="introducir_informacion_cuadro"></input>
+            </div>
+         
+            
+            <span id="mensaje_error_integrante" >Est@ compañer@ ya tiene grupo / no esta registrad@</span>
+            <div>
+                <span class="contenido_de_modal">Cuantidad de integrantes:
+                    <input type="text" class="introducir_informacion_cuadro" placeholder="Escribe la cantidad de integrantes..."></input>
+                </span>
+            </div>
+            
+            
+            <div id="botones_de_modal_editar_informacion_grupo">
+                <div>
+                    <button type="submit" class="btn_guardar_cambios">GUARDAR CAMBIOS</button>
+                </div>
+                <div>
+                    <button type="submit" class="btn_eliminar_grupo">ELIMINAR GRUPO</button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <div id="modal_editar_informacion_de_grupo_2" class="desplegable">
+        <div class="banner_perfil_desplegable">
+            <span id="close_modal" class="close_modal">x</span>
+            <span class="contenido_de_modal">Nombre del grupo:</span>
+            <input type="text" class="introducir_informacion_cuadro" placeholder="Escribe el Nombre del grupo..."></input>
+            <span class="contenido_de_modal">Integrantes:</span>
+            <div id= "nombres_de_integrantes" class="fila_info">
+                <div>
+                    <input type="text" class="introducir_informacion_cuadro" placeholder="Integrante"></input>
+                    <input type="text" class="introducir_informacion_cuadro" placeholder="Integrante"></input>
+                </div>
+                <div>
+                    <input type="text" class="introducir_informacion_cuadro" placeholder="Integrante"></input>
+                    <input type="text" class="introducir_informacion_cuadro" placeholder="Integrante"></input>
+                </div>
+                <div>
+                    <input type="text" class="introducir_informacion_cuadro" placeholder="Integrante"></input>
+                    <input type="text" class="introducir_informacion_cuadro" placeholder="Integrante"></input>
+                </div>
+                
+            </div>
+            <span class="contenido_de_modal">Agregar Integrante</span>
+            <div>
+                <span class="contenido_de_modal">Padron del Integrante x:</span>
+                <input type="text" class="introducir_informacion_cuadro"></input>
+            </div>
+         
+            
+            <span id="mensaje_error_integrante" >Est@ compañer@ ya tiene grupo / no esta registrad@</span>
+            <div>
+                <span class="contenido_de_modal">Cuantidad de integrantes:
+                    <input type="text" class="introducir_informacion_cuadro" placeholder="Escribe la cantidad de integrantes..."></input>
+                </span>
+            </div>
+            
+            
+            <div id="botones_de_modal_editar_informacion_grupo">
+                <div>
+                    <button type="submit" class="btn_guardar_cambios">GUARDAR CAMBIOS</button>
+                </div>
+                <div>
+                    <button type="submit" class="btn_eliminar_grupo">ELIMINAR GRUPO</button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <div id="modal_editar_informacion_de_grupo_3" class="desplegable">
+        <div class="banner_perfil_desplegable">
+            <span id="close_modal" class="close_modal">x</span>
+            <span class="contenido_de_modal">Nombre del grupo:</span>
+            <input type="text" class="introducir_informacion_cuadro" placeholder="Escribe el Nombre del grupo..."></input>
+            <span class="contenido_de_modal">Integrantes:</span>
+            <div id= "nombres_de_integrantes" class="fila_info">
+                <div>
+                    <input type="text" class="introducir_informacion_cuadro" placeholder="Integrante"></input>
+                    <input type="text" class="introducir_informacion_cuadro" placeholder="Integrante"></input>
+                </div>
+                <div>
+                    <input type="text" class="introducir_informacion_cuadro" placeholder="Integrante"></input>
+                    <input type="text" class="introducir_informacion_cuadro" placeholder="Integrante"></input>
+                </div>
+                <div>
+                    <input type="text" class="introducir_informacion_cuadro" placeholder="Integrante"></input>
+                    <input type="text" class="introducir_informacion_cuadro" placeholder="Integrante"></input>
+                </div>
+                
+            </div>
+            <span class="contenido_de_modal">Agregar Integrante</span>
+            <div>
+                <span class="contenido_de_modal">Padron del Integrante x:</span>
+                <input type="text" class="introducir_informacion_cuadro"></input>
+            </div>
+         
+            
+            <span id="mensaje_error_integrante" >Est@ compañer@ ya tiene grupo / no esta registrad@</span>
+            <div>
+                <span class="contenido_de_modal">Cuantidad de integrantes:
+                    <input type="text" class="introducir_informacion_cuadro" placeholder="Escribe la cantidad de integrantes..."></input>
+                </span>
+            </div>
+            
+            
+            <div id="botones_de_modal_editar_informacion_grupo">
+                <div>
+                    <button type="submit" class="btn_guardar_cambios">GUARDAR CAMBIOS</button>
+                </div>
+                <div>
+                    <button type="submit" class="btn_eliminar_grupo">ELIMINAR GRUPO</button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+
+<!--EDICION DEL PERFIL-->
+
     <div id="perfil">
         <div id="banner_perfil">
-            <form method="POST" enctype="multipart/form-data">
-                <label for="input-banner">
-                        <img id='img_cambiar_banner'src="{{ url_for('static', filename='img/icono_camara.png') }}" >
-                </label>
-                <input type="file" id="input-banner" name="imagen-banner" style="display:none;" onchange="this.form.submit()">
-            </form>
+            <div>
+                <img id="img_cambiar_banner" src="{{ url_for('static', filename='img/icono_lapiz_edit.png') }}" alt="Cambiar color del banner">
+                <input type="color" id="color_selector_banner" style="display:none;">
+            </div>
         </div>
 
         <div id="foto_de_perfil">
@@ -161,7 +349,7 @@
                             <div class="informacion_inicial_grupo">
                                 <div class="nombre_del_grupo_perteneciente">
                                     <span class="nombre_del_grupo">Nombre del grupo</span>
-                                    <button class="button_trasparente_editar">
+                                    <button id="button_editar_informacion_grupo" class="button_trasparente_editar">
                                         <img class="icono_lapiz" src="{{ url_for('static', filename='img/icono_lapiz_edit.png') }}" alt="editar grupo">
                                     </button>
                                 </div>
@@ -177,7 +365,7 @@
                             <div class="informacion_inicial_grupo">
                                 <div class="nombre_del_grupo_perteneciente">
                                     <span class="nombre_del_grupo">Nombre del grupo</span>
-                                    <button class="button_trasparente_editar">
+                                    <button id="button_editar_informacion_grupo_2" class="button_trasparente_editar">
                                         <img class="icono_lapiz" src="{{ url_for('static', filename='img/icono_lapiz_edit.png') }}" alt="editar grupo">
                                     </button>
                                 </div>
@@ -193,7 +381,7 @@
                             <div class="informacion_inicial_grupo">
                                 <div class="nombre_del_grupo_perteneciente">
                                     <span class="nombre_del_grupo">Nombre del grupo</span>
-                                    <button class="button_trasparente_editar">
+                                    <button id="button_editar_informacion_grupo_3" class="button_trasparente_editar">
                                         <img class="icono_lapiz" src="{{ url_for('static', filename='img/icono_lapiz_edit.png') }}" alt="editar grupo">
                                     </button>
                                 </div>

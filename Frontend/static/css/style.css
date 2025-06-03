@@ -436,8 +436,8 @@ footer {
     position: absolute;
     top: 60px; /* Ajusta para que la foto se superponga al banner */
     left: 70px; /* Alineado a la izquierda dentro de #perfil */
-    min-width: 150px;
-    min-height: 150px;
+    width: 150px;
+    height: 150px;
     background-color: #BEBEBE;
     border-radius: 50%;
     border: 8px solid #1C1C21;
@@ -448,8 +448,10 @@ footer {
 
 }
 .foto_perfil_img {
-    height: 50px;
-    width: 50px;
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+    object-fit: cover; /* Asegura que la imagen cubra todo el círculo */
     
 }
 
@@ -543,7 +545,7 @@ span {
 #editar_bio {
     position: absolute;
     bottom: 10px;
-    right: -2%;
+    right: 10px;
     border-radius: 50%;
     height: 30px;
     width: 30px;
@@ -820,6 +822,7 @@ span {
     color: #F2F2F2;
     padding: 10px;
     border: none;
+    margin: 6px;
 }
 
 .btn_agregar_materia {
@@ -839,4 +842,66 @@ span {
 
 #texto_de_horarios h5 {
     margin-top: 10px; /* 10px de espacio debajo, ajusta a tu gusto */
+}
+
+#nombres_de_integrantes {
+    margin: 15px;
+    border-bottom: #626262 solid 6px;
+    width: 90%;
+    display: flex;
+    padding: 8px;
+
+
+}
+
+#mensaje_error_integrante {
+    color: #5e64c5;
+    font-weight: bold;
+    font-size: 14px;
+    margin-top: 10px;
+    text-align: center;
+    display: flex;
+}
+
+#botones_de_modal_editar_informacion_grupo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.btn_guardar_cambios {
+    background-color: #73198c;
+    color: #F2F2F2;
+    padding: 10px 10px;
+    font-size: 12px;
+    border-radius: 500px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn_eliminar_grupo {
+    background-color: #6C0000;
+    color: #F2F2F2;
+    padding: 10px 10px;
+    font-size: 12px;
+    border-radius: 500px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.opciones_para_icono_perfil {
+    width: 80px;
+    height: 80px;
+    background-color: #BEBEBE;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+
+
 }

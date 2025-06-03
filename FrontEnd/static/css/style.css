@@ -69,6 +69,8 @@ nav {
 #opciones_menu a:hover {
     cursor: pointer;
     font-weight: bold;
+    color: #c8c5f5;
+    font-size: large;
 }
 
 @media (max-width: 768px) {
@@ -773,4 +775,69 @@ footer {
     letter-spacing: 0.5px;
     font-family: 'Plus Jakarta Sans', sans-serif;
 
+}
+
+
+/************************* ESTILOS PARA COMPAÑEROS SIN GRUPO *************************/
+
+.titulo_nombre_materia {
+  text-align: center;
+    margin: 4rem;
+    color: #FFFFFF;
+    font-family: Gentium Book Basic;
+    font-weight: bold;
+}
+
+.contenedor_btn_ver_grupos_compañerxs {
+  text-align: center;
+  margin-bottom: 4rem;
+  font-family: Poltawski Nowy;
+}
+
+.contenedor_btn_ver_grupos_compañerxs a {
+  background-color: #167B56;
+  color: #F2F2F2;
+}
+
+.contenedor_btn_ver_grupos_compañerxs a:hover {
+  background-color: #0c3d2b;
+  color: #F2F2F2;
+}
+
+#contenedor_compañerxs_sin_grupo {
+  margin-bottom: 5rem;
+  margin-top: 5rem;
+}
+
+#contenedor_compañerxs_sin_grupo > div:first-child {
+  justify-content: center;
+}
+
+#compañerx_sin_grupo {
+  background-color: #303030;
+  border: none;
+}
+
+#contenedor_compañerx_sin_grupo_nombre {
+  color: #AEABD4;
+  font-family: 'Plus Jakarta Sans';
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 1rem;
+  background-color: #1C1C21;
+  border-radius: 1rem;
+  
+  height: 5rem;
+  align-content: center;
+}
+
+#compañerx_sin_grupo a {
+  background-color: #5C95D6;
+  width: 100%;
+  color: #F2F2F2;
+  font-family: 'Poppins';
+}
+
+#contenedor_compañerx_sin_grupo a:hover {
+  background-color: #446f9f;
 }

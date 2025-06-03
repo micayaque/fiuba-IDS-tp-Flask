@@ -59,6 +59,10 @@ materias = [
     {"codigo_materia": 20, "nombre": "EBT"}
 ]
 
+@app.route("/grupos")
+def mostrar_grupos():
+    return render_template("grupos.html", grupos=grupos)
+
 @app.route("/materias")
 def mostrar_materias():
     return render_template('materias.html', materias=materias)
@@ -75,9 +79,23 @@ def grupos_por_materia(codigo_materia):
 
     return render_template("grupos_por_materia.html", materia=materia, grupos=grupos_de_materia)
 
-@app.route("/grupos")
-def mostrar_grupos():
-    return render_template("grupos.html", grupos=grupos)
+@app.route("/materias/<int:codigo_materia>/sin-grupo")
+def ver_sin_grupo(codigo_materia):
+    materia = None
+    for m in materias:
+        if m["codigo_materia"] == codigo_materia:
+            materia = m
+            break
+
+    compañeros_sin_grupo = [
+        {"padron": 543211, "nombre": "Compañerx 1"},
+        {"padron": 543212, "nombre": "Compañerx 2"},
+        {"padron": 543213, "nombre": "Compañerx 3"},
+        {"padron": 543214, "nombre": "Compañerx 4"},
+    ]
+
+    return render_template("compañerxs_sin_grupo.html", materia=materia, compañeros=compañeros_sin_grupo)
+
 
 if __name__ == '__main__':
     app.run('localhost', port=8000, debug=True)

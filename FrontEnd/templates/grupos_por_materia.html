@@ -1,9 +1,8 @@
 {% extends 'base.html' %}
 
-{% block tittle %}Buscador de Grupos{% endblock %}
+{% block title %}Buscador de Grupos{% endblock %}
 
 {% block content %}
-<div class="container container_buscador_grupos my-5">
   <div class="contenido_buscador_grupos">
     <!-- Parte superior -->
     <div class="contentido_top_buscador_grupos d-flex flex-column justify-content-center align-items-center gap-3 mb-4">
@@ -14,116 +13,25 @@
 
     <!-- Parte inferior: tarjetas -->
     <div class="contentido_bottom_buscador_grupos row g-4 justify-content-center">
-      <div class="col-10 col-md-6 col-lg-4">
+      {% for i in range(9) %}
+      <div class="col-12 col-md-6 col-lg-4">
         <div class="carta card h-100 shadow">
           <div class="card-body d-flex flex-column justify-content-between grupo_info">
             <div>
-              <h3 class="nombre_del_grupo card-title">Nombre del grupo</h3>
-              <p class="cantidad_integrantes card-text">integrantes</p>
+              <h3 class="nombre_del_grupo card-title">Nombre del grupo {{ i+1 }}</h3>
+              <p class="cantidad_integrantes card-text">Cantidad de Integrantes</p>
             </div>
-            <button class="boton_info btn btn-outline-primary mt-3">INFO</button>
-          </div>
-        </div>
-      </div>
+            <!-- Botón que abre su propio modal -->
+            <button class="boton_info">
+              INFO
+            </button>
 
-      <div class="col-10 col-md-6 col-lg-4">
-        <div class="carta card h-100 shadow">
-          <div class="card-body d-flex flex-column justify-content-between grupo_info">
-            <div>
-              <h3 class="nombre_del_grupo card-title">Nombre del grupo</h3>
-              <p class="cantidad_integrantes card-text">integrantes</p>
-            </div>
-            <button class="boton_info btn btn-outline-primary mt-3">INFO</button>
           </div>
         </div>
       </div>
+      {% endfor %}
 
-      <div class="col-10 col-md-6 col-lg-4">
-        <div class="carta card h-100 shadow">
-          <div class="card-body d-flex flex-column justify-content-between grupo_info">
-            <div>
-              <h3 class="nombre_del_grupo card-title">Nombre del grupo</h3>
-              <p class="cantidad_integrantes card-text">integrantes</p>
-            </div>
-            <button class="boton_info btn btn-outline-primary mt-3">INFO</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-10 col-md-6 col-lg-4">
-        <div class="carta card h-100 shadow">
-          <div class="card-body d-flex flex-column justify-content-between grupo_info">
-            <div>
-              <h3 class="nombre_del_grupo card-title">Nombre del grupo</h3>
-              <p class="cantidad_integrantes card-text">integrantes</p>
-            </div>
-            <button class="boton_info btn btn-outline-primary mt-3">INFO</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-10 col-md-6 col-lg-4">
-        <div class="carta card h-100 shadow">
-          <div class="card-body d-flex flex-column justify-content-between grupo_info">
-            <div>
-              <h3 class="nombre_del_grupo card-title">Nombre del grupo</h3>
-              <p class="cantidad_integrantes card-text">integrantes</p>
-            </div>
-            <button class="boton_info btn btn-outline-primary mt-3">INFO</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-10 col-md-6 col-lg-4">
-        <div class="carta card h-100 shadow">
-          <div class="card-body d-flex flex-column justify-content-between grupo_info">
-            <div>
-              <h3 class="nombre_del_grupo card-title">Nombre del grupo</h3>
-              <p class="cantidad_integrantes card-text">integrantes</p>
-            </div>
-            <button class="boton_info btn btn-outline-primary mt-3">INFO</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-10 col-md-6 col-lg-4">
-        <div class="carta card h-100 shadow">
-          <div class="card-body d-flex flex-column justify-content-between grupo_info">
-            <div>
-              <h3 class="nombre_del_grupo card-title">Nombre del grupo</h3>
-              <p class="cantidad_integrantes card-text">integrantes</p>
-            </div>
-            <button class="boton_info btn btn-outline-primary mt-3">INFO</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-10 col-md-6 col-lg-4">
-        <div class="carta card h-100 shadow">
-          <div class="card-body d-flex flex-column justify-content-between grupo_info">
-            <div>
-              <h3 class="nombre_del_grupo card-title">Nombre del grupo</h3>
-              <p class="cantidad_integrantes card-text">integrantes</p>
-            </div>
-            <button class="boton_info btn btn-outline-primary mt-3">INFO</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-10 col-md-6 col-lg-4">
-        <div class="carta card h-100 shadow">
-          <div class="card-body d-flex flex-column justify-content-between grupo_info">
-            <div>
-              <h3 class="nombre_del_grupo card-title">Nombre del grupo</h3>
-              <p class="cantidad_integrantes card-text">integrantes</p>
-            </div>
-            <button class="boton_info btn btn-outline-primary mt-3">INFO</button>
-          </div>
-        </div>
-      </div>
-      
     </div>
   </div>
 </div>
 {% endblock %}
-

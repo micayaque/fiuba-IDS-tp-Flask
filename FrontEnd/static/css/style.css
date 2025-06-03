@@ -361,90 +361,125 @@ footer {
     margin-right: 1rem;
 }
 
-/******************************************* ESTILOS PARA MATERIAS ************************************************/
 
-#contenedor-buscador-materia {
-  display: flex;
-  flex-wrap: wrap;
-  margin-bottom: 2rem;
-  justify-content: center;
-  align-items: center;
-  margin-left: 4rem;
-  margin-right: 4rem;
+/********************************** ESTILOS PARA EL FORMULARIO DE REGISTRO E INICIO DE SESION*********************************/
 
+#btn_cerrar_sesion {
+  background-color: #6C0000;
+  margin: 1rem;
 }
 
-#contenedor-buscador-input{
-  display: flex;
-  gap: 0.5rem;
-  width: 30rem;
-}
+/* Fondo negro del formulario */
+.modal-dark {
+    background-color: #1C1C21 !important;  
+    border-radius: 35px !important;
+    color: #fff;
+    border: none;
+  }
+  
+  /* Título a la izquierda con color celeste */
+  .custom-title {
+    color: #A4A2C9 !important; 
+    font-size: 1.5rem;
+    text-align: left;
+    margin-bottom: 1.2rem;
+  }
+  
+  /* Etiquetas (label) visibles */
+  label,
+  .form-label {
+    color: #0dcaf0 !important;  
+    font-weight: 500;
+    font-size: 14px;
+    margin-bottom: 4px;
+    display: block;
+  }
+  
+  /* Contenedor relativo para inputs con íconos */
+  .form-group.position-relative {
+    position: relative; 
+  }
+  
+  /* Inputs */
+  .form-control,
+  .input-dark {
+    background-color: #1E1B1F !important;
+    color: #fff !important;
+    border: 1px solid #444 !important;
+    border-radius: 15px !important;
+    height: 45px;
+    font-size: 14px;
+  
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+  
+    padding-left: 40px !important; 
+    padding-right: 40px !important; 
+  
+    line-height: 1.2;
+    margin-bottom: 0.6rem;
+    width: 100%;
+    display: block;
+  }
+  
+  /* Placeholders */
+  .form-control::placeholder,
+  .input-dark::placeholder {
+    color: rgba(255, 255, 255, 0.6) !important;
+  }
+  
+  /* Botón */
+  .btn-submit {
+    border-radius: 30px !important;
+    height: 45px;
+    font-weight: 600;
+    background-color: #292929 !important;
+    color: #fff !important;
+    transition: background-color 0.3s ease;
+    margin-top: 0.8rem;
+  }
+  
+  .btn-submit:hover {
+    background-color: #495057 !important;
+  }
+  
+  /* Íconos dentro de los inputs */
+  .icon-left,
+  .icon-right {
+    position: absolute;
+    top: 70%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    color: #aaa;
+    z-index: 2;
+    line-height: 1;
+  }
+  
+  .icon-left {
+    left: 15px;
+    pointer-events: none;
+  }
+  
+  .icon-right {
+    right: 15px;
+    cursor: pointer;
+    pointer-events: auto;
+  }
 
-#contenedor-buscador-input input {
-  width: 100%;
-}
-
-#txt-buscador {
-  font-size: 1rem;
-  font-weight: bold;
-  color: #F2F2F2;
-  font-family: 'Istok Web';
-}
-
-#buscadorInput {
-  border-radius: 1.5rem;
-  border: #BFBFBF solid 0.01rem;
-  background-color: #1C1C21;
-  font-family: 'Inter';
-  padding: 0.5rem 1rem;
-  color: #F2F2F2;
-}
-
-#btn-buscar-materia {
-  background-color: #800080;
-  border-radius: 50%;
-  width: 2.5rem;
-  height: 2.5rem;
-  border: none;
-}
-
-#btn-buscar-materia img {
-  width: 1.2rem;
-  height: 1.2rem;
-}
-
-/**GRILLA**/
-
-#contenedor-materias {
-  margin: 2rem;
-  display: flex;
-  justify-content: center;
-}
-
-.materia-item {
-  border: #303030 solid 0.3rem;
-  border-radius: 1rem;
-  width: 12rem;
-  margin-bottom: 1.1rem;
-  min-height: 5.5rem;
-  display: flex;
-  align-items: center;
-  margin: 0.5rem;
-  text-align: center;
-}
-
-.materia-nombre {
-  color: #AEABD4;
-  text-decoration: none;
-  display: block;
-  width: 100%;
-  font-family: 'Poetsen One', sans-serif;
-  font-weight: 400;
-  font-style: normal;
-
-}
-
-.materia-item:hover {
-  background-color: black;
-  transform: scale(1.07);
-}
+/* Tamaño personalizado del modal */
+.modal-lg-custom {
+    max-width: 600px !important; 
+    width: 100%;
+  }
+  
+  /* Responsive */
+  @media (max-width: 576px) {
+    .modal-content {
+      padding: 1.5rem !important;
+    }
+  
+    .custom-title {
+      font-size: 1.3rem;
+    }
+  }
+  

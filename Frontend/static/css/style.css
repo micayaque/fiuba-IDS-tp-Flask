@@ -378,7 +378,7 @@ footer {
 /*perzonalizacion del banner y foto de perfil*/
 
 #banner_perfil {
-    height: 150px;
+    height: clamp(100px, 15vw, 150px);
     width: 100%; /* Asegura que ocupe todo el ancho del contenedor */
     background-color: #A0B4B7;
     position: relative;
@@ -405,9 +405,10 @@ footer {
 
 #foto_de_perfil {
     position: absolute;
-    top: 60px; /* Ajusta para que la foto se superponga al banner */
-    left: 70px; /* Alineado a la izquierda dentro de #perfil */
-    width: 13%;
+    top: clamp(40px, 8vw, 80px); /* se adapta también */
+    left: clamp(40px, 8vw, 70px);
+    width: clamp(80px, 13vw, 130px);
+    aspect-ratio: 1 / 1;
     background-color: #BEBEBE;
     border-radius: 50%;
     border: 5px solid #626262;
@@ -415,8 +416,11 @@ footer {
     justify-content: center;
     align-items: center;
     z-index: 2;
+    min-width: 80px;                 /* ✅ evita que se achique demasiado */
+    max-width: 160px;
 
 }
+
 .foto_perfil_img {
     height: 100%;
     width: 100%;
@@ -776,8 +780,8 @@ footer {
 
 #circulo_de_foto_de_perfil {
     background-color: #BEBEBE;
-    height: 150px;
-    width: 150px;
+    width: clamp(80px, 13vw, 130px);
+    height: clamp(80px, 13vw, 130px);
     border-radius: 50%;
     align-items: center;
     display: flex;
@@ -799,7 +803,8 @@ footer {
     align-items: center;
     display: flex;
     justify-content: center;
-    width: 100%;
+    gap: 1rem;
+
 }
 
 .boton_editar_perfil_modal {

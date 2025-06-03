@@ -14,7 +14,7 @@
 
         <div id="foto_de_perfil">
             <button id="boton_editar_foto_de_perfil" class="button_editar_foto_de_perfil">
-                <i class="foto_perfil_img fa-regular fa-image"></i>
+                <img class="foto_perfil_img" src="{{ url_for('static', filename='img/icono_imagen_perfil.png') }}"></i>
             </button> 
         </div>
 
@@ -168,16 +168,17 @@
             <span id="close_modal" class="close_modal">x</span>
             <span class="contenido_de_modal">Elegi una foto de perfil</span>
             <div class="fila_info">
+                
                <div class="opciones_para_icono_perfil">
-                <button id="foto_perfil_rosa" class="button_editar_foto_de_perfil">
-                    <img class="foto_perfil_img" src="{{ url_for('static', filename='img/foto_de_perfil_rosa.png') }}" alt="Foto de Perfil" >
-                </button>
+                    <button id="foto_perfil_rosa" class="button_editar_foto_de_perfil">
+                        <img class="foto_perfil_img" src="{{ url_for('static', filename='img/foto_de_perfil_rosa.png') }}" alt="Foto de Perfil" >
+                    </button>
                 </div> 
 
                 <div class="opciones_para_icono_perfil">
-                <button id="foto_perfil_violeta" class="button_editar_foto_de_perfil">
-                    <img class="foto_perfil_img" src="{{ url_for('static', filename='img/foto_de_perfil_violeta.png') }}" alt="Foto de Perfil" >
-                </button>
+                    <button id="foto_perfil_violeta" class="button_editar_foto_de_perfil">
+                        <img class="foto_perfil_img" src="{{ url_for('static', filename='img/foto_de_perfil_violeta.png') }}" alt="Foto de Perfil" >
+                    </button>
                 </div>
 
             </div>

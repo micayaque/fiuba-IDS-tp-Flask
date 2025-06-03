@@ -54,7 +54,6 @@ body {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    margin-bottom: 2rem;
 }
 
 nav {
@@ -645,13 +644,13 @@ footer {
 }
 
 .contenido_buscador_grupos {
+    margin-top: 3rem;
     height: 100%;
     width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: 80px 0px;
 }
 
 .contentido_top_buscador_grupos {

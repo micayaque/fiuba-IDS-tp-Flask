@@ -395,8 +395,7 @@ footer {
     width: 30px;
     object-fit: cover;
     cursor: pointer;
-    padding: 0;
-
+    padding: 3px;
     color: #CEE5F2;
     background-color: #1c1c1c;
     border-radius: 100%;
@@ -419,7 +418,13 @@ footer {
     z-index: 2;
 
 }
-
+.foto_perfil_img {
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+    object-fit: cover; /* Asegura que la imagen cubra todo el círculo */
+    
+}
 /*los datos del usuario*/
 #datos_usuario {
     display: flex;
@@ -473,7 +478,6 @@ footer {
     vertical-align: middle;
     opacity: 0.5;
     cursor: pointer;
-
     color: #CEE5F2;
 }
 

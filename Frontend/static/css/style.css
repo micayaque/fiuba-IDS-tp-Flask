@@ -540,6 +540,7 @@ footer {
     padding-right: 1%;
     flex-wrap: wrap;
 
+
 }
 
 .info_relevante,
@@ -549,7 +550,18 @@ footer {
   box-sizing: border-box;
 }
 
+.division_info_relevante {
+    padding: 3%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 
+    flex: 1 1 30%; 
+    min-width: 250px;     
+    max-width: 100%;       
+    box-sizing: border-box;
+}
 
 
 .info_relevante {
@@ -564,6 +576,7 @@ footer {
     font-weight: bolder;
     font-size: clamp(1.5rem, 1.5vw, 1rem);
     color: #F2F2F2;
+    width: 100%;
  
 }
 
@@ -584,6 +597,7 @@ footer {
     border: transparent;
     color: #b3b3b3;
     border-right: 4px solid #838383;
+    width: 80%;
 
     font-size: 20px;
 }
@@ -595,9 +609,9 @@ footer {
     align-items: center;
     justify-content: center;
 
-    flex: 1 1 30%;         /* ✅ permite que se distribuyan horizontalmente */
-    min-width: 250px;      /* ✅ se rompe a la siguiente fila si no entra */
-    max-width: 100%;       /* ✅ no se pasa del ancho del contenedor */
+    flex: 1 1 30%; 
+    min-width: 250px;     
+    max-width: 100%;       
     box-sizing: border-box;     /* Centra horizontalmente */
     
 }

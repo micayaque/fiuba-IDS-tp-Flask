@@ -44,28 +44,35 @@
 
         <div>
             <div class="fila_info">
-                <span class="info_relevante">
-                    Materias cursando 
-                    <button id="boton_editar_materias_cursando" class="button_trasparente_editar">
-                        <img class="icono_lapiz" src="{{ url_for('static', filename='img/icono_lapiz_edit.png') }}" alt="editar sobre mi">
-                    </button>
-                </span>
-                <span class="info_relevante">Materias aprobadas
-                    <button id="boton_editar_materias_Aprobadas" class="button_trasparente_editar">
-                        <img class="icono_lapiz" src="{{ url_for('static', filename='img/icono_lapiz_edit.png') }}" alt="editar sobre mi">
-                    </button>
-                </span>
-                <span class="info_relevante">Horarios disponibles
-                    <button id="boton_editar_horarios_disponibles" class="button_trasparente_editar">
-                        <img class="icono_lapiz" src="{{ url_for('static', filename='img/icono_lapiz_edit.png') }}" alt="editar sobre mi">
-                    </button>
-                </span>
-            </div>
-
-            <div class="fila_info">
-                <textarea class="caja_de_texto_info" type="text" placeholder=""></textarea>
-                <textarea class="caja_de_texto_info" type="text" placeholder=""></textarea>
-                <textarea class="caja_de_texto_info" type="text" placeholder=""></textarea>
+                <div class="division_info_relevante">
+                    <span class="info_relevante">
+                        Materias cursando 
+                        <button id="boton_editar_materias_cursando" class="button_trasparente_editar">
+                            <img class="icono_lapiz" src="{{ url_for('static', filename='img/icono_lapiz_edit.png') }}" alt="editar sobre mi">
+                        </button>
+                    </span>
+                    <textarea class="caja_de_texto_info" type="text" placeholder=""></textarea>
+                    
+                </div>
+                
+                <div class = "division_info_relevante">
+                    <span class="info_relevante">Materias aprobadas
+                        <button id="boton_editar_materias_Aprobadas" class="button_trasparente_editar">
+                            <img class="icono_lapiz" src="{{ url_for('static', filename='img/icono_lapiz_edit.png') }}" alt="editar sobre mi">
+                        </button>
+                    </span>
+                    <textarea class="caja_de_texto_info" type="text" placeholder=""></textarea>
+                </div>
+                
+                <div class="division_info_relevante">
+                    <span class="info_relevante">Horarios disponibles
+                        <button id="boton_editar_horarios_disponibles" class="button_trasparente_editar">
+                            <img class="icono_lapiz" src="{{ url_for('static', filename='img/icono_lapiz_edit.png') }}" alt="editar sobre mi">
+                        </button>
+                    </span>
+                    <textarea class="caja_de_texto_info" type="text" placeholder=""></textarea>
+                </div>
+                
             </div>
                     
             <div>

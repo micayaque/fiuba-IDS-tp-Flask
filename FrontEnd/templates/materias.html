@@ -19,11 +19,9 @@
 
   <div id="contenedor-materias" class="row">
     {% for materia in materias %}
-      <div class="materia-item col-6 col-sm-4 col-md-3 col-lg-2">
-        <!-- <a href="/materia/{{ materia.id }}" class="materia-nombre">{{ materia.nombre }}</a> -->
-        <a href="{{ url_for('grupos_por_materia', codigo_materia=materia.codigo_materia) }}" class="materia-nombre"> {{ materia.nombre }}
-</a>
-
+      <div class="materia-item">
+        <!-- <a class="materia-nombre" href="{{ url_for('grupos_por_materia', codigo_materia=materia.codigo_materia) }}"> {{ materia.nombre }}</a> -->
+        <a href="/materia/{{ materia.codigo_materia }}" class="materia-nombre">{{ materia.nombre }}</a>
       </div>
     {% endfor %}
   </div>

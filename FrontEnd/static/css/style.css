@@ -637,6 +637,13 @@ footer {
 
 /******************************** ESTILOS PARA BUSCADOR DE GRUPOS ********************************/
 
+.nombre_materia {
+  margin-bottom: 3rem;
+  color: #FFFFFF;
+  font-family: Gentium Book Basic;
+  font-weight: bold;
+}
+
 .contenido_buscador_grupos {
     height: 100%;
     width: 100%;
@@ -660,6 +667,7 @@ footer {
 .contentido_bottom_buscador_grupos {
     width: 100%;
     max-width: 900px;
+    margin-bottom: 5rem;
 }
 
 .contentido_bottom_buscador_grupos .carta {
@@ -694,12 +702,22 @@ footer {
 
 .contentido_top_buscador_grupos .boton_compañeros {
     background-color: #167B56;
-    color: white;
+    color: #F2F2F2;
     border-radius: 15px;
     border: 0;
     padding: 5px 15px;
     font-size: 14px;
     font-weight: 600;
+}
+
+.boton_compañeros {
+  text-align: center;
+  margin-bottom: 4rem;
+  font-family: 'Poltawski Nowy';
+}
+
+.boton_compañeros:hover {
+  background-color: #0c3d2b;
 }
 
 .grupo_info .nombre_del_grupo {

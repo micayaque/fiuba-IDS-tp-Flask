@@ -7,24 +7,26 @@
 
   <!-- Parte superior -->
   <div class="contentido_top_buscador_grupos d-flex flex-column justify-content-center align-items-center gap-3 mb-4">
-    <h2 class="nombre_materia text-center">Nombre de la materia</h2>
-    <button class="boton_compañeros btn">Ver compañer@s sin grupo</button>
+    <h2 class="nombre_materia text-center">{{ materia.nombre }}</h2>
+
+    <button class="boton_compañeros btn">VER COMPAÑER@S SIN GRUPO</button>
+
   </div>
 
   <!-- Parte inferior: Cartas -->
   <div class="contentido_bottom_buscador_grupos row g-4 justify-content-center">
-    {% for i in range(9) %}
+    {% for grupo in grupos %}
     <div class="col-12 col-md-6 col-lg-4">
       <div class="carta card h-100 shadow">
         <div class="card-body d-flex flex-column justify-content-between grupo_info">
           <div>
-            <h3 class="nombre_del_grupo card-title">Nombre del grupo {{ i+1 }}</h3>
+            <h3 class="nombre_del_grupo card-title">{{ grupo.nombre }}</h3>
             <p class="cantidad_integrantes card-text">Cantidad de Integrantes</p>
           </div>
 
           <!-- Botón que abre su modal -->
           <button type="button" class="boton_info btn btn-primary" data-bs-toggle="modal"
-            data-bs-target="#modalGrupo{{ i }}">
+            data-bs-target="#modalGrupo{{ grupo.id }}">
             INFO
           </button>
         </div>
@@ -32,7 +34,7 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="modalGrupo{{ i }}" tabindex="-1" aria-labelledby="modalGrupoLabel{{ i }}"
+    <div class="modal fade" id="modalGrupo{{ grupo.id }}" tabindex="-1" aria-labelledby="modalGrupoLabel{{ grupo.id }}"
       aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content bg-dark text-white rounded-4 p-4 border-0 position-relative">
@@ -42,7 +44,7 @@
             data-bs-dismiss="modal" aria-label="Cerrar"></button>
 
           <!-- Título -->
-          <h5 class="modal-title text-center text-lilac mb-4 fs-3" id="modalGrupoLabel{{ i }}">Nombre del grupo {{ i+1 }}</h5>
+          <h5 class="modal-title text-center text-lilac mb-4 fs-3" id="modalGrupoLabel{{ grupo.id }}">Nombre del grupo {{ grupo.id }}</h5>
 
           <div class="modal-body d-flex flex-row justify-content-between gap-5 flex-wrap">
 

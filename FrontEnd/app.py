@@ -24,45 +24,59 @@ def cerrar_sesion():
 def perfil_de_usuario():
     return f"Bienvenido al perfil de {session['usuario']}"  # muestra el perfil del usuario a través del botón "Mi perfil"
 
+grupos = [
+    {'id': 1, 'nombre': 'Nombre de grupo 1', 'codigo_materia': 1},
+    {'id': 2, 'nombre': 'Nombre de grupo 2', 'codigo_materia': 7},
+    {'id': 3, 'nombre': 'Nombre de grupo 3', 'codigo_materia': 5},
+    {'id': 4, 'nombre': 'Nombre de grupo 4', 'codigo_materia': 10},
+    {'id': 5, 'nombre': 'Nombre de grupo 5', 'codigo_materia': 3},
+    {'id': 6, 'nombre': 'Nombre de grupo 6', 'codigo_materia': 15},
+    {'id': 7, 'nombre': 'Nombre de grupo 7', 'codigo_materia': 20},
+    {'id': 8, 'nombre': 'Nombre de grupo 8', 'codigo_materia': 6},
+    {'id': 9, 'nombre': 'Nombre de grupo 9', 'codigo_materia': 16}
+]
+
+materias = [
+    {"codigo_materia": 1, "nombre": "Fundamentos de la programación"},
+    {"codigo_materia": 2, "nombre": "Introducción al desarrollo de software"},
+    {"codigo_materia": 3, "nombre": "Organización del computador"},
+    {"codigo_materia": 4, "nombre": "Probabilidad y estadística"},
+    {"codigo_materia": 5, "nombre": "Sistemas operativos"},
+    {"codigo_materia": 6, "nombre": "Paradigmas de programación"},
+    {"codigo_materia": 7, "nombre": "Base de datos"},
+    {"codigo_materia": 8, "nombre": "Ciencia de datos"},
+    {"codigo_materia": 9, "nombre": "Algoritmos y estructuras de datos"},
+    {"codigo_materia": 10, "nombre": "Teoría de algoritmos"},
+    {"codigo_materia": 11, "nombre": "Modelación numérica"},
+    {"codigo_materia": 12, "nombre": "Ingeniería de software"},
+    {"codigo_materia": 13, "nombre": "Física"},
+    {"codigo_materia": 14, "nombre": "Taller de programación"},
+    {"codigo_materia": 15, "nombre": "Programación concurrente"},
+    {"codigo_materia": 16, "nombre": "Seguridad informática"},
+    {"codigo_materia": 17, "nombre": "Gestión del desarrollo de sistemas informáticos"},
+    {"codigo_materia": 18, "nombre": "Redes"},
+    {"codigo_materia": 19, "nombre": "Sistemas distribuidos"},
+    {"codigo_materia": 20, "nombre": "EBT"}
+]
+
 @app.route("/materias")
 def mostrar_materias():
-    materias = [
-        {"codigo_materia": 1, "nombre": "Fundamentos de la programación"},
-        {"codigo_materia": 2, "nombre": "Introducción al desarrollo de software"},
-        {"codigo_materia": 3, "nombre": "Organización del computador"},
-        {"codigo_materia": 4, "nombre": "Probabilidad y estadística"},
-        {"codigo_materia": 5, "nombre": "Sistemas operativos"},
-        {"codigo_materia": 6, "nombre": "Paradigmas de programación"},
-        {"codigo_materia": 7, "nombre": "Base de datos"},
-        {"codigo_materia": 8, "nombre": "Ciencia de datos"},
-        {"codigo_materia": 9, "nombre": "Algoritmos y estructuras de datos"},
-        {"codigo_materia": 10, "nombre": "Teoría de algoritmos"},
-        {"codigo_materia": 11, "nombre": "Modelación numérica"},
-        {"codigo_materia": 12, "nombre": "Ingeniería de software"},
-        {"codigo_materia": 13, "nombre": "Física"},
-        {"codigo_materia": 14, "nombre": "Taller de programación"},
-        {"codigo_materia": 15, "nombre": "Programación concurrente"},
-        {"codigo_materia": 16, "nombre": "Seguridad informática"},
-        {"codigo_materia": 17, "nombre": "Gestión del desarrollo de sistemas informáticos"},
-        {"codigo_materia": 18, "nombre": "Redes"},
-        {"codigo_materia": 19, "nombre": "Sistemas distribuidos"},
-        {"codigo_materia": 20, "nombre": "EBT"}
-    ]
     return render_template('materias.html', materias=materias)
+
+@app.route("/materia/<int:codigo_materia>")
+def grupos_por_materia(codigo_materia):
+    # Buscar la materia seleccionada
+    for m in materias:
+        if m["codigo_materia"] == codigo_materia:
+            materia = m
+            break
+
+    grupos_de_materia = [grupo for grupo in grupos if grupo["codigo_materia"] == codigo_materia]
+
+    return render_template("grupos_por_materia.html", materia=materia, grupos=grupos_de_materia)
 
 @app.route("/grupos")
 def mostrar_grupos():
-    grupos = [
-    {'id': 1, 'nombre': 'Nombre de grupo 1', 'materia': 'Fundamentos de la programación'},
-    {'id': 2, 'nombre': 'Nombre de grupo 2', 'materia': 'Base de datos'},
-    {'id': 3, 'nombre': 'Nombre de grupo 3', 'materia': 'Sistemas operativos'},
-    {'id': 4, 'nombre': 'Nombre de grupo 4', 'materia': 'Teoría de algoritmos'},
-    {'id': 5, 'nombre': 'Nombre de grupo 5', 'materia': 'Organización del Computador'},
-    {'id': 6, 'nombre': 'Nombre de grupo 6', 'materia': 'Programación concurrente'},
-    {'id': 7, 'nombre': 'Nombre de grupo 7', 'materia': 'EBT'},
-    {'id': 8, 'nombre': 'Nombre de grupo 8', 'materia': 'Paradigmas de programación'},
-    {'id': 9, 'nombre': 'Nombre de grupo 9', 'materia': 'Seguridad informática'}
-    ]
     return render_template("grupos.html", grupos=grupos)
 
 if __name__ == '__main__':

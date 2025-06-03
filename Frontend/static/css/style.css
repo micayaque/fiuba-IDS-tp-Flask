@@ -863,9 +863,8 @@ footer {
 #nombres_de_integrantes {
     margin: 10px;
     border-bottom: #626262 solid 6px;
-    width: 90%;
     display: flex;
-    padding: 8px;
+    justify-content: center;
 
 
 }

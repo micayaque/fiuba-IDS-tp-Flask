@@ -808,6 +808,45 @@ footer {
     font-family: 'Poppins';
 }
 
+#titulo-grupos {
+    color: #F2F2F2;
+    font-family: 'Poppins';
+    font-weight: bold;
+}
+
+.grupo-card-background {
+    background-color: #303030;
+    border-radius: 12px;
+    font-family: 'Plus Jakarta Sans';
+}
+
+#btn-info-grupo {
+    background-color: #5C95D6;
+    color: #F2F2F2;
+}
+
+#btn-estado-tp {
+    background-color: #167B56;
+    color: #F2F2F2;
+}
+
+.info-grupo-background {
+    background-color: #1C1C21;
+    border-radius: 12px;
+    padding: 12px;
+}
+
+.info-grupo-background span {
+    color: #F2F2F2;
+    font-weight: lighter;
+}
+
+#nombre-grupo {
+    color: #AEABD4;
+}
+
+
+
 .btn_agregar_materia {
     border: none;
     font-weight: bold;

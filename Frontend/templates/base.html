@@ -13,6 +13,8 @@
         <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Istok+Web&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Gentium+Book+Plus:ital,wght@0,400;0,700;1,400;1,700&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+
         <!--Fin fuentes de texto-->
 
         <link rel="icon" href="{{ url_for('static', filename='/img/icono_pagina.png', _external=True) }}">
@@ -36,7 +38,7 @@
                 </div>
 
                 <div id="contenedor_botones_header">
-                    {% if session.usuario %}
+                    <!-- {% if session.usuario %}
                         <a  href="{{ url_for('perfil_de_usuario') }}"><i class="fa-solid fa-user"></i></a>
                         <a href="{{ url_for('perfil_de_usuario') }}" class="btn btn-sm">MI PERFIL</a>
                         <a href="#"><i class="fa-regular fa-bell"></i></a>
@@ -44,7 +46,7 @@
                         {% else %}
                         <a href="#" id="btn_iniciar_sesion" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#loginModal">INICIAR SESIÓN</a>
                         <a href="#" id="btn_registrarse" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#registroModal">REGISTRARSE</a>
-                    {% endif %}
+                    {% endif %} -->
                 </div>
 
             </div>

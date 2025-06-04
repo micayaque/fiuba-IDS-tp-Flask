@@ -364,18 +364,12 @@ footer {
 
 
 
-/******************************* ESTILOS PARA PERFIL.HTML *******************************/
+/******************************* ESTILOS PARA PERFIL DE USUARIO *******************************/
 
 #perfil {
     position: relative;
-    display: flex;/* Aumenta el espacio interno */
-    flex-direction: column;
-    min-height: px; /*quitar cuando agrege contenido*/
-    margin: 2% 6%; /* 20px arriba/abajo, 100px izquierda/derecha */
-    font-family: 'Roboto', sans-serif;    
+    margin: 2% 6%;
 }
-
-/*perzonalizacion del banner y foto de perfil*/
 
 #banner_perfil {
     height: clamp(100px, 15vw, 150px);
@@ -428,7 +422,7 @@ footer {
     object-fit: cover; /* Asegura que la imagen cubra todo el círculo */
     
 }
-/*los datos del usuario*/
+
 #datos_usuario {
     display: flex;
     flex-direction: column;
@@ -450,15 +444,13 @@ footer {
     color: #F2F2F2;
     margin-bottom: 0.5rem;
 }
+
 .fila-datos {
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
 }
-
-
-
 
 .editar_foto {
     background-color: #303030;
@@ -491,8 +483,6 @@ footer {
     cursor: pointer;
     color: #CEE5F2;
 }
-
-
 
 .contenedor_textarea {
     position: relative;
@@ -529,40 +519,6 @@ footer {
     border: none;
 
 }
-
-.fila_info {
-    min-height: 50px;
-    display: flex;
-    flex-direction: row;
-    align-items: stretch; /* Cambia esto para que las columnas ocupen toda la altura */
-    width: 100%;
-    padding-left: 1%;
-    padding-right: 1%;
-    flex-wrap: wrap;
-
-
-}
-
-.info_relevante,
-.caja_de_texto_info {
-  flex: 1 1 30%; /* 30% del ancho, pero se puede achicar si hace falta */
-  min-width: 250px; /* Evita que se hagan muy chicos */
-  box-sizing: border-box;
-}
-
-.division_info_relevante {
-    padding: 3%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-    flex: 1 1 30%; 
-    min-width: 250px;     
-    max-width: 100%;       
-    box-sizing: border-box;
-}
-
 
 .info_relevante {
     display: flex;
@@ -605,7 +561,8 @@ footer {
 .grupos_del_usuario {
     padding: 3%;
     display: flex;
-    flex-direction: row;
+    /* flex-direction: row; */
+    flex-direction: column;
     align-items: center;
     justify-content: center;
 
@@ -839,6 +796,16 @@ footer {
     border: none;
     margin-top: 2px;
     font-size: clamp(0.8rem, 1vw, 1rem);
+}
+
+.materia-background {
+    background-color: #1C1C21;
+    color: #F2F2F2;
+    font-family: 'Inter';
+}
+
+.materia-background h5{
+    font-family: 'Poppins';
 }
 
 .btn_agregar_materia {

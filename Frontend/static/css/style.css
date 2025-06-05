@@ -409,6 +409,9 @@ footer {
     z-index: 3;
 }
 
+
+
+
 /* Posicionamiento de la foto */
 #foto_de_perfil {
     top: clamp(40px, 8vw, 80px);
@@ -457,6 +460,15 @@ footer {
     height: 100%; 
     min-height: 90px;
 }
+
+#color_selector_banner {
+    display: none;
+}
+
+
+
+
+
 
 
 

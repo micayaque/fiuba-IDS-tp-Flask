@@ -7,10 +7,10 @@
 <div id="perfil" class="position-relative d:flex flex-column">
 
     <!-- Banner del perfil -->
-    <div id="banner_perfil" class="mb-5">
+    <div id="banner_perfil" class="mb-5 position-relative">
         <div>
-            <i id="img_cambiar_banner" class="fa-solid fa-camera position-absolute""></i>
-            <input type="color" id="color_selector_banner" style="display: none;">
+            <i id="img_cambiar_banner" class="fa-solid fa-camera position-absolute" onclick="abrirSelectorColor()"></i>
+            <input type="color" id="color_selector_banner" onchange="cambiarColorBanner(this.value)">
         </div>
 
         <div id="foto_de_perfil" class="position-absolute">
@@ -20,7 +20,6 @@
         </div>
     </div>
 
-        
     <!-- Datos del usuario -->
     <div id="datos_usuario" class="mt-5 pt-5">
         <div class="fila-datos">
@@ -39,9 +38,7 @@
         </div>
     </div>
 
-
-
-<!-- Materias -->
+    <!-- Materias -->
     <div class="container my-5">
         <div class="row g-5 justify-content-center">
             <!-- Materias Cursando -->
@@ -131,6 +128,7 @@
     </div>
 
 
+
     <!-- Modal para editar la foto de perfil-->
     <div class="modal" id="modalEditarFotoPerfil">
         <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -154,40 +152,10 @@
         </div>
     </div>
 
-</div>
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    
 
 
 

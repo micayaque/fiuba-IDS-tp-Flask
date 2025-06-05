@@ -12,7 +12,7 @@
             <input type="color" id="color_selector_banner" onchange="cambiarColorBanner(this.value)">
         </div>
         <div id="foto_de_perfil" class="position-absolute">
-            <button id="boton_editar_foto_de_perfil" class="button_editar_foto_de_perfil btn" data-bs-toggle="modal" data-bs-target="#modalEditarFotoPerfil" onclick="event.stopPropagation()">
+            <button id="boton_editar_foto_de_perfil" class="p-0 border-0 btn" data-bs-toggle="modal" data-bs-target="#modalEditarFotoPerfil" onclick="event.stopPropagation()">
                 <img class="foto_perfil_img" src="{{ url_for('static', filename='img/avatar-default.jpg') }}" alt="Foto de perfil">
             </button>
         </div>
@@ -45,7 +45,7 @@
     </div>
 
     <!-- Materias -->
-    <div class="container my-5">
+    <div class="container my-3">
         <div class="row g-5 justify-content-center">
             <!-- Materias Cursando -->
             <div class="col-12 col-sm-6 col-md-4 col-lg-3">
@@ -53,52 +53,42 @@
                     <div class="card-body">
                         <h5 class="card-title d-flex justify-content-between align-items-center">
                             Materias cursando
-                            <button class="btn btn-sm btn-outline-secondary">
+                            <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalEditarMaterias">
                                 <img src="{{ url_for('static', filename='img/icono_lapiz_edit.png') }}" alt="Editar materias" width="16">
                             </button>
                         </h5>
                         <ul class="list-group list-group-flush my-3 lista-de-materias">
-                            {% for materia in materias.cursando %}
-                                <li class="list-group-item materia-background">{{ materia }}</li>
-                            {% endfor %}
                         </ul>
                     </div>
                 </div>
             </div>
-
             <!-- Materias Aprobadas -->
             <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                 <div class="card h-100 materia-background border-0">
                     <div class="card-body">
                         <h5 class="card-title d-flex justify-content-between align-items-center">
                             Materias aprobadas
-                            <button id="boton_editar_materias" class="btn btn-sm btn-outline-secondary">
+                            <button id="boton_editar_materias" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalEditarMaterias">
                                 <img src="{{ url_for('static', filename='img/icono_lapiz_edit.png') }}" alt="Editar materias" width="16">
                             </button>
                         </h5>
                         <ul class="list-group list-group-flush my-3">
-                            {% for materia in materias.aprobadas %}
-                                <li class="list-group-item materia-background">{{ materia }}</li>
-                            {% endfor %}
+                            <li class="list-group-item materia-background"></li>
                         </ul>
                     </div>
                 </div>
             </div>
-
             <!-- Horarios disponibles -->
             <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                 <div class="card h-100 materia-background border-0">
                     <div class="card-body">
                         <h5 class="card-title d-flex justify-content-between align-items-center">
                             Horarios disponibles
-                            <button id="boton_editar_horarios_disponibles" class="btn btn-sm btn-outline-secondary">
+                            <button id="boton_editar_horarios_disponibles" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalEditarHorarios">
                             <img src="{{ url_for('static', filename='img/icono_lapiz_edit.png') }}" alt="Editar" width="16">
                             </button>
                         </h5>
-                        <ul class="list-group list-group-flush mt-3">
-                            {% for horario in materias.horarios %}
-                                <li class="list-group-item materia-background">{{ horario }}</li>
-                            {% endfor %}
+                        <ul class="list-group list-group-flush my-3">
                         </ul>
                     </div>
                 </div>
@@ -133,6 +123,9 @@
         </div>
     </div>
 
+
+
+
     <!-- Modal para editar datos del usuario nombre/universidad/carrera-->
     <div class="modal" id="modalEditarCampo">
         <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -162,6 +155,91 @@
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CANCELAR</button>
                         <button type="button" class="btn btn-guardar" onclick="guardarSobreMi()">GUARDAR</button>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para editar materias -->
+    <div class="modal" id="modalEditarMaterias">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content p-3">
+                <div class="modal-header">
+                    <h5 class="modal-title">Editar Materias</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form class="text-center">
+                        <div class="text-start"><label class="form-label ">Seleccioná tus materias:</label></div>
+                        <div class="mb-3 d-flex flex-wrap gap-2 justify-content-center">
+                            {% for materia in ['Algoritmos I', 'Algoritmos II', 'Bases de Datos', 'Teoría de algoritmos', 'Análisis Matemático I', 'Álgebra'] %}
+                                <label class="check-input-materia">
+                                    <input class="d-none" type="checkbox" name="materias" value="{{ materia }}">
+                                    <div class="materia-box p-2">{{ materia }}</div>
+                                </label>
+                            {% endfor %}
+                        </div>
+                        <div class="text-start d-flex row">
+                            <label for="nuevaMateria" class="form-label">Agregar nueva materia:</label>
+                            <input type="text" class="p-2 input-agregar-materia" id="nuevaMateria" placeholder="Escribí una materia nueva">
+                        </div>
+                        <button type="submit" class="btn btn-guardar mt-3 text-center">Guardar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para editar horarios disponibles -->
+    <div class="modal" id="modalEditarHorarios">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content p-4">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title fw-bold">Editar horarios disponibles</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="table-responsive">
+                            <table class="table p-3 tabla-horarios text-center align-middle">
+                                <thead>
+                                    <tr>
+                                        <th><i class="fa-regular fa-clock"></i></th>
+                                        <th>Lu</th>
+                                        <th>Ma</th>
+                                        <th>Mié</th>
+                                        <th>Ju</th>
+                                        <th>Vi</th>
+                                        <th>Sá</th>
+                                        <th>Do</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th>Mañana</th>
+                                        {% for dia in ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'] %}
+                                            <td><input type="checkbox" name="{{ dia }}_mañana"></td>
+                                        {% endfor %}
+                                    </tr>
+                                    <tr>
+                                        <th>Tarde<br></th>
+                                        {% for dia in ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'] %}
+                                            <td><input type="checkbox" name="{{ dia }}_tarde"></td>
+                                        {% endfor %}
+                                    </tr>
+                                    <tr>
+                                        <th>Noche<br></th>
+                                        {% for dia in ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'] %}
+                                            <td><input type="checkbox" name="{{ dia }}_noche"></td>
+                                        {% endfor %}
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="my-3 text-center">
+                            <button type="submit" class="btn btn-guardar">Guardar horarios</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -200,4 +278,3 @@
 </div>
 
 {% endblock %}
-

@@ -54,12 +54,10 @@ body {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    margin-bottom: 2rem;
 }
 
 nav {
     margin-top: 1rem;
-
 }
 
 #opciones_menu {
@@ -71,6 +69,8 @@ nav {
 #opciones_menu a:hover {
     cursor: pointer;
     font-weight: bold;
+    color: #c8c5f5;
+    font-size: large;
 }
 
 @media (max-width: 768px) {
@@ -86,8 +86,6 @@ nav {
     font-weight: bold;
     padding: 2rem;
 }
-
-/* Footer */
 
 footer {
     background-color: #242424;
@@ -162,6 +160,7 @@ footer {
     height: 3.75rem;
 }
 
+
 /********************************ESTILOS PARA CONTACTO********************************/
 
 #fondo_popup_contacto {
@@ -172,6 +171,7 @@ footer {
   width: 100%; 
   height: 100%;
   background-color: rgba(0, 0, 0, 0.9); /* oscuro semi-transparente */
+  z-index: 999;
 }
 
 #contenedor_contacto_popup {
@@ -187,9 +187,9 @@ footer {
     align-items: center;
     color: #F2F2F2;
     font-family: 'Poppins';
-
     width: 95vw;               /* Usamos % del viewport para evitar que se achique demasiado */
-  max-width: 500px;          /* Limita en pantallas grandes */
+    max-width: 500px;          /* Limita en pantallas grandes */
+    z-index: 1000;             /* Da prioridad para que este por delante de todo*/
 }
 
 #contenedor_lista_correos {
@@ -362,6 +362,493 @@ footer {
     margin-right: 1rem;
 }
 
+/********************************** ESTILOS PARA EL FORMULARIO DE REGISTRO E INICIO DE SESION*********************************/
+
+#btn_cerrar_sesion {
+  background-color: #6C0000;
+  margin: 1rem;
+}
+
+/* Fondo negro del formulario */
+.modal-dark {
+    background-color: #1C1C21 !important;  
+    border-radius: 35px !important;
+    color: #fff;
+    border: none;
+  }
+  
+  /* Título a la izquierda con color celeste */
+  .custom-title {
+    color: #A4A2C9 !important; 
+    font-size: 1.5rem;
+    text-align: left;
+    margin-bottom: 1.2rem;
+  }
+  
+  /* Etiquetas (label) visibles */
+  label,
+  .form-label {
+    color: #0dcaf0 !important;  
+    font-weight: 500;
+    font-size: 14px;
+    margin-bottom: 4px;
+    display: block;
+  }
+  
+  /* Contenedor relativo para inputs con íconos */
+  .form-group.position-relative {
+    position: relative; 
+  }
+  
+  /* Inputs */
+  .form-control,
+  .input-dark {
+    background-color: #1E1B1F !important;
+    color: #fff !important;
+    border: 1px solid #444 !important;
+    border-radius: 15px !important;
+    height: 45px;
+    font-size: 14px;
+  
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+  
+    padding-left: 40px !important; 
+    padding-right: 40px !important; 
+  
+    line-height: 1.2;
+    margin-bottom: 0.6rem;
+    width: 100%;
+    display: block;
+  }
+  
+  /* Placeholders */
+  .form-control::placeholder,
+  .input-dark::placeholder {
+    color: rgba(255, 255, 255, 0.6) !important;
+  }
+  
+  /* Botón */
+  .btn-submit {
+    border-radius: 30px !important;
+    height: 45px;
+    font-weight: 600;
+    background-color: #292929 !important;
+    color: #fff !important;
+    transition: background-color 0.3s ease;
+    margin-top: 0.8rem;
+  }
+  
+  .btn-submit:hover {
+    background-color: #495057 !important;
+  }
+  
+  /* Íconos dentro de los inputs */
+  .icon-left,
+  .icon-right {
+    position: absolute;
+    top: 70%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    color: #aaa;
+    z-index: 2;
+    line-height: 1;
+  }
+  
+  .icon-left {
+    left: 15px;
+    pointer-events: none;
+  }
+  
+  .icon-right {
+    right: 15px;
+    cursor: pointer;
+    pointer-events: auto;
+  }
+
+/* Tamaño personalizado del modal */
+.modal-lg-custom {
+    max-width: 600px !important; 
+    width: 100%;
+  }
+  
+  /* Responsive */
+  @media (max-width: 576px) {
+    .modal-content {
+      padding: 1.5rem !important;
+    }
+  
+    .custom-title {
+      font-size: 1.3rem;
+    }
+  }
+  
+
+/******************************************* ESTILOS PARA MATERIAS ************************************************/
+
+#contenedor-buscador-materia {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+  justify-content: center;
+  align-items: center;
+  margin-left: 4rem;
+  margin-right: 4rem;
+
+}
+
+#contenedor-buscador-input{
+  display: flex;
+  gap: 0.5rem;
+  width: 30rem;
+}
+
+#contenedor-buscador-input input {
+  width: 100%;
+}
+
+#txt-buscador {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #F2F2F2;
+  font-family: 'Istok Web';
+}
+
+#buscadorInput {
+  border-radius: 1.5rem;
+  border: #BFBFBF solid 0.01rem;
+  background-color: #1C1C21;
+  font-family: 'Inter';
+  font-size: xx-small;
+  padding: 0.5rem 1rem;
+  color: #F2F2F2;
+}
+
+#btn-buscar-materia {
+  background-color: #800080;
+  border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: none;
+}
+
+#btn-buscar-materia img {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+/**GRILLA**/
+
+#contenedor-materias {
+  margin: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+.materia-item {
+  border: #303030 solid 0.3rem;
+  border-radius: 1rem;
+  width: 12rem;
+  margin-bottom: 1.1rem;
+  min-height: 5.5rem;
+  display: flex;
+  align-items: center;
+  margin: 0.5rem;
+  text-align: center;
+}
+
+.materia-nombre {
+  color: #AEABD4;
+  text-decoration: none;
+  display: block;
+  width: 100%;
+  font-family: 'Poetsen One', sans-serif;
+  font-weight: 400;
+  font-style: normal;
+
+}
+
+.materia-item:hover {
+  background-color: black;
+  transform: scale(1.07);
+}
+
+
+/******************************* ESTILOS PARA GRUPOS ***************************************/
+
+.barra_desplazamiento_grupos {
+    padding: 0.625rem 0.625rem;
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 30rem;
+    background-color: transparent;
+}
+
+.barra_desplazamiento_grupos div {
+    padding-top: 0;
+    padding-right: 0.1875rem;
+}
+
+.barra_desplazamiento_grupos::-webkit-scrollbar {
+    border-radius: 1rem;
+}
+
+.barra_desplazamiento_grupos::-webkit-scrollbar-thumb {
+    background: #5a5959;
+    border-radius: 1rem;
+}
+
+.barra_desplazamiento_grupos::-webkit-scrollbar-thumb:hover {
+    background: #444444;
+}
+
+
+#items_barra_desplazamiento_grupos div {
+    border-radius: 0.625rem;
+    width: 100%;
+    max-width: 100%;
+    transform: translate(-5px, 10px);
+}
+
+
+#contenedor_nombre_grupo_nombre_materia {
+    background-color: #1C1C21;
+    padding: 0.625rem;
+    height: 5.4375rem;
+}
+
+#contenedor_nombre_grupo_nombre_materia h5 {
+    color: #AEABD4;
+    font-size: 1.05em;
+}
+
+#contenedor_boton_informacion_grupo {
+    margin-top: 0.625rem;
+    padding-bottom: 0.1875rem;
+}
+
+#contenedor_boton_informacion_grupo a {
+    font-weight: bold;
+    color: #FFFFFF;
+    background-color: #5C95D6;
+    height: 1.875rem;
+    width: 100%;
+}
+
+
+/******************************** ESTILOS PARA BUSCADOR DE GRUPOS ********************************/
+
+.nombre_materia {
+  margin-bottom: 3rem;
+  color: #FFFFFF;
+  font-family: Gentium Book Basic;
+  font-weight: bold;
+}
+
+.contenido_buscador_grupos {
+    margin-top: 3rem;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.contentido_top_buscador_grupos {
+    margin-bottom: 40px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.contentido_bottom_buscador_grupos {
+    width: 100%;
+    max-width: 900px;
+    margin-bottom: 5rem;
+}
+
+.contentido_bottom_buscador_grupos .carta {
+    width: 280px;
+    height: 110px;
+    background-color: #303030;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border-radius: 13px;
+    padding: 3px 6px;
+}
+
+.carta .grupo_info {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: #1C1C21;
+    border-radius: 13px;
+    margin: 10px;
+}
+
+.contentido_top_buscador_grupos .nombre_materia {
+    color: white;
+    font-weight: 700;
+    font-size: 25px;
+}
+
+.contentido_top_buscador_grupos .boton_compañeros {
+    background-color: #167B56;
+    color: #F2F2F2;
+    border-radius: 15px;
+    border: 0;
+    padding: 5px 15px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.boton_compañeros {
+  text-align: center;
+  margin-bottom: 4rem;
+  font-family: 'Poltawski Nowy';
+}
+
+.boton_compañeros:hover {
+  background-color: #0c3d2b;
+}
+
+.grupo_info .nombre_del_grupo {
+    color: #AEABD4;
+    font-weight: 600;
+    font-size: 20px;
+    margin: 0;
+    margin-left: 15px;
+}
+
+.grupo_info .cantidad_integrantes {
+    color: white;
+    font-weight: 600;
+    font-size: 15px;
+    margin: 0;
+    margin-left: 15px;
+}
+
+.carta .boton_info {
+    width: 100%;
+    border-radius: 20px;
+    border: 0;
+    background-color: #5C95D6;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    padding: 3px;
+}
+
+.modal-title {
+    font-weight: 800;
+}
+
+.modal-content {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 600;
+    background-color: #1C1C21 !important;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+
+
+}
+
+.modal-dialog {
+    max-width: 900px;
+}
+
+.boton_solicitar_unirse {
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+
+}
+
+
+/************************* ESTILOS PARA COMPAÑEROS SIN GRUPO *************************/
+
+.titulo_nombre_materia {
+    margin: 3rem;
+    color: #FFFFFF;
+    font-family: Gentium Book Basic;
+    font-weight: bold;
+    text-align: center;
+    font-size: 25px;
+}
+
+.contenedor_btn_ver_grupos_compañerxs {
+  text-align: center;
+  margin-bottom: 4rem;
+  font-family: Poltawski Nowy;
+}
+
+.contenedor_btn_ver_grupos_compañerxs a {
+  background-color: #167B56;
+  color: #F2F2F2;
+  border-radius: 15px;
+  padding: 5px 15px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.contenedor_btn_ver_grupos_compañerxs a:hover {
+  background-color: #0c3d2b;
+  color: #F2F2F2;
+}
+
+#contenedor_compañerxs_sin_grupo {
+  margin-bottom: 5rem;
+  margin-top: 5rem;
+  max-width: 900px;
+}
+
+#contenedor_compañerxs_sin_grupo > div:first-child {
+  justify-content: center;
+  border-radius: 13px;
+}
+
+#compañerx_sin_grupo {
+  background-color: #303030;
+  border: none;
+  margin-bottom: 1rem;
+}
+
+#contenedor_compañerx_sin_grupo_nombre {
+  color: #AEABD4;
+  font-family: 'Plus Jakarta Sans';
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 1rem;
+  background-color: #1C1C21;
+  border-radius: 1rem;
+  
+  height: 5rem;
+  align-content: center;
+}
+
+#compañerx_sin_grupo a {
+  background-color: #5C95D6;
+  width: 100%;
+  color: #F2F2F2;
+  font-family: 'Poppins';
+}
+
+#contenedor_compañerx_sin_grupo a:hover {
+  background-color: #446f9f;
+}
 
 
 /******************************* ESTILOS PARA PERFIL DE USUARIO *******************************/

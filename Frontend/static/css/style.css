@@ -366,41 +366,53 @@ footer {
 
 /******************************* ESTILOS PARA PERFIL DE USUARIO *******************************/
 
-#perfil {
-    position: relative;
-    margin: 2% 6%;
+#circulo_de_foto_de_perfil {
+    background-color: #BEBEBE;
+    width: clamp(80px, 13vw, 130px);
+    height: clamp(80px, 13vw, 130px);
+    border-radius: 50%;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin: 10px;
+}
+
+#contenedor_de_circulo_de_foto_de_perfil {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin: 20px 0;
+    border-bottom: #36363c solid 8px;
+
 }
 
 #banner_perfil {
     height: clamp(100px, 15vw, 150px);
-    width: 100%; /* Asegura que ocupe todo el ancho del contenedor */
     background-color: #A0B4B7;
     position: relative;
-    z-index: 1;
-
     border-radius: 16px 16px 0 0;
 }
 
+/* Ícono de cámara en la esquina inferior derecha del banner */
 #img_cambiar_banner {
-    position: absolute;
-    right: 16px;   /* Distancia desde el borde derecho */
-    bottom: 16px;  /* Distancia desde el borde inferior */
+    right: 16px;
+    bottom: 16px;
     height: 30px;
     width: 30px;
-    object-fit: cover;
+    padding: 6px;
     cursor: pointer;
-    padding: 3px;
     color: #CEE5F2;
     background-color: #1c1c1c;
-    border-radius: 100%;
-    align-content: center;
+    border-radius: 50%;
     text-align: center;
+    z-index: 3;
 }
 
+/* Posicionamiento de la foto */
 #foto_de_perfil {
-    position: absolute;
-    top: clamp(40px, 8vw, 80px); /* se adapta también */
-    left: clamp(40px, 8vw, 70px);
+    top: clamp(40px, 8vw, 80px);
+    left: clamp(20px, 6vw, 70px);
     width: clamp(80px, 13vw, 130px);
     aspect-ratio: 1 / 1;
     background-color: #BEBEBE;
@@ -410,18 +422,50 @@ footer {
     justify-content: center;
     align-items: center;
     z-index: 2;
-    min-width: 80px;                 /* ✅ evita que se achique demasiado */
-    max-width: 160px;
-
 }
 
+/* Imagen circular */
 .foto_perfil_img {
     height: 100%;
     width: 100%;
+    object-fit: cover;
     border-radius: 50%;
-    object-fit: cover; /* Asegura que la imagen cubra todo el círculo */
-    
 }
+
+
+
+
+
+.modal-header h5 {
+    color: #F2F2F2;
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+}
+
+.modal-content {
+    background-color: #1C1C21;    
+}
+
+.btn-close{
+    color: #F2F2F2;    
+    background-color: #BEBEBE;
+}
+
+#avatar-img {
+    width: 100%; 
+    min-width: 90px; 
+    height: 100%; 
+    min-height: 90px;
+}
+
+
+
+
+
+
+
+
+
 
 #datos_usuario {
     display: flex;
@@ -536,8 +580,6 @@ footer {
  
 }
 
-
-
 .caja_de_texto_info {
     display: flex;
     min-height: 150px;
@@ -594,8 +636,6 @@ footer {
     border-radius: 12px;
     padding: 4px 10px;
     min-height: unset;
-
-    
 }
 
 .cantidad_de_integrantes_numero {
@@ -618,9 +658,6 @@ footer {
     align-items: center;         /* Centra el ícono verticalmente */
     height: auto;                /* Asegura que no tenga altura extra */
 }
-
-
-
 
 .nombre_del_grupo {
     margin: 0;
@@ -675,6 +712,21 @@ footer {
     border: none;
     cursor: pointer;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /*modals*/
@@ -746,28 +798,6 @@ footer {
     background-color: transparent; /* o quita el fondo rojo */
     font-weight: bold;
     margin: 10px;
-}
-
-
-#circulo_de_foto_de_perfil {
-    background-color: #BEBEBE;
-    width: clamp(80px, 13vw, 130px);
-    height: clamp(80px, 13vw, 130px);
-    border-radius: 50%;
-    align-items: center;
-    display: flex;
-    justify-content: center;
-    margin: 10px;
-}
-
-#contenedor_de_circulo_de_foto_de_perfil {
-    align-items: center;
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    margin: 20px 0;
-    border-bottom: #36363c solid 8px;
-
 }
 
 .botones_editar_perfil {

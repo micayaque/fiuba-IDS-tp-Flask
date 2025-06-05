@@ -6,6 +6,7 @@ app.secret_key = 'clave-secreta'  # necesaria para usar session
 
 @app.route("/usuario")
 def usuario():
+    avatares = ["pepe.jpg", "tiger.jpg", "mulan.jpg", "jon.jpg", "lisa.jpg", "snoopy.jpg", "this_is_fine.jpg", "tom.jpg", "coraje.jpg"]
     grupos = [
         {"id": 1, "nombre": "Grupo A", "integrantes": 5},
         {"id": 2, "nombre": "Grupo B", "integrantes": 3},
@@ -18,7 +19,7 @@ def usuario():
         "horarios": ["Lunes 18-21", "Miércoles 14-17"]
     }
     
-    return render_template("perfil_de_usuario.html", materias=materias, grupos=grupos)
+    return render_template("perfil_de_usuario.html", materias=materias, grupos=grupos, avatares=avatares)
 
 
 @app.route('/logout', methods=['POST'])

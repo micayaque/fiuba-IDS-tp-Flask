@@ -465,34 +465,32 @@ footer {
     display: none;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#datos_usuario {
-    display: flex;
-    flex-direction: column;
-    color: #F2F2F2;
-    margin: 3%;
+.titulo_datos_usuario {
     font-family: 'Inter';
-    font-weight: bold;
-
-    gap: 1rem;
+    color: #F2F2F2;
+    margin: 1rem;
 }
 
-.datos {
-    font-size: clamp(1rem, 1.5vw, 1rem);
+#datos_usuario i {
+    color: #F2F2F2
 }
+
+.modal-content textarea {
+    background-color: #1C1C21;
+    color: #F2F2F2;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 .nombre_de_usuario {
     font-size: clamp(1.5rem, 2vw, 1rem);
@@ -540,40 +538,12 @@ footer {
     color: #CEE5F2;
 }
 
-.contenedor_textarea {
-    position: relative;
-    width: 95%;
-    border-bottom: 30px solid transparent;
-}
 
-#sobre_mi {
+#sobre_mi_usuario {
     background-color: #36363c;
-    min-height: 130px;
+    min-height: 150px;
     border-radius: 1rem;
-    padding: 10px 2% 0px 10px; /* espacio a la derecha para el botón */
     color: #F2F2F2;
-    border: none;
-    box-shadow: none;
-    outline: none;
-    resize: vertical;
-    width: 100%;
-}
-
-#editar_bio {
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
-    border-radius: 50%;
-    height: 30px;
-    width: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    padding: 0;
-    background-color: #36363c;
-    border: none;
-
 }
 
 .info_relevante {
@@ -725,8 +695,23 @@ footer {
     cursor: pointer;
 }
 
+.btn-guardar{
+    background-color: #6B066F;
+    color: #F2F2F2;
+}
 
+.btn-guardar:hover {
+    background-color: #410744;
+    color: #F2F2F2;
+}
 
+.modal-body input {
+    background-color: #1C1C21;
+    border: #F2F2F2 solid 1px;
+    color: #F2F2F2;
+    border-radius: 0.3rem;
+    font-family: 'Poppins';
+}
 
 
 

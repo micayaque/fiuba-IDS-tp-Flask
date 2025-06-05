@@ -4,17 +4,15 @@
 
 {% block content %}
 
-<div id="perfil" class="position-relative d:flex flex-column">
+<div id="perfil" class="position-relative d-flex flex-column">
 
     <!-- Banner del perfil -->
-    <div id="banner_perfil" class="mb-5 position-relative">
+    <div id="banner_perfil" class="mb-5 position-relative" onclick="document.getElementById('color_selector_banner').click()">
         <div>
-            <i id="img_cambiar_banner" class="fa-solid fa-camera position-absolute" onclick="abrirSelectorColor()"></i>
             <input type="color" id="color_selector_banner" onchange="cambiarColorBanner(this.value)">
         </div>
-
         <div id="foto_de_perfil" class="position-absolute">
-            <button id="boton_editar_foto_de_perfil" class="button_editar_foto_de_perfil btn" data-bs-toggle="modal" data-bs-target="#modalEditarFotoPerfil">
+            <button id="boton_editar_foto_de_perfil" class="button_editar_foto_de_perfil btn" data-bs-toggle="modal" data-bs-target="#modalEditarFotoPerfil" onclick="event.stopPropagation()">
                 <img class="foto_perfil_img" src="{{ url_for('static', filename='img/avatar-default.jpg') }}" alt="Foto de perfil">
             </button>
         </div>
@@ -22,19 +20,27 @@
 
     <!-- Datos del usuario -->
     <div id="datos_usuario" class="mt-5 pt-5">
-        <div class="fila-datos">
-            <h2 class="nombre_de_usuario">Nombre de compañer@</h2>
-            <span class="datos">Universidad</span>
+        <div class="d-flex">
+            <h4 id="nombre_usuario" class="titulo_datos_usuario">Nombre de compañer@</h4>
+            <button type="button" class="btn p-0" data-bs-toggle="modal" data-bs-target="#modalEditarCampo" onclick="abrirEditorInfo('nombre')">
+                <i class="fa-regular fa-pen-to-square"></i>
+            </button>
         </div>
-
-        <span id="nombre_de_la_carrera">Carrera</span>
-        <h2 class="nombre_de_usuario"> Sobre mi</h2>
-        <div class="contenedor_textarea">
-            <textarea id="sobre_mi" type="text" placeholder="Escribe algo sobre ti..."></textarea>
-            <button id="editar_bio">
-                <img class="icono_lapiz" src="{{ url_for('static', filename='img/icono_lapiz_edit.png') }}" alt="editar sobre mi">
-                <!--deberia dejar editar la bio cuando presione este botton-->
-            </button>                    
+        <div class="d-flex my-2">
+            <h6 id="universidad_usuario" class="titulo_datos_usuario">Universidad</h6>
+            <button class="btn" data-bs-toggle="modal" data-bs-target="#modalEditarCampo" onclick="abrirEditorInfo('universidad')">
+                <i class="fa-regular fa-pen-to-square"></i>
+            </button>
+        </div>
+        <div class="d-flex my-2">
+            <h6 id="carrera_usuario" class="titulo_datos_usuario">Carrera</h6>
+            <button class="btn" data-bs-toggle="modal" data-bs-target="#modalEditarCampo" onclick="abrirEditorInfo('carrera')">
+                <i class="fa-regular fa-pen-to-square"></i>
+            </button>
+        </div>
+        <div class="d-flex flex-wrap align-items-center gap-2  my-2 mb-3">
+            <h6 class="titulo_datos_usuario"> Sobre mí</h6>
+            <textarea id="sobre_mi_usuario" class="form-control p-4 border-0" placeholder="Escribí algo sobre vos..." readonly data-bs-toggle="modal" data-bs-target="#modalSobreMi" onclick="abrirEditorSobreMi()" ></textarea>
         </div>
     </div>
 
@@ -127,15 +133,47 @@
         </div>
     </div>
 
+    <!-- Modal para editar datos del usuario nombre/universidad/carrera-->
+    <div class="modal" id="modalEditarCampo">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title" id="modalEditarCampoTitulo">Editar</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input id="inputEditarCampo" class="w-100"></input>
+                </div>
+                <div class="modal-footer border-0 justify-content-center">
+                    <button type="button" class="btn btn-guardar" onclick="guardarCampoEditado()">GUARDAR</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <!-- Modal para editar el cuadro de texto "Sobre mí" -->
+    <div class="modal" id="modalSobreMi">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header border-0"><h5>Editar bio</h5></div>
+                <div class="modal-body">
+                    <textarea id="textareaEditarSobreMi" class="w-100"></textarea>
+                    <div class="d-flex justify-content-center gap-2 mt-3">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CANCELAR</button>
+                        <button type="button" class="btn btn-guardar" onclick="guardarSobreMi()">GUARDAR</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Modal para editar la foto de perfil-->
     <div class="modal" id="modalEditarFotoPerfil">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header border-0">
-                    <h5 class="modal-title" ">Elegí tu avatar</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal""></button>
+                    <h5 class="modal-title">Elegí tu avatar</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
 
                 <div class="modal-body">
@@ -155,10 +193,8 @@
 
 
 
+
     
-
-
-
 
 
 </div>

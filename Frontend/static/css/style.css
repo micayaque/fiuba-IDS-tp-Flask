@@ -365,6 +365,7 @@ footer {
 
 
 /******************************* ESTILOS PARA PERFIL DE USUARIO *******************************/
+
 #banner_perfil {
     height: clamp(100px, 15vw, 150px);
     background-color: #A0B4B7;
@@ -395,11 +396,6 @@ footer {
     background-color: #1C1C21;    
     color: #F2F2F2;
     font-family: 'Poppins', sans-serif;
-}
-
-.btn-close{
-    color: #F2F2F2;    
-    background-color: #BEBEBE;
 }
 
 #avatar-img {
@@ -525,34 +521,38 @@ footer {
     color: #AEABD4;
 }
 
-
-
-
-
-
-
-
-
-.btn_eliminar_grupo {
-    background-color: #6C0000;
-    color: #F2F2F2;
-    padding: clamp(8px, 2vw, 15px);
-    font-size: clamp(0.75rem, 1vw, 1rem);
-    border-radius: 500px;
-    border: none;
-    font-weight: bold;
-    cursor: pointer;
+#btn-agregar-grupo {
+    color: #626262;
 }
 
-.opciones_para_icono_perfil {
-    width: 80px;
-    height: 80px;
-    background-color: #BEBEBE;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 10px;
+#nombreGrupo {
+    max-height: 40px;
+}
 
+.form-label {
+    color: #F2F2F2;
+    font-family: 'Poppins';
+}
 
+.modal-body-scrollable {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.form-control {
+    background-color: #1C1C21 !important;
+    color: #F2F2F2;
+}
+
+input:focus {
+    color: #F2F2F2 !important;
+}
+
+.btn-eliminar-grupo {
+    background-color: #6C0000;
+    color: #F2F2F2;
+}
+
+.contenedor-eliminar-integrante i { 
+    color: #6C0000;
 }

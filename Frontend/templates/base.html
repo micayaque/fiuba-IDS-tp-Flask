@@ -14,6 +14,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Istok+Web&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Gentium+Book+Plus:ital,wght@0,400;0,700;1,400;1,700&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
 
         <!--Fin fuentes de texto-->
 
@@ -38,7 +39,7 @@
                 </div>
 
                 <div id="contenedor_botones_header">
-                    <!-- {% if session.usuario %}
+                    {% if session.usuario %}
                         <a  href="{{ url_for('perfil_de_usuario') }}"><i class="fa-solid fa-user"></i></a>
                         <a href="{{ url_for('perfil_de_usuario') }}" class="btn btn-sm">MI PERFIL</a>
                         <a href="#"><i class="fa-regular fa-bell"></i></a>
@@ -46,7 +47,7 @@
                         {% else %}
                         <a href="#" id="btn_iniciar_sesion" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#loginModal">INICIAR SESIÓN</a>
                         <a href="#" id="btn_registrarse" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#registroModal">REGISTRARSE</a>
-                    {% endif %} -->
+                    {% endif %}
                 </div>
 
             </div>
@@ -106,7 +107,7 @@
                 <h5 class="custom-title fw-bold mb-4">¡Bienvenid@!</h5>
 
                 <!-- <form> -->
-                <form">
+                <form method="POST" action="{{ url_for('iniciar_sesion') }}">
                 <!-- Número de padrón -->
                 <div class="mb-3 w-100">
                     <label for="login-padron" class="text-white">Número de padrón</label>
@@ -141,8 +142,8 @@
                 <ul class="nav" id="opciones_menu">
 
                     <li class="nav-item"><a class="nav-link" href="/#como-funciona">Cómo funciona</a></li>
-                    <li class="nav-item"><a class="nav-link" href="">Materias</a></li>
-                    <li class="nav-item"><a class="nav-link" href="">Grupos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('mostrar_materias') }}">Materias</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('mostrar_grupos') }}">Grupos</a></li>
                     <li class="nav-item" onclick="mostrarPopupContacto()" ><a class="nav-link">Contactanos</a></li>
                     <li class="nav-item"><a class="nav-link">Mobile app</a></li>
 

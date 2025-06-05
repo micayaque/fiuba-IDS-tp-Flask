@@ -39,8 +39,8 @@
 
                 <div id="contenedor_botones_header">
                     {% if session.usuario %}
-                        <a  href="{{ url_for('perfil_de_usuario') }}"><i class="fa-solid fa-user"></i></a>
-                        <a href="{{ url_for('perfil_de_usuario') }}" class="btn btn-sm">MI PERFIL</a>
+                        <a  href="{{ url_for('usuario') }}"><i class="fa-solid fa-user"></i></a>
+                        <a href="{{ url_for('usuario') }}" class="btn btn-sm">MI PERFIL</a>
                         <a href="#"><i class="fa-regular fa-bell"></i></a>
                         <a href="{{ url_for('cerrar_sesion') }}" id="btn_cerrar_sesion" class="btn btn-sm">CERRAR SESIÓN</a>
                         {% else %}

@@ -96,5 +96,25 @@ def companieros_sin_grupo_por_materia(codigo_materia):
 
     return render_template("compañerxs_sin_grupo.html", materia=materia, compañeros=compañeros_sin_grupo)
 
+
+@app.route("/usuario")
+def usuario():
+    avatares = ["pepe.jpg", "tiger.jpg", "mulan.jpg", "jon.jpg", "lisa.jpg", "snoopy.jpg", "this_is_fine.jpg", "tom.jpg", "coraje.jpg"]
+    grupos = [
+        {"id": 1, "nombre": "Grupo A", "integrantes": 5},
+        {"id": 2, "nombre": "Grupo B", "integrantes": 3},
+        {"id": 3, "nombre": "Grupo C", "integrantes": 6},
+    ]
+
+    materias = {
+        "cursando": ["Álgebra I", "Análisis II", "Física I"],
+        "aprobadas": ["IPC", "Análisis I"],
+        "horarios": ["Lunes 18-21", "Miércoles 14-17"]
+    }
+    
+    return render_template("perfil_de_usuario.html", materias=materias, grupos=grupos, avatares=avatares)
+
+
+
 if __name__ == '__main__':
     app.run('localhost', port=8000, debug=True)

@@ -38,16 +38,26 @@
                 </div>
 
                 <div id="contenedor_botones_header">
+                    
                     {% if session.usuario %}
-                        <a class="fw-bold text-decoration-none btn btn-sm" href="{{ url_for('usuario') }}"><i class="fa-solid fa-user"></i></a>
-                        <a class="fw-bold text-decoration-none btn btn-sm" href="{{ url_for('usuario') }}">MI PERFIL</a>
+                        <a class="fw-bold text-decoration-none btn btn-sm" href="{{ url_for('auth.perfil_de_usuario') }}"><i class="fa-solid fa-user"></i></a>
+                        <a class="fw-bold text-decoration-none btn btn-sm" href="{{ url_for('auth.perfil_de_usuario') }}">MI PERFIL</a>
                         <a class="fw-bold text-decoration-none btn btn-sm" href="#"><i class="fa-regular fa-bell"></i></a>
-                        <a class="fw-bold text-decoration-none btn btn-sm m-3" href="{{ url_for('cerrar_sesion') }}" id="btn_cerrar_sesion">CERRAR SESIÓN</a>
-                        {% else %}
+                        <a class="fw-bold text-decoration-none btn btn-sm m-3" href="{{ url_for('auth.cerrar_sesion') }}" id="btn_cerrar_sesion">CERRAR SESIÓN</a>
+                    {% else %}
+                    
                         <a class="fw-bold text-decoration-none btn btn-sm" href="#" id="btn_iniciar_sesion"  data-bs-toggle="modal" data-bs-target="#loginModal">INICIAR SESIÓN</a>
                         <a class="fw-bold text-decoration-none btn btn-sm rounded-5" href="#" id="btn_registrarse" data-bs-toggle="modal" data-bs-target="#registroModal">REGISTRARSE</a>
                     {% endif %}
                 </div>
+
+
+                {% if usuario %}
+  <p>Hola, {{ usuario }} 👋 Bienvenido al sistema.</p>
+{% else %}
+  <p>No iniciaste sesión.</p>
+{% endif %}
+
 
             </div>
         </header>
@@ -59,17 +69,18 @@
                 <div class="modal-body">
                 <h5 class="custom-title fw-bold mb-4">¡Bienvenid@!</h5>
 
-                <form>
+                <form method="POST" action="{{ url_for('auth.registrarse') }}">
+
                     <!-- Número de padrón -->
                     <div class="mb-3 w-100">
                     <label for="padron" class="text-white d-block mb-5">Número de padrón</label>
-                    <input type="text" class="form-control form-dark d-block w-100" id="padron" placeholder="Escribí acá tu número de padrón">
+                    <input type="text" class="form-control form-dark d-block w-100" id="padron" name="padron" placeholder="Escribí acá tu número de padrón">
                     </div>
         
                     <!-- Contraseña -->
                     <div class="mb-3 position-relative w-100">
                     <label for="register-password" class="text-white d-block mb-5">Contraseña</label>
-                    <input type="password" class="form-control input-dark ps-5 pe-5 d-block w-100" id="register-password" placeholder="Contraseña">
+                    <input type="password" class="form-control input-dark ps-5 pe-5 d-block w-100" id="register-password" name="password" placeholder="Contraseña">
                     <i class="fas fa-lock icon-left position-absolute"></i>
                     <i class="far fa-eye icon-right position-absolute" id="togglePassword" onclick="togglePasswordVisibility()"></i>
                     </div>
@@ -77,13 +88,13 @@
                     <!-- Nombre -->
                     <div class="mb-3 w-100">
                     <label for="nombre" class="text-white d-block mb-5">Nombre</label>
-                    <input type="text" class="form-control form-dark d-block w-100" id="nombre" placeholder="Escribí acá tu nombre">
+                    <input type="text" class="form-control form-dark d-block w-100" id="nombre" name="nombre" placeholder="Escribí acá tu nombre">
                     </div>
 
                     <!-- Apellido -->
                     <div class="mb-3 w-100">
                     <label for="apellido" class="text-white d-block mb-5">Apellido</label>
-                    <input type="text" class="form-control form-dark d-block w-100" id="apellido" placeholder="Escribí acá tu apellido">
+                    <input type="text" class="form-control form-dark d-block w-100" id="apellido" name="apellido" placeholder="Escribí acá tu apellido">
                     </div>
 
                     <!-- Botón -->
@@ -105,7 +116,8 @@
                 <h5 class="custom-title fw-bold mb-4">¡Bienvenid@!</h5>
 
                 <!-- <form> -->
-                <form method="POST" action="{{ url_for('iniciar_sesion') }}">
+                <form method="POST" action="{{ url_for('auth.iniciar_sesion') }}">
+
                 <!-- Número de padrón -->
                 <div class="mb-3 w-100">
                     <label for="login-padron" class="text-white d-block mb-5">Número de padrón</label>
@@ -116,7 +128,7 @@
                 <!-- Contraseña -->
                 <div class="mb-3 position-relative w-100">
                     <label for="login-password" class="text-white d-block mb-5">Contraseña</label>
-                    <input type="password" class="form-control input-dark ps-5 pe-5 d-block w-100" id="login-password" placeholder="Contraseña">
+                    <input type="password" class="form-control input-dark ps-5 pe-5 d-block w-100" id="login-password" name="password" placeholder="Contraseña">
                     <i class="fas fa-lock icon-left position-absolute"></i>
                     <i class="far fa-eye icon-right position-absolute" id="toggleLoginPassword" onclick="toggleLoginPasswordVisibility()"></i>
                 </div>
@@ -130,6 +142,32 @@
             </div>
         </div>
         </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         <!-- Menú -->
@@ -197,6 +235,24 @@
         <!-- Bootstrap-->
         <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
         <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     </body>
 
 </html>

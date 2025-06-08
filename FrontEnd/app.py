@@ -1,8 +1,55 @@
+import sys
+import os
+
+# Agrega la carpeta raíz al path
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+
+
+
+
+# app.py
+from flask import Flask, render_template, session, redirect, url_for, request
+from BackEnd.routes.auth import auth_bp
+
+app = Flask(__name__)
+app.secret_key = "clave_secreta"
+
+# Blueprints
+app.register_blueprint(auth_bp, url_prefix="/auth/registrarse")
+
+
+
+@app.route('/')
+def home():
+    usuario = session.get('padron')
+    return render_template('index.html', usuario=usuario)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+'''
+
 from flask import Flask, render_template, session, redirect, url_for, request
 
 app = Flask(__name__)
 
 app.secret_key = 'clave-secreta'  # necesaria para usar session
+
 
 @app.route("/")
 def inicio():
@@ -19,6 +66,36 @@ def iniciar_sesion():
 def cerrar_sesion():
     session.pop("usuario", None)                    # para cerrar la sesión, eliminamos al usuario de session
     return redirect(url_for("inicio"))                # volvemos a la página principal
+
+'''
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 @app.route("/perfil_de_usuario")
 def perfil_de_usuario():

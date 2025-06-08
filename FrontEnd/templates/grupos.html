@@ -4,18 +4,18 @@
 {% block content %}
 <div class="container my-5 text-light">
    <h2 class="text-center mb-4">Grupos disponibles</h2>
-   <div class="barra_desplazamiento_grupos">
-      <div class="row justify-content-left g-4">
+   <div class="barra_desplazamiento_grupos p-3">
+      <div class="row justify-content-left g-4 pt-0 pe-5">
          {% for grupo in grupos %}
-         <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div class="card bg-dark text-light rounded-4 shadow-sm h-90">
-                  <div id="items_barra_desplazamiento_grupos" class="card-body d-flex flex-column justify-content-between">
-                     <div id="contenedor_nombre_grupo_nombre_materia" class="text-left">
+         <div class="col-12 col-sm-6 col-md-4 col-lg-3 pt-0 pe-5">
+            <div class="card bg-dark text-light rounded-4 shadow-sm h-90 pt-0 pe-5">
+                  <div id="items_barra_desplazamiento_grupos" class="card-body d-flex flex-column justify-content-between pt-0 pe-5 rounded-4 w-100">
+                     <div id="contenedor_nombre_grupo_nombre_materia" class="text-left p-5">
                         <h5 class="card-title fw-semibold">{{ grupo.nombre }}</h5>
                         <p class="card-text text-white-muted small">{{ grupo.materia }}</p>
                      </div>
-                     <div id="contenedor_boton_informacion_grupo" class="text-center">
-                        <a href="/grupo/{{ grupo.id }}" class="btn btn-primary rounded-pill px-4">INFO</a>
+                     <div id="contenedor_boton_informacion_grupo" class="text-center mt-3 pt-0 pb-5 pe-5">
+                        <a href="/grupo/{{ grupo.id }}" class="btn btn-primary rounded-pill px-4 fw-bold w-100">INFO</a>
                      </div>
                   </div>
             </div>

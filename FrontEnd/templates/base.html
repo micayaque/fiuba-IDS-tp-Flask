@@ -51,7 +51,7 @@
                         <a  href="{{ url_for('perfil_de_usuario') }}"><i class="fa-solid fa-user"></i></a>
                         <a href="{{ url_for('perfil_de_usuario') }}" class="btn btn-sm">MI PERFIL</a>
                         <a href="#"><i class="fa-regular fa-bell"></i></a>
-                        <a href="" id="btn_cerrar_sesion" class="btn btn-sm">CERRAR SESIÓN</a>
+                        <a href="{{ url_for('registrar_iniciar_sesion.cerrar_sesion') }}" id="btn_cerrar_sesion" class="btn btn-sm">CERRAR SESIÓN</a>
                         {% else %}
                         <a href="#" id="btn_iniciar_sesion" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#loginModal">INICIAR SESIÓN</a>
                         <a href="#" id="btn_registrarse" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#registroModal">REGISTRARSE</a>

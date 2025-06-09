@@ -1,3 +1,10 @@
+# consultar con franco, ¿por qué no funciona el import normal de BackEnd.routes.registrar_iniciar_sesion sin las primeras 3 lineas?
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from BackEnd.routes.registrar_iniciar_sesion import registrar_iniciar_sesion_bp
+
 from flask import Flask, render_template, session, redirect, url_for, request
 import requests
 
@@ -6,6 +13,8 @@ app = Flask(__name__)
 app.secret_key = 'clave-secreta'  # necesaria para usar session
 
 API_BASE = "http://localhost:5000"
+
+app.register_blueprint(registrar_iniciar_sesion_bp)
 
 @app.route("/")
 def inicio():

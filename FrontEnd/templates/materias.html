@@ -20,7 +20,7 @@
   <div id="contenedor-materias" class="row">
     {% for materia in materias %}
       <div class="materia-item rounded-5 m-5 text-center align-items-center d-flex">
-        <a href="/materia/{{ materia.codigo_materia }}" class="materia-nombre d-block w-100 text-decoration-none fst-normal">{{ materia.nombre }}</a>
+        <a href="/materia/{{ materia.materia_codigo }}" class="materia-nombre d-block w-100 text-decoration-none fst-normal">{{ materia.nombre }}</a>
       </div>
     {% endfor %}
   </div>

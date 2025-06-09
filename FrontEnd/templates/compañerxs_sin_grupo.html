@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Compañeros sin grupo - {{ materia.nombre }}{% endblock %}
+
+{% block content %}
+
+    <h2 class="titulo_nombre_materia">{{ materia.nombre }}</h2>
+    
+    <div class="contenedor_btn_ver_grupos_compañerxs">
+        <a class="btn" href="{{ url_for('grupos_por_materia', codigo_materia=materia.codigo_materia) }}">VER GRUPOS FORMADOS</a>
+    </div>
+
+    <div id="contenedor_compañerxs_sin_grupo" class="container">
+        <div class="row">
+            {% for compañero in compañeros %}
+            <div class="carta col-12 col-md-6 col-lg-4">
+                <div id="compañerx_sin_grupo" class="card">
+                    <div class="card-body">
+                        <div id="contenedor_compañerx_sin_grupo_nombre">
+                            <h5>{{ compañero.nombre }}</h5>
+                        </div>
+                        <a href="#" class="btn">INFO</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

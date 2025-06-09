@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+
+    <head>
+        <meta charset="UTF-8">
+        <!--Bootstrap-->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+
+        <!--Archivo de estilos CSS-->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/contacto_modal.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/registro_inicio_modal.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/buscador_grupos.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/materias.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/grupos.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/compañerxs_sin_grupo.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/perfil_usuario.css') }}">
+
+        <!--Fuentes de texto, las agregamos online porque es muy dificil que se caiga GoogleFonts, ¿aún así tenemos que hacerlo descargarlas?-->
+        <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Istok+Web&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Gentium+Book+Plus:ital,wght@0,400;0,700;1,400;1,700&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Gentium+Book+Plus:ital,wght@0,400;0,700;1,400;1,700&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Poetsen+One&display=swap" rel="stylesheet">
+        <!--Fin fuentes de texto-->
+
+        <link rel="icon" href="{{ url_for('static', filename='/img/icono_pagina.png', _external=True) }}">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>{% block title %}{% endblock %}</title>
+
+
+        <!-- Font Awesome-->
+        <script src="https://kit.fontawesome.com/75c8b9e0f6.js" crossorigin="anonymous"></script>
+    </head>
+
+
+    <body>
+        
+        <header>
+            <div id="contenedor_header" class="container">        
+
+                <div id="contenedor_logo_header" class="start-0">
+                    <a href="/"><img src="{{ url_for('static', filename='img/logo_header.png') }}" alt="Logo"></a>
+                </div>
+
+                <div id="contenedor_botones_header">
+                    {% if session.usuario %}
+                        <a  href="{{ url_for('perfil_de_usuario') }}"><i class="fa-solid fa-user"></i></a>
+                        <a href="{{ url_for('perfil_de_usuario') }}" class="btn btn-sm">MI PERFIL</a>
+                        <a href="#"><i class="fa-regular fa-bell"></i></a>
+                        <a href="{{ url_for('registrar_iniciar_sesion.cerrar_sesion') }}" id="btn_cerrar_sesion" class="btn btn-sm">CERRAR SESIÓN</a>
+                        {% else %}
+                        <a href="#" id="btn_iniciar_sesion" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#loginModal">INICIAR SESIÓN</a>
+                        <a href="#" id="btn_registrarse" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#registroModal">REGISTRARSE</a>
+                    {% endif %}
+                </div>
+
+            </div>
+        </header>
+
+        
+        <!-- Modal de Registro -->
+        <div class="modal fade" id="registroModal" tabindex="-1" aria-labelledby="registroModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg-custom">
+            <div class="modal-content modal-dark p-4">
+                <div class="modal-body">
+                <h5 class="custom-title fw-bold mb-4">¡Bienvenid@!</h5>
+        
+                <form method="POST" action="{{ url_for('registrar_iniciar_sesion.registrarse') }}">
+                    <!-- Número de padrón -->
+                    <div class="mb-3 w-100">
+                    <label for="padron" class="text-white">Número de padrón</label>
+                    <input type="text" class="form-control form-dark" id="padron" name="padron" placeholder="Escribí acá tu número de padrón">
+                    </div>
+        
+                    <!-- Contraseña -->
+                    <div class="mb-3 position-relative w-100">
+                    <label for="register-password" class="text-white">Contraseña</label>
+                    <input type="password" class="form-control input-dark ps-5 pe-5" id="register-password" name="password" placeholder="Contraseña">
+                    <i class="fas fa-lock icon-left"></i>
+                    <i class="far fa-eye icon-right" id="togglePassword" onclick="togglePasswordVisibility()"></i>
+                    </div>
+        
+                    <!-- Nombre -->
+                    <div class="mb-3 w-100">
+                    <label for="nombre" class="text-white">Nombre</label>
+                    <input type="text" class="form-control form-dark" id="nombre" name="nombre" placeholder="Escribí acá tu nombre">
+                    </div>
+
+                    <!-- Apellido -->
+                    <div class="mb-3 w-100">
+                    <label for="apellido" class="text-white">Apellido</label>
+                    <input type="text" class="form-control form-dark" id="apellido" name="apellido" placeholder="Escribí acá tu apellido">
+                    </div>
+        
+                    <!-- Botón -->
+                    <div class="d-grid w-100">
+                    <button type="submit" class="btn btn-dark btn-submit">Registrate</button>
+                    </div>
+                </form>
+                </div>
+            </div>
+            </div>
+        </div>
+
+
+        <!-- Modal de Login -->
+        <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content modal-dark p-4">
+            <div class="modal-body">
+                <h5 class="custom-title fw-bold mb-4">¡Bienvenid@!</h5>
+
+                <!-- <form> -->
+                <form method="POST" action="{{ url_for('registrar_iniciar_sesion.iniciar_sesion') }}">
+                <!-- Número de padrón -->
+                <div class="mb-3 w-100">
+                    <label for="login-padron" class="text-white">Número de padrón</label>
+                    <input type="text" class="form-control form-dark" name="padron" id="login-padron" placeholder="Escribí acá tu número de padrón">
+                    <input type="hidden" name="next" value="{{ request.path }}">
+                </div>
+
+                <!-- Contraseña -->
+                <div class="mb-3 position-relative w-100">
+                    <label for="login-password" class="text-white">Contraseña</label>
+                    <input type="password" class="form-control input-dark ps-5 pe-5" id="login-password" name="password" placeholder="Contraseña">
+                    <i class="fas fa-lock icon-left"></i>
+                    <i class="far fa-eye icon-right" id="toggleLoginPassword" onclick="toggleLoginPasswordVisibility()"></i>
+                </div>
+
+                <!-- Botón -->
+                <div class="d-grid w-100">
+                    <button type="submit" class="btn btn-dark btn-submit">Iniciar sesión</button>
+                </div>
+                </form>
+            </div>
+            </div>
+        </div>
+        </div>
+
+
+        <!-- Menú -->
+
+        <div id="contenedor_menu">
+            
+            <nav class="mt-md-0">
+                <ul class="nav" id="opciones_menu">
+
+                    <li class="nav-item"><a class="nav-link" href="/#como-funciona">Cómo funciona</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('mostrar_materias') }}">Materias</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('mostrar_grupos') }}">Grupos</a></li>
+                    <li class="nav-item" onclick="mostrarPopupContacto()" ><a class="nav-link">Contactanos</a></li>
+                    <li class="nav-item"><a class="nav-link">Mobile app</a></li>
+
+                </ul>
+            </nav>
+
+        </div>
+
+        <!-- Contacto -->
+        <div onclick="cerrarPopupContacto()" id="fondo_popup_contacto"></div>
+
+        <div id="contenedor_contacto_popup">
+            <h3>Contacto</h3>
+            <div id="contenedor_lista_correos">
+                <div class="mail">cvperezb@fi.uba.ar</div>
+                <div class="mail">myaque@fi.uba.ar</div>
+                <div class="mail">aoshiro@fi.uba.ar</div>
+                <div class="mail">lcoroq@fi.uba.ar</div>
+                <div class="mail">sbardina@fi.uba.ar</div>
+                <div class="mail">samartin@fi.uba.ar</div>
+            </div>
+            <form action="">
+                <label for="email">Ingrese su correo: </label><br>
+                <input type="email" name="email" id="email" autocomplete="email"><br>
+
+                <label for="mensaje">Mensaje: </label>
+                <textarea type="text" name="mensaje" id="mensaje"></textarea>
+
+                <div id="contenedor_botones_enviar_cerrar">
+                    <button type="submit" id="btn_enviar">Enviar</button>
+                    <button type="button" id="btn_cerrar" onclick="cerrarPopupContacto()">Cerrar</button>
+                </div>
+            </form>
+        </div>
+
+        <main class="container">
+            {% block content %}{% endblock %}
+        </main>
+
+        <!-- Footer -->
+        <footer>
+            <div class="container" id="contenedor_footer">
+
+                <div id="contenedor_logo_footer" class="flex-md-row">
+                    <img id="img_footer" src="{{ url_for('static', filename='img/logo_footer.png') }}" alt="Logo Footer"> 
+                    <h4>TP Buddy</h4>
+                </div>
+
+                <ul class="nav" id="listado_footer">
+                    <li class="nav-item"><a href="/">Inicio</a></li>
+                    <li class="nav-item"><a href="/#como-funciona">Cómo funciona</a></li>
+                    <li class="nav-item"><a onclick="mostrarPopupContacto()">Contactanos</a></li>
+                </ul>
+
+                <p>Términos y condiciones</p>
+                <p>2025@</p>
+
+            </div>
+        </footer>
+
+        <!-- Bootstrap-->
+        <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    </body>
+
+</html>

@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block title %}Buscador de Grupos{% endblock %}
+
+{% block content %}
+<div class="contenido_buscador_grupos">
+
+  <!-- Parte superior -->
+  <div class="contentido_top_buscador_grupos d-flex flex-column justify-content-center align-items-center gap-3 mb-4">
+    <h2 class="nombre_materia text-center">{{ materia.nombre }}</h2>
+
+    <a href="{{ url_for('companieros_sin_grupo_por_materia', codigo_materia=materia.codigo_materia) }}" class="btn boton_compañeros"> VER COMPAÑER@S SIN GRUPO </a>
+
+  </div>
+
+  <!-- Parte inferior: Cartas -->
+  <div class="contentido_bottom_buscador_grupos row g-4 justify-content-center">
+    {% for grupo in grupos %}
+    <div class="d-flex justify-content-center col-12 col-md-6 col-lg-4">
+      <div class="carta card h-100 shadow">
+        <div class="card-body d-flex flex-column justify-content-between grupo_info">
+          <div>
+            <h3 class="nombre_del_grupo card-title">{{ grupo.nombre }}</h3>
+            <p class="cantidad_integrantes card-text">Cantidad de Integrantes</p>
+          </div>
+
+          <!-- Botón que abre su modal -->
+          <button type="button" class="boton_info btn btn-primary" data-bs-toggle="modal"
+            data-bs-target="#modalGrupo{{ grupo.id }}">
+            INFO
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalGrupo{{ grupo.id }}" tabindex="-1" aria-labelledby="modalGrupoLabel{{ grupo.id }}"
+      aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-dark text-white rounded-4 p-4 border-0 position-relative">
+
+          <!-- Botón de cierre (X) -->
+          <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3"
+            data-bs-dismiss="modal" aria-label="Cerrar"></button>
+
+          <!-- Título -->
+          <h5 class="modal-title text-center text-lilac mb-4 fs-3" id="modalGrupoLabel{{ grupo.id }}">Nombre del grupo {{ grupo.id }}</h5>
+
+          <div class="modal-body d-flex flex-row justify-content-between gap-5 flex-wrap">
+
+            <!-- Integrantes -->
+            <div class="flex-fill">
+              <p class="fw-bold mb-1">Primer integrante</p>
+              <p class="fw-bold mb-1">Segundo integrante</p>
+              <p class="fw-bold mb-1">Tercer integrante</p>
+              <p class="fw-bold mb-1">Cuarto integrante</p>
+              <p class="fw-bold mb-1">...</p>
+            </div>
+
+            <!-- Horarios -->
+            <div class="flex-fill">
+              <p class="fw-bold mb-2">Horarios disponibles para trabajar junt@s:</p>
+              <p>Lu: 10:00 - 12:00</p>
+              <p>Ma: 14:00 - 16:00</p>
+              <p>Mi: —</p>
+              <p>Ju: 18:00 - 20:00</p>
+              <p>Vi: —</p>
+              <p>Sa: 15:00 - 17:00</p>
+              <p>Do: —</p>
+            </div>
+
+          </div>
+
+
+          <!-- Botón solicitar -->
+          <div class="modal-footer border-0 justify-content-end">
+            <button type="button" class="boton_solicitar_unirse btn" style="background-color: #A020F0; color: white;">
+              SOLICITAR UNIRSE
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+</div>
+{% endblock %}

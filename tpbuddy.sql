@@ -75,6 +75,34 @@ CREATE TABLE solicitudes_grupos (
 );
 
 INSERT INTO materias (materia_codigo, nombre) VALUES
-('TB022', 'Introducción al Desarrollo de Software'),
 ('CB001', 'Análisis Matemático II'),
-('TB021', 'Fundamentos de Programación');
+('TB021', 'Fundamentos de Programación'),
+('TB022', 'Introducción al Desarrollo de Software'),
+('TB023', 'Álgebra Lineal'),
+('TB024', 'Organización del Computador'),
+('TB025', 'Algoritmos y Estructuras de Datos'),
+('TB026', 'Probabilidad y Estadística'),
+('TB027', 'Teoría de Algoritmos'),
+('TB028', 'Sistemas Operativos'),
+('TB029', 'Paradigmas de Programación'),
+('TB030', 'Base de Datos'),
+('TB031', 'Modelación Numérica'),
+('TB032', 'Taller de Programación'),
+('IS001', 'Ingeniería de Software I'),
+('IS002', 'Ingeniería de Software II'),
+('IS003', 'Diseño de Software'),
+('IT001', 'Arquitectura de Computadoras'),
+('IT002', 'Redes'),
+('IT003', 'Programación Concurrente'),
+('IT004', 'Sistemas Distribuidos I'),
+('CS001', 'Matemática Discreta'),
+('CS002', 'Teoría de la Computación'),
+('IN001', 'Introducción a la Inteligencia Artificial'),
+('DS001', 'Ciencia de Datos'),
+('OP001', 'Criptografía I'),
+('OP002', 'Lenguajes y Compiladores I'),
+('OP003', 'Análisis Matemático III'),
+('TR001', 'Taller de Proyecto Final');
+
+INSERT INTO grupos (grupo_id, materia_codigo, nombre, tp_terminado, maximo_integrantes) VALUES
+(1,'TR001', 'Locura', False, 4);

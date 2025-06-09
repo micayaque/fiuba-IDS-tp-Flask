@@ -54,3 +54,5 @@ COMPLETAR
 ```bash
 python app.py
 ```
+
+La app se abrirá en [http://localhost:5000](http://localhost:5000)

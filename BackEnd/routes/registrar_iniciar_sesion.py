@@ -1,4 +1,4 @@
-from flask import Blueprint, request, redirect, render_template, flash, url_for, session  
+from flask import Blueprint, request, redirect, flash, url_for, session  
 
 # otra consulta: ¿por que no funciona el import directo desde db (de BackEnd) "from db import get_connection" si antes para mostrar las materias de la base de datos si funcionaba?
 from .db import get_connection
@@ -27,7 +27,7 @@ def registrarse():
         cursor.close()
         conn.close()
 
-    return redirect('/')  # Si el registro es exitoso, va al home
+    return redirect(url_for('inicio'))  # Si el registro es exitoso, va al home
 
 
 @registrar_iniciar_sesion_bp.route('/login', methods=['POST'])
@@ -45,6 +45,14 @@ def iniciar_sesion():
 
     if usuario:
         session['usuario'] = usuario['padron']
-        return redirect('/')
+        return redirect(url_for('inicio'))
     else:
         return "Padron o contraseña incorrectos", 401  # Error simple por ahora
+
+
+@registrar_iniciar_sesion_bp.route('/cerrar_sesion')
+def cerrar_sesion():
+    # eliminar los datos de la sesión
+    session.clear()
+    # redirigir al inicio
+    return redirect(url_for('inicio'))

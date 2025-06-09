@@ -40,10 +40,10 @@
                 <div id="contenedor_botones_header">
                     
                     {% if session.usuario %}
-                        <a class="fw-bold text-decoration-none btn btn-sm" href="{{ url_for('auth.perfil_de_usuario') }}"><i class="fa-solid fa-user"></i></a>
-                        <a class="fw-bold text-decoration-none btn btn-sm" href="{{ url_for('auth.perfil_de_usuario') }}">MI PERFIL</a>
+                        <a class="fw-bold text-decoration-none btn btn-sm" href="{{ url_for('perfil_de_usuario') }}"><i class="fa-solid fa-user"></i></a>
+                        <a class="fw-bold text-decoration-none btn btn-sm" href="{{ url_for('perfil_de_usuario') }}">MI PERFIL</a>
                         <a class="fw-bold text-decoration-none btn btn-sm" href="#"><i class="fa-regular fa-bell"></i></a>
-                        <a class="fw-bold text-decoration-none btn btn-sm m-3" href="{{ url_for('auth.cerrar_sesion') }}" id="btn_cerrar_sesion">CERRAR SESIÓN</a>
+                        <a class="fw-bold text-decoration-none btn btn-sm m-3" href="" id="btn_cerrar_sesion">CERRAR SESIÓN</a>
                     {% else %}
                     
                         <a class="fw-bold text-decoration-none btn btn-sm" href="#" id="btn_iniciar_sesion"  data-bs-toggle="modal" data-bs-target="#loginModal">INICIAR SESIÓN</a>
@@ -60,7 +60,7 @@
                 <div class="modal-body">
                 <h5 class="custom-title fw-bold mb-4">¡Bienvenid@!</h5>
 
-                <form method="POST" action="{{ url_for('auth.registrarse') }}">
+                <form method="POST" action="{{ url_for('registrar_iniciar_sesion.registrarse') }}">
 
                     <!-- Número de padrón -->
                     <div class="mb-3 w-100">
@@ -107,7 +107,7 @@
                 <h5 class="custom-title fw-bold mb-4">¡Bienvenid@!</h5>
 
                 <!-- <form> -->
-                <form method="POST" action="{{ url_for('auth.iniciar_sesion') }}">
+                <form method="POST" action="{{ url_for('registrar_iniciar_sesion.iniciar_sesion') }}">
 
                 <!-- Número de padrón -->
                 <div class="mb-3 w-100">
@@ -163,7 +163,7 @@
 
         <!-- Menú -->
 
-        <div id="contenedor_menu" class="d-flex justify-content-center flex-wrap>
+        <div id="contenedor_menu" class="d-flex justify-content-center flex-wrap">
             <nav class="mt-5">
                 <ul class="nav justify-content-center flex-wrap gap-2" id="opciones_menu">
                     <li class="nav-item"><a class="nav-link text-decoration-none fw-bold p-4" href="/#como-funciona">Cómo funciona</a></li>

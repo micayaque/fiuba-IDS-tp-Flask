@@ -1,0 +1,105 @@
+#fondo_popup_contacto {
+  display: none;
+  position: fixed;
+  top: 0; 
+  left: 0;
+  width: 100%; 
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9); /* oscuro semi-transparente */
+  z-index: 999;
+}
+
+#contenedor_contacto_popup {
+    display: none;
+    flex-direction: column;
+    padding: 0.5rem;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 10%;
+    background-color: #1C1C21;
+    align-items: center;
+    color: #F2F2F2;
+    font-family: 'Poppins';
+    width: 95vw;               /* Usamos % del viewport para evitar que se achique demasiado */
+    max-width: 500px;          /* Limita en pantallas grandes */
+    z-index: 1000;             /* Da prioridad para que este por delante de todo*/
+}
+
+#contenedor_lista_correos {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin: 1rem;
+    width: 100%;
+}
+
+.mail {
+    border: solid #F2F2F2 0.2px;
+    border-radius: 1rem;
+    padding: 0.4rem;
+    width: 40%;
+    text-align: center;
+}
+
+@media (max-width: 415px) {
+  
+  #contenedor_contacto_popup {
+    font-size: small;
+  }
+
+  .mail {
+    font-size: smaller;
+    font-size:xx-small;
+  }
+}
+
+/*Controla el form, tamaños y vista*/
+
+#contenedor_contacto_popup form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+#contenedor_contacto_popup form input {
+    background-color: transparent;
+    border: #F2F2F2 solid 1px;
+    border-radius: 0.3rem;
+    color: #F2F2F2;
+}
+
+#contenedor_contacto_popup form textarea {
+    height: 7rem;
+    background-color: transparent;
+    border: #F2F2F2 solid 1px;
+    border-radius: 0.3rem;
+    color: #F2F2F2;
+}
+
+#contenedor_botones_enviar_cerrar {
+    display: flex;
+    flex-direction: row;
+    background-color: transparent;
+    gap: 3rem;
+    justify-content: center;
+}
+
+#contenedor_botones_enviar_cerrar button {
+    margin-top: 1.5rem;
+    padding: 0.5rem;
+    border-radius: 1rem;
+    color: #F2F2F2;
+    border: none;
+}
+
+#btn_enviar {
+    background-color: #6B066F;
+}
+
+#btn_cerrar {
+    background-color: #6C0000;
+}

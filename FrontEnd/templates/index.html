@@ -5,69 +5,69 @@
 
 {% block content %}
 
-    <div id="contenedor_inicio" class="container py-5">
+    <div id="contenedor_inicio" class="container">
 
-            <div id="contenedor_cantidad_grupos_formados" class="d-flex gap-3 justify-content-center align-content-center mb-5 fw-bold">
+            <div id="contenedor_cantidad_grupos_formados">
 
                 <img id="img_grupos_formados" src="{{ url_for('static', filename='img/img_grupos.png') }}" alt="Cantidad de grupos formados">
                 <p>317 grupos formados</p>
 
             </div>
 
-            <p id="txt_titulo" class="text-center px-5 fw-bold">
+            <p id="txt_titulo">
                 Encontrá compañeros y organizá tus TPs de la mejor manera. 
                 Facilitamos tu búsqueda de grupo para que te enfoques en aprender.
             </p>
 
-            <p class="txt_subtitulo text-center px-5 fw-bold">
+            <p id="txt_subtitulo">
                 Nunca fue tan simple armar tu grupo de TP.
             </p>
 
-            <div class="mt-5 mb-5">
-                <video class="w-100 h-auto" src="{{ url_for('static', filename='img/gif_inicio.webm') }}" autoplay muted loop playsinline></video>
+            <div id="contenedor_video">
+                <video id="gif_inicio" src="{{ url_for('static', filename='img/gif_inicio.webm') }}" autoplay muted loop playsinline></video>
             </div>
 
-            <p class="txt_subtitulo text-center px-5 fw-bold">
+            <p id="txt_subtitulo">
                 Conectamos estudiantes para que trabajen mejor, juntos!
             </p>
 
         <section id="como-funciona">
-            <div id="contenedor_como_funciona" class="py-5 mt-5">
-                <h2 class="text-center fw-bold mb-3"> ¿Cómo funciona TPBuddy? </h2>
+            <div id="contenedor_como_funciona" >
+                <h2> ¿Cómo funciona TPBuddy? </h2>
                 <ol>
-                    <li class="mt-3 list-unstyled">
-                        <i class="fa-solid fa-puzzle-piece text-warning me-2"></i></i><strong>Creá tu perfil</strong><br>
+                    <li class="item_como_funciona">
+                        <i class="fa-solid fa-puzzle-piece text-warning"></i></i><strong>Creá tu perfil</strong><br>
                         Contanos quién sos: qué materias estás cursando, qué horarios tenés disponibles y qué tipo de grupo buscás. Esta información nos ayuda a conectarte con personas compatibles.
                     </li>
 
-                    <li class="mt-3 list-unstyled">
-                        <i class="fa-solid fa-users text-info me-2"></i><strong>Buscá una materia</strong><br>
+                    <li class="item_como_funciona">
+                        <i class="fa-solid fa-users text-info"></i><strong>Buscá una materia</strong><br>
                         Explorá el listado de materias disponibles. Al seleccionar una, vas a poder ver los <em>grupos formados</em>, los <em>grupos con cupos disponibles</em> y los <em>compañeros que todavía no tienen grupo</em>.
                     </li>
 
-                    <li class="mt-3 list-unstyled">
-                        <i class="fa-solid fa-handshake text-success me-2"></i><strong>Unite o creá un grupo</strong><br>
+                    <li class="item_como_funciona">
+                        <i class="fa-solid fa-handshake text-success"></i><strong>Unite o creá un grupo</strong><br>
                         <ul>
-                            <li class="list-unstyled mb-1"><i class="fa-solid fa-star text-warning me-2 mb-1"></i> ¿Viste un grupo que te interesa? Podés <em>enviar una solicitud para unirte</em>.</li>
-                            <li class="list-unstyled mb-1"><i class="fa-solid fa-star text-warning me-2 mb-1"></i> ¿Querés armar tu propio grupo? ¡Adelante! Otros estudiantes podrán ver tu grupo y postularse para unirse.</li>
+                            <li><i class="fa-solid fa-star text-warning"></i> ¿Viste un grupo que te interesa? Podés <em>enviar una solicitud para unirte</em>.</li>
+                            <li><i class="fa-solid fa-star text-warning"></i> ¿Querés armar tu propio grupo? ¡Adelante! Otros estudiantes podrán ver tu grupo y postularse para unirse.</li>
                         </ul>
                     </li>
 
-                    <li class="mt-3 list-unstyled">
-                        <i class="fa-solid fa-bell text-danger me-2"></i><strong>Gestioná tus solicitudes</strong><br>
+                    <li class="item_como_funciona">
+                        <i class="fa-solid fa-bell text-danger"></i><strong>Gestioná tus solicitudes</strong><br>
                         Los grupos pueden aceptar o rechazar solicitudes. Todo queda registrado para que sepas siempre el estado de tus postulaciones.
                     </li>
 
-                    <li class="mt-3 list-unstyled">
-                        <i class="fa-solid fa-bullseye text-primary me-2"></i><strong>Listo para trabajar</strong><br>
+                    <li class="item_como_funciona">
+                        <i class="fa-solid fa-bullseye text-primary"></i><strong>Listo para trabajar</strong><br>
                         Una vez formado tu grupo, ya están listos para organizarse y comenzar el TP. ¡Más simple, más ordenado, más eficiente!
                     </li>
 
-                    <li class="mt-3 list-unstyled">
-                        <i class="fa-regular fa-star text-warning me-2"></i><strong>Bonus</strong><br>
+                    <li class="item_como_funciona">
+                        <i class="fa-regular fa-star text-warning"></i><strong>Bonus</strong><br>
                         <ul>
-                            <li class="list-unstyled mb-1"><i class="fa-regular fa-star text-warning me-2"></i> Podés actualizar tu perfil en cualquier momento.</li>
-                            <li class="list-unstyled mb-1"><i class="fa-solid fa-mobile-screen-button me-2"></i> Próximamente: versión mobile para que gestiones tus grupos desde el celu.</li>
+                            <li><i class="fa-regular fa-star text-warning"></i> Podés actualizar tu perfil en cualquier momento.</li>
+                            <li><i class="fa-solid fa-mobile-screen-button"></i> Próximamente: versión mobile para que gestiones tus grupos desde el celu.</li>
                         </ul>
                     </li>
 

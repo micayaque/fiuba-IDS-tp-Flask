@@ -4,22 +4,22 @@
 
 {% block content %}
 
-    <h2 class="titulo_nombre_materia m-5 fw-bold text-center">{{ materia.nombre }}</h2>
+    <h2 class="titulo_nombre_materia">{{ materia.nombre }}</h2>
     
-    <div class="contenedor_btn_ver_grupos_compañerxs text-center mb-5">
-        <a class="btn"  href="{{ url_for('grupos_por_materia', codigo_materia=materia.codigo_materia) }}">VER GRUPOS FORMADOS</a>
+    <div class="contenedor_btn_ver_grupos_compañerxs">
+        <a class="btn" href="{{ url_for('grupos_por_materia', codigo_materia=materia.codigo_materia) }}">VER GRUPOS FORMADOS</a>
     </div>
 
-    <div id="contenedor_compañerxs_sin_grupo" class="container my-5">
-        <div class="row rounded-4 p-5 justify-content-center">
+    <div id="contenedor_compañerxs_sin_grupo" class="container">
+        <div class="row">
             {% for compañero in compañeros %}
             <div class="carta col-12 col-md-6 col-lg-4">
-                <div id="compañerx_sin_grupo" class="card border-0 mb-3">
+                <div id="compañerx_sin_grupo" class="card">
                     <div class="card-body">
-                        <div id="contenedor_compañerx_sin_grupo_nombre" class="fw-bold text-center mb-3 rounded-4 align-content-center">
+                        <div id="contenedor_compañerx_sin_grupo_nombre">
                             <h5>{{ compañero.nombre }}</h5>
                         </div>
-                        <a href="#" class="btn w-100">INFO</a>
+                        <a href="#" class="btn">INFO</a>
                     </div>
                 </div>
             </div>

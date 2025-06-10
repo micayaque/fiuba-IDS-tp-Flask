@@ -44,11 +44,10 @@ def iniciar_sesion():
     conn.close()
 
     if usuario:
-        session['usuario'] = usuario['padron']
+        session['padron'] = usuario['padron']
         return redirect(url_for('inicio'))
     else:
         return "Padron o contraseña incorrectos", 401  # Error simple por ahora
-
 
 @registrar_iniciar_sesion_bp.route('/cerrar_sesion')
 def cerrar_sesion():

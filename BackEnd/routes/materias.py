@@ -18,6 +18,7 @@ def get_materias():
     conn.close()
     return jsonify(materias)
 
+
 @materias_bp.route("/materias/<string:materia_codigo>/grupos")
 def grupos_por_materia(materia_codigo):
     conn = get_connection()

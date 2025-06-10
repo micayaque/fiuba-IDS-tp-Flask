@@ -1,13 +1,15 @@
+#contenedor-grupos {
+    color: #F2F2F2;
+    font-family: 'Plus Jakarta Sans';
+}
+
 .barra_desplazamiento_grupos {
-    padding: 0.625rem 0.625rem;
     overflow-y: auto;
     overflow-x: hidden;
     height: 30rem;
-    background-color: transparent;
 }
 
 .barra_desplazamiento_grupos div {
-    padding-top: 0;
     padding-right: 0.1875rem;
 }
 
@@ -24,18 +26,13 @@
     background: #444444;
 }
 
-
 #items_barra_desplazamiento_grupos div {
-    border-radius: 0.625rem;
-    width: 100%;
     max-width: 100%;
     transform: translate(-5px, 10px);
 }
 
-
 #contenedor_nombre_grupo_nombre_materia {
     background-color: #1C1C21;
-    padding: 0.625rem;
     height: 5.4375rem;
 }
 
@@ -44,15 +41,9 @@
     font-size: 1.05em;
 }
 
-#contenedor_boton_informacion_grupo {
-    margin-top: 0.625rem;
-    padding-bottom: 0.1875rem;
-}
-
 #contenedor_boton_informacion_grupo a {
-    font-weight: bold;
     color: #FFFFFF;
     background-color: #5C95D6;
     height: 1.875rem;
-    width: 100%;
+    font-family: 'Poppins';
 }

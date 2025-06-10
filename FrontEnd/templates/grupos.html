@@ -2,20 +2,22 @@
 {% block tittle %}Grupos{% endblock %}
 
 {% block content %}
-<div class="container my-5 text-light">
-   <h2 class="text-center mb-4">Grupos disponibles</h2>
+<div class="container my-5" id="contenedor-grupos">
+   <div class="align-items-center d-flex flex-column mb-3">
+      <h2 class="fw-bold text-center mb-5">Grupos disponibles</h2>
+   </div>
    <div class="barra_desplazamiento_grupos">
-      <div class="row justify-content-left g-4">
+      <div class="row my-5 me-2 d-flex justify-content-center mt-0 pt-0">
          {% for grupo in grupos %}
-         <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div class="card bg-dark text-light rounded-4 shadow-sm h-90">
-                  <div id="items_barra_desplazamiento_grupos" class="card-body d-flex flex-column justify-content-between">
-                     <div id="contenedor_nombre_grupo_nombre_materia" class="text-left">
-                        <h5 class="card-title fw-semibold">{{ grupo.nombre }}</h5>
-                        <p class="card-text text-white-muted small">{{ grupo.materia }}</p>
+         <div class="col-12 col-sm-6 col-md-4 col-lg-3 pt-0">
+            <div class="card bg-dark rounded-4 h-90 mb-4 mx-1 pt-0">
+                  <div id="items_barra_desplazamiento_grupos" class="card-body d-flex flex-column pt-0">
+                     <div id="contenedor_nombre_grupo_nombre_materia" class="p-3 w-100 text-left rounded-4">
+                        <h5 class="card-title fw-bold">{{ grupo.nombre }}</h5>
+                        <p class="card-text small">{{ grupo.materia }}</p>
                      </div>
-                     <div id="contenedor_boton_informacion_grupo" class="text-center">
-                        <a href="/grupo/{{ grupo.id }}" class="btn btn-primary rounded-pill px-4">INFO</a>
+                     <div id="contenedor_boton_informacion_grupo" class="w-100 my-3 rounded-4 text-center d-flex justify-content-center align-items-center">
+                        <a href="/grupo/{{ grupo.id }}" class="btn btn-primary rounded-pill px-4 fw-bold w-100">INFO</a>
                      </div>
                   </div>
             </div>

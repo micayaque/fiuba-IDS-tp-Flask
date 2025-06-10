@@ -14,8 +14,10 @@ def get_grupos():
         JOIN materias ON grupos.materia_codigo = materias.materia_codigo
         WHERE NOT grupos.tp_terminado
         """
-    )
+    )    
     grupos = cursor.fetchall()
     cursor.close()
     conn.close()
     return jsonify(grupos)
+
+

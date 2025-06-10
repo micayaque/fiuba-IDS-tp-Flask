@@ -27,34 +27,27 @@ def perfil_de_usuario():
 @app.route("/grupos")
 def mostrar_grupos():
     response = requests.get(f"{API_BASE}/grupos")
-    print(response.text)
     grupos = response.json()
     return render_template("grupos.html", grupos=grupos)
 
 @app.route("/materias")
 def mostrar_materias():
     response = requests.get(f"{API_BASE}/materias")
-    print(response.text)
     materias = response.json()
     return render_template('materias.html', materias=materias)
 
-@app.route("/materia/<int:codigo_materia>")
-def grupos_por_materia(codigo_materia):
-    # Buscar la materia seleccionada
-    for m in materias:
-        if m["codigo_materia"] == codigo_materia:
-            materia = m
-            break
+@app.route("/materias/<string:materia_codigo>/grupos")
+def grupos_por_materia(materia_codigo):
+    response = requests.get(f"{API_BASE}/materias/{materia_codigo}/grupos")
+    grupos = response.json()
+    return render_template("grupos_por_materia.html", nombre_materia=grupos[0]["nombre_materia"], materia_codigo=grupos[0]["materia_codigo"], grupos=grupos)
 
-    grupos_de_materia = [grupo for grupo in grupos if grupo["codigo_materia"] == codigo_materia]
-
-    return render_template("grupos_por_materia.html", materia=materia, grupos=grupos_de_materia)
 
 @app.route("/materias/<int:codigo_materia>/companieros-sin-grupo")
-def companieros_sin_grupo_por_materia(codigo_materia):
+def companieros_sin_grupo_por_materia(materia_codigo):
     materia = None
     for m in materias:
-        if m["codigo_materia"] == codigo_materia:
+        if m["codigo_materia"] == materia_codigo:
             materia = m
             break
 

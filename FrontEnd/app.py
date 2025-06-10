@@ -20,36 +20,15 @@ app.register_blueprint(registrar_iniciar_sesion_bp)
 def inicio():
     return render_template("index.html")
 
-# endpoint para prueba de iniciar sesión (sin validación de usuario) 
-@app.route("/iniciar_sesion", methods=["POST"])
-def iniciar_sesion():
-    session["usuario"] = request.form.get("padron")  # obtenemos y guardamos el padrón ingresado por el usuario para saber quién está (si hay alguien) con la sesión iniciada
-    next_url = request.form.get("next")              # obtenemos la URL en la que estaba el usuario antes de iniciar sesión
-    return redirect(next_url)                        # redirige a dicha URL
-
-@app.route("/cerrar_sesion")
-def cerrar_sesion():
-    session.pop("usuario", None)                    # para cerrar la sesión, eliminamos al usuario de session
-    return redirect(url_for("inicio"))                # volvemos a la página principal
-
 @app.route("/perfil_de_usuario")
 def perfil_de_usuario():
     return f"Bienvenido al perfil de {session['usuario']}"  # muestra el perfil del usuario a través del botón "Mi perfil"
 
-grupos = [
-    {'id': 1, 'nombre': 'Nombre de grupo 1', 'codigo_materia': 1},
-    {'id': 2, 'nombre': 'Nombre de grupo 2', 'codigo_materia': 1},
-    {'id': 3, 'nombre': 'Nombre de grupo 3', 'codigo_materia': 1},
-    {'id': 4, 'nombre': 'Nombre de grupo 4', 'codigo_materia': 1},
-    {'id': 5, 'nombre': 'Nombre de grupo 5', 'codigo_materia': 1},
-    {'id': 6, 'nombre': 'Nombre de grupo 6', 'codigo_materia': 1},
-    {'id': 7, 'nombre': 'Nombre de grupo 7', 'codigo_materia': 1},
-    {'id': 8, 'nombre': 'Nombre de grupo 8', 'codigo_materia': 1},
-    {'id': 9, 'nombre': 'Nombre de grupo 9', 'codigo_materia': 1}
-]
-
 @app.route("/grupos")
 def mostrar_grupos():
+    response = requests.get(f"{API_BASE}/grupos")
+    print(response.text)
+    grupos = response.json()
     return render_template("grupos.html", grupos=grupos)
 
 @app.route("/materias")
@@ -105,7 +84,6 @@ def usuario():
     }
     
     return render_template("perfil_de_usuario.html", materias=materias, grupos=grupos, avatares=avatares)
-
 
 
 if __name__ == '__main__':

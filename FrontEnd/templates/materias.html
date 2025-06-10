@@ -15,8 +15,8 @@
   </div>
   <div id="contenedor-materias" class="row my-5 d-flex justify-content-center">
     {% for materia in materias %}
-      <div class="materia-item justify-content-center p-3 card rounded-5 m-3 text-center d-flex">
-        <a href="/materia/{{ materia.codigo_materia }}" class="materia-nombre d-block text-decoration-none fst-normal">{{ materia.nombre }}</a>
+      <div class="materia-item justify-content-center p-1 card rounded-5 m-3 text-center d-flex">
+        <a href="/materia/{{ materia.codigo_materia }}" class="materia-nombre d-block text-decoration-none fw-bold">{{ materia.nombre }}</a>
       </div>
     {% endfor %}
   </div>

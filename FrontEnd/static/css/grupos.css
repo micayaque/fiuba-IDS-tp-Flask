@@ -31,6 +31,10 @@
     transform: translate(-5px, 10px);
 }
 
+.grupo-card {
+    background-color: #303030;
+}
+
 #contenedor_nombre_grupo_nombre_materia {
     background-color: #1C1C21;
     height: 5.4375rem;

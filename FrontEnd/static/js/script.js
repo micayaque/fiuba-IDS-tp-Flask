@@ -1,14 +1,16 @@
 function mostrarPopupContacto() {
     document.getElementById("contenedor_contacto_popup").style.display = "flex";
     document.getElementById("fondo_popup_contacto").style.display = "block";
-};
+}
 
 function cerrarPopupContacto() {
     document.getElementById("contenedor_contacto_popup").style.display = "none";
     document.getElementById("fondo_popup_contacto").style.display = "none";
-};
+}
 
 function filtrarMaterias() {
+    console.log("filtrarMaterias ejecutada");
+
   const input = document.getElementById('buscadorInput').value.toLowerCase();
   
   const materias = document.getElementsByClassName('materia-item');
@@ -35,7 +37,7 @@ function togglePasswordVisibility() {
         icon.classList.remove('fa-eye-slash');
         icon.classList.add('fa-eye');
       }
-    };
+    }
 
 // Formulario de Login
 
@@ -52,7 +54,7 @@ function toggleLoginPasswordVisibility() {
       icon.classList.remove('fa-eye-slash');
       icon.classList.add('fa-eye');
     }
-  };
+  }
 
 
   // cambiar foto de perfil

@@ -36,6 +36,7 @@
 /**GRILLA**/
 
 .materia-item {
+  display: flex;
   background-color: #1C1C21;
   border: #303030 solid 0.3rem;
   width: 12rem;

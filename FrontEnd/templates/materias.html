@@ -8,19 +8,18 @@
     <div class="align-items-center d-flex flex-column">
       <p id="txt-buscador" class="fw-bold text-center mb-4">Buscá tu materia y encontrá a tu grupo ideal</p>
       <div id="contenedor-buscador-input" class="mx-5 d-flex gap-3 justify-content-center align-items-center w-100">
-        <input class="w-100" type="text" id="buscadorInput" class="rounded-5" placeholder="Buscar materia..." onkeyup="filtrarMaterias()">
+        <input type="text" id="buscadorInput" class="rounded-5 w-100" placeholder="Buscar materia..." onkeyup="filtrarMaterias()">
         <button id="btn-buscar-materia" class="border-0" type="submit"><i class="fa-solid fa-magnifying-glass color-blanco"></i></button>
       </div>
     </div>
   </div>
   <div id="contenedor-materias" class="row my-5 d-flex justify-content-center">
     {% for materia in materias %}
-      <div class="materia-item justify-content-center p-1 card rounded-5 m-3 text-center d-flex">
+      <div class="materia-item justify-content-center p-1 card rounded-5 m-3 text-center">
         <a href="/materia/{{ materia.codigo_materia }}" class="materia-nombre d-block text-decoration-none fw-bold">{{ materia.nombre }}</a>
       </div>
     {% endfor %}
   </div>
 </div>
 
-<script src="{{ url_for('static', filename='js/script.js') }}"></script>
 {% endblock %}

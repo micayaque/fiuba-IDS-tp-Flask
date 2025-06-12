@@ -7,13 +7,14 @@
 <div id="perfil" class="position-relative d-flex flex-column">
 
     <!-- Banner del perfil -->
-    <div id="banner_perfil" class="mb-5 position-relative" onclick="document.getElementById('color_selector_banner').click()">
-        <div>
-            <input type="color" id="color_selector_banner" onchange="cambiarColorBanner(this.value)">
-        </div>
+    <div id="banner_perfil" class="mb-5 position-relative" style="background-color: {{ usuario.banner_color }};" onclick="document.getElementById('color_selector_banner').click()">
+        <form id="formColorBanner" method="POST" action="/usuario/{{ usuario.padron }}/editar" style="display:none;">
+            <input type="hidden" name="campo" value="banner_color">
+            <input type="color" id="color_selector_banner" name="valor" value="{{ usuario.banner_color }}" onchange="document.getElementById('formColorBanner').submit();">
+        </form>
         <div id="foto_de_perfil" class="position-absolute">
             <button id="boton_editar_foto_de_perfil" class="p-0 border-0 btn" data-bs-toggle="modal" data-bs-target="#modalEditarFotoPerfil" onclick="event.stopPropagation()">
-                <img class="foto_perfil_img" src="{{ url_for('static', filename='img/' + usuario.avatar_url) }}" alt="Foto de perfil">
+                <img class="foto_perfil_img" src="{{ url_for('static', filename='img/avatares/' + usuario.avatar_url) }}" alt="Foto de perfil">
             </button>
         </div>
     </div>
@@ -21,26 +22,20 @@
     <!-- Datos del usuario -->
     <div id="datos_usuario" class="mt-4">
         <div class="d-flex">
-            <h4 id="nombre_usuario" class="titulo_datos_usuario">Nombre de compañer@</h4>
-            <button type="button" class="btn p-0" data-bs-toggle="modal" data-bs-target="#modalEditarCampo" onclick="abrirEditorInfo('nombre')">
+            <h4 id="nombre_usuario" class="titulo_datos_usuario">{{ usuario.nombre }}</h4>
+            <button type="button" class="btn p-0" data-bs-toggle="modal" data-bs-target="#modalEditarNombre">
                 <i class="fa-regular fa-pen-to-square"></i>
             </button>
         </div>
         <div class="d-flex my-2">
-            <h6 id="universidad_usuario" class="titulo_datos_usuario">Universidad</h6>
-            <button class="btn" data-bs-toggle="modal" data-bs-target="#modalEditarCampo" onclick="abrirEditorInfo('universidad')">
-                <i class="fa-regular fa-pen-to-square"></i>
-            </button>
-        </div>
-        <div class="d-flex my-2">
-            <h6 id="carrera_usuario" class="titulo_datos_usuario">Carrera</h6>
-            <button class="btn" data-bs-toggle="modal" data-bs-target="#modalEditarCampo" onclick="abrirEditorInfo('carrera')">
+            <h6 id="carrera_usuario" class="titulo_datos_usuario">{{ usuario.carrera }}</h6>
+            <button class="btn" data-bs-toggle="modal" data-bs-target="#modalEditarCarrera">
                 <i class="fa-regular fa-pen-to-square"></i>
             </button>
         </div>
         <div class="d-flex flex-wrap align-items-center gap-2  my-2 mb-3">
             <h6 class="titulo_datos_usuario"> Sobre mí</h6>
-            <textarea id="sobre_mi_usuario" class="w-100 p-4 border-0" placeholder="Escribí algo sobre vos..." readonly data-bs-toggle="modal" data-bs-target="#modalSobreMi" onclick="abrirEditorSobreMi()" ></textarea>
+            <textarea id="sobre_mi_usuario" class="w-100 p-4 border-0" placeholder="Escribí algo sobre vos..." readonly data-bs-toggle="modal" data-bs-target="#modalSobreMi">{{ usuario.sobre_mi }}</textarea>
         </div>
     </div>
 
@@ -140,9 +135,13 @@
                     <div class="row g-3 justify-content-center">
                         {% for avatar in avatares %}
                         <div class="col-4 col-sm-4 col-md-3 col-lg-2 text-center">
-                            <button type="button" class="btn p-0" onclick="cambiarFoto('{{ url_for('static', filename='img/avatares/' + avatar) }}')">
-                                <img id="avatar_img" src="{{ url_for('static', filename='img/avatares/' + avatar) }}" alt="Avatar" class="rounded-circle img-fluid">
-                            </button>
+                            <form method="POST" action="/usuario/{{ usuario.padron }}/editar">
+                                <input type="hidden" name="campo" value="avatar_url">
+                                <input type="hidden" name="valor" value="{{ avatar }}">
+                                <button type="submit" class="btn p-0">
+                                    <img id="avatar_img" src="{{ url_for('static', filename='img/avatares/' + avatar) }}" alt="Avatar" class="rounded-circle img-fluid">
+                                </button>
+                            </form>
                         </div>
                         {% endfor %}
                     </div>
@@ -151,39 +150,68 @@
         </div>
     </div>
 
-    <!-- Modal para editar datos del usuario nombre/universidad/carrera-->
-    <div class="modal" id="modalEditarCampo">
+    <!-- Modal para editar nombre-->
+    <div class="modal" id="modalEditarNombre">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header border-0">
                     <h5 class="modal-title" id="modalEditarCampoTitulo">Editar</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
-                <div class="modal-body">
-                    <input id="inputEditarCampo" class="w-100"></input>
-                </div>
-                <div class="modal-footer border-0 justify-content-center">
-                    <button type="button" class="btn btn-guardar" onclick="guardarCampoEditado()">GUARDAR</button>
-                </div>
+                <form method="POST" action="/usuario/{{ usuario.padron }}/editar">
+                    <div class="modal-body d-flex flex-column align-items-center w-100">
+                        <input type="hidden" name="campo" value="nombre" class="inputEditarCampo w-100"></input>
+                        <input type="text" name="valor" value="{{ usuario.nombre }}" class="inputEditarCampo w-100"></input>
+                    </div>
+                    <div class="modal-footer border-0 justify-content-center">
+                        <button type="button" class="btn btn-guardar"">GUARDAR</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+
+    <!-- Modal para editar carrera-->
+    <div class="modal" id="modalEditarCarrera">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title" id="modalEditarCampoTitulo">Editar</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <form method="POST" action="/usuario/{{ usuario.padron }}/editar">
+                    <div class="modal-body d-flex flex-column align-items-center w-100">
+                        <input type="hidden" name="campo" value="carrera" class="inputEditarCampo w-100"></input>
+                        <input type="text" name="valor" value="{{ usuario.carrera }}" class="inputEditarCampo w-100"></input>
+                    </div>
+                    <div class="modal-footer border-0 justify-content-center">
+                        <button type="button" class="btn btn-guardar">GUARDAR</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 
     <!-- Modal para editar el cuadro de texto "Sobre mí" -->
     <div class="modal" id="modalSobreMi">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header border-0"><h5>Editar bio</h5></div>
-                <div class="modal-body">
-                    <textarea id="textareaEditarSobreMi" class="w-100"></textarea>
-                    <div class="d-flex justify-content-center gap-2 mt-3">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CANCELAR</button>
-                        <button type="button" class="btn btn-guardar" onclick="guardarSobreMi()">GUARDAR</button>
+                <form method="POST" action="/usuario/{{ usuario.padron }}/editar">
+                    <div class="modal-body">
+                        <textarea id="textareaEditarSobreMi" name="valor" class="w-100">{{ usuario.sobre_mi }}</textarea>
+                        <input type="hidden" name="campo" value="sobre_mi">
+                        <div class="d-flex justify-content-center gap-2 mt-3">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CANCELAR</button>
+                            <button type="submit" class="btn btn-guardar">GUARDAR</button>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>
+    
 
     <!-- Modal para editar materias -->
     <div class="modal" id="modalEditarMaterias">
@@ -304,10 +332,6 @@
                                 <div class="row">
                                     <label for="nombreIntegrante" class="form-label">Nombre de integrante X:</label>
                                     <input type="text" class="form-control" id="nombreIntegrante" name="nombreIntegrante" style="background-color: #1C1C21">
-                                </div>
-                                <div class="row">
-                                    <label for="apellidoIntegrante" class="form-label">Apellido de integrante X:</label>
-                                    <input type="text" class="form-control" id="apellidoIntegrante" name="apellidoIntegrante" style="background-color: #1C1C21">
                                 </div>
                                 <div class="row">
                                     <label for="faltantes" class="form-label">¿Cuántas personas faltan para formar el grupo?</label>

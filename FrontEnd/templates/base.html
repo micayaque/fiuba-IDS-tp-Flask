@@ -82,14 +82,8 @@
         
                     <!-- Nombre -->
                     <div class="mb-3 w-100">
-                    <label for="nombre" class="text-white">Nombre</label>
+                    <label for="nombre" class="text-white">Nombre completo</label>
                     <input type="text" class="form-control form-dark" id="nombre" name="nombre" placeholder="Escribí acá tu nombre">
-                    </div>
-
-                    <!-- Apellido -->
-                    <div class="mb-3 w-100">
-                    <label for="apellido" class="text-white">Apellido</label>
-                    <input type="text" class="form-control form-dark" id="apellido" name="apellido" placeholder="Escribí acá tu apellido">
                     </div>
         
                     <!-- Botón -->
@@ -143,7 +137,7 @@
         <div id="contenedor_menu">
             
             <nav class="mt-md-0">
-                <ul class="nav" id="opciones_menu">
+                <ul class="nav mb-5" id="opciones_menu">
 
                     <li class="nav-item"><a class="nav-link" href="/#como-funciona">Cómo funciona</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('mostrar_materias') }}">Materias</a></li>

@@ -10,7 +10,6 @@ def registrarse():
     padron = data['padron']
     password = data['password']
     nombre = data['nombre']
-    apellido = data['apellido']
 
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
@@ -22,8 +21,8 @@ def registrarse():
         return "El usuario ya existe", 400
 
     cursor.execute(
-        "INSERT INTO usuarios (padron, contrasena, nombre, apellido) VALUES (%s, %s, %s, %s)",
-        (padron, password, nombre, apellido)
+        "INSERT INTO usuarios (padron, contrasena, nombre) VALUES (%s, %s, %s)",
+        (padron, password, nombre)
     )
 
     conn.commit()

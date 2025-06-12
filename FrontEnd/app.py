@@ -12,13 +12,11 @@ def registrarse():
     padron = request.form['padron']
     password = request.form['password']
     nombre = request.form['nombre']
-    apellido = request.form['apellido']
 
     response = requests.post(f"{API_BASE}/registrarse", json={
         "padron": padron,
         "password": password,
         "nombre": nombre,
-        "apellido": apellido
     })
 
     if response.status_code == 200:
@@ -57,9 +55,32 @@ def cerrar_sesion():
 def inicio():
     return render_template("index.html")
 
-@app.route("/perfil_de_usuario")
-def perfil_de_usuario():
-    return f"Bienvenido al perfil de {session['usuario']}"  # muestra el perfil del usuario a través del botón "Mi perfil"
+
+@app.route("/usuario/<int:padron>")
+def usuario(padron):
+    avatares = ["pepe.jpg", "tiger.jpg", "mulan.jpg", "jon.jpg", "lisa.jpg", "snoopy.jpg", "this_is_fine.jpg", "tom.jpg", "coraje.jpg"]
+        
+    response = requests.get(f"{API_BASE}/usuario/{padron}")
+    usuario = response.json()
+    return render_template("perfil_de_usuario.html", usuario=usuario, avatares=avatares)
+
+
+@app.route("/usuario/<int:padron>/editar", methods=["POST"])
+def editar_perfil_usuario(padron):
+    campo = request.form.get("campo")
+    valor = request.form.get("valor")
+    # Envía el request al backend como JSON
+    response = requests.post(
+        f"{API_BASE}/usuario/{padron}/editar",
+        json={"campo": campo, "valor": valor}
+    )
+    # Puedes manejar la respuesta JSON si lo deseas
+    if response.status_code == 200:
+        return redirect(url_for("usuario", padron=padron))
+    else:
+        # Puedes mostrar un mensaje de error si quieres
+        return "Error al actualizar el perfil", 400
+
 
 @app.route("/grupos")
 def mostrar_grupos():
@@ -96,15 +117,6 @@ def companieros_sin_grupo_por_materia(materia_codigo):
     ]
 
     return render_template("compañerxs_sin_grupo.html", materia=materia, compañeros=compañeros_sin_grupo)
-
-
-@app.route("/usuario/<int:padron>")
-def usuario(padron):
-    avatares = ["pepe.jpg", "tiger.jpg", "mulan.jpg", "jon.jpg", "lisa.jpg", "snoopy.jpg", "this_is_fine.jpg", "tom.jpg", "coraje.jpg"]
-        
-    response = requests.get(f"{API_BASE}/usuario/{padron}")
-    usuario = response.json()
-    return render_template("perfil_de_usuario.html", usuario=usuario, avatares=avatares)
 
 if __name__ == '__main__':
     app.run('localhost', port=8000, debug=True)

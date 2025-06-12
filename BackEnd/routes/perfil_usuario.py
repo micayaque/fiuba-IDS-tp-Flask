@@ -12,7 +12,23 @@ def get_perfil_usuario(padron):
         SELECT * FROM usuarios WHERE padron = %s
         """, (padron,)
     )
-    resultado = cursor.fetchone()
+    usuario = cursor.fetchone()
     cursor.close()
     conn.close()
-    return jsonify(resultado)
+    return jsonify(usuario)
+
+@perfil_usuario_bp.route("/usuario/<int:padron>/editar", methods=["POST"])
+def editar_perfil_usuario(padron):
+    data = request.get_json()
+    campo = data.get("campo")
+    valor = data.get("valor")
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(f"UPDATE usuarios SET {campo} = %s WHERE padron = %s", (valor, padron))
+    conn.commit()
+
+    cursor.close()
+    conn.close()
+    return "Perfil actualizado", 200

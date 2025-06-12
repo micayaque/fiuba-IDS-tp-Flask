@@ -1,10 +1,3 @@
-# consultar con franco, ¿por qué no funciona el import normal de BackEnd.routes.registrar_iniciar_sesion sin las primeras 3 lineas?
-import sys
-import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
-from BackEnd.routes.registrar_iniciar_sesion import registrar_iniciar_sesion_bp
-
 from flask import Flask, render_template, session, redirect, url_for, request
 import requests
 
@@ -14,7 +7,51 @@ app.secret_key = 'clave-secreta'  # necesaria para usar session
 
 API_BASE = "http://localhost:5000"
 
-app.register_blueprint(registrar_iniciar_sesion_bp)
+@app.route("/registrarse", methods=["POST"])
+def registrarse():
+    padron = request.form['padron']
+    password = request.form['password']
+    nombre = request.form['nombre']
+    apellido = request.form['apellido']
+
+    response = requests.post(f"{API_BASE}/registrarse", json={
+        "padron": padron,
+        "password": password,
+        "nombre": nombre,
+        "apellido": apellido
+    })
+
+    if response.status_code == 200:
+        session['usuario'] = padron
+        return redirect(url_for("inicio"))
+    elif response.status_code == 400 and response.text == "El usuario ya existe":
+        return render_template("index.html", error="El usuario ya existe")
+    else:
+        return render_template("index.html", error="Error al registrar el usuario")
+
+    
+@app.route("/iniciar-sesion", methods=["POST"])
+def iniciar_sesion():
+    padron = request.form['padron']
+    password = request.form['password']
+
+    response = requests.post(f"{API_BASE}/iniciar-sesion", json={
+        "padron": padron,
+        "password": password
+    })
+
+    if response.status_code == 200:
+        session['usuario'] = padron
+        return redirect(url_for("inicio"))
+    else:
+        return render_template("index.html", error="Padron o contraseña incorrectos")
+
+
+@app.route("/cerrar-sesion")
+def cerrar_sesion():
+    session.clear()
+    return redirect(url_for("inicio"))
+
 
 @app.route("/")
 def inicio():

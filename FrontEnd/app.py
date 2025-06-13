@@ -60,12 +60,12 @@ def inicio():
 def usuario(padron):
     avatares = ["pepe.jpg", "tiger.jpg", "mulan.jpg", "jon.jpg", "lisa.jpg", "snoopy.jpg", "this_is_fine.jpg", "tom.jpg", "coraje.jpg"]
         
-    response = requests.get(f"{API_BASE}/usuario/{padron}")
+    response = requests.get(f"{API_BASE}/usuario/{padron}")     # datos del usuario: nombre, carrera, "sobre mi", avatar, color del banner del perfil
     usuario = response.json()
 
     materias = requests.get(f"{API_BASE}/materias").json()
 
-    response = requests.get(f"{API_BASE}/usuario/{padron}/materias-cursando")
+    response = requests.get(f"{API_BASE}/usuario/{padron}/materias-cursando")   # materias que el usuario está cursando
     if response.status_code == 200:
         materias_cursando = response.json()
     else:
@@ -74,7 +74,7 @@ def usuario(padron):
     codigos_cursando = {m["materia_codigo"] for m in materias_cursando}
     materias_para_elegir_cursando = [m for m in materias if m["materia_codigo"] not in codigos_cursando]
 
-    response = requests.get(f"{API_BASE}/usuario/{padron}/materias-aprobadas")
+    response = requests.get(f"{API_BASE}/usuario/{padron}/materias-aprobadas")  # materias que el usuario aprobó
     if response.status_code == 200:
         materias_aprobadas = response.json()
     else:
@@ -83,10 +83,20 @@ def usuario(padron):
     codigos_aprobadas = {m["materia_codigo"] for m in materias_aprobadas}
     materias_para_elegir_aprobadas = [m for m in materias if m["materia_codigo"] not in codigos_aprobadas]
 
-    # grupos = requests.get(f"{API_BASE}/grupos").json()
+
+    response = requests.get(f"{API_BASE}/usuario/{padron}/horarios-usuario")  # horarios disponibles del usuario
+    if response.status_code == 200:
+        horarios_usuario = response.json()
+    else:
+        horarios_usuario = []
+    horarios_por_dia_usuario = {}
+    for horario in horarios_usuario:
+        horarios_por_dia_usuario.setdefault(horario["dia"], []).append(horario["turno"])     # agrupa a los turnos por día para mostrarlos más fácil en el html
+
 
     return render_template("perfil_de_usuario.html", usuario=usuario, avatares=avatares, materias_cursando=materias_cursando, materias_aprobadas=materias_aprobadas, 
-    materias_para_elegir_cursando=materias_para_elegir_cursando, materias_para_elegir_aprobadas=materias_para_elegir_aprobadas)
+    materias_para_elegir_cursando=materias_para_elegir_cursando, materias_para_elegir_aprobadas=materias_para_elegir_aprobadas, horarios_por_dia_usuario=horarios_por_dia_usuario)
+
 
 
 @app.route("/usuario/<int:padron>/editar-perfil", methods=["POST"])
@@ -191,6 +201,21 @@ def eliminar_materia_aprobada(padron):
 
     return redirect(url_for("usuario", padron=padron))
 
+
+@app.route("/usuario/<int:padron>/editar-horarios-usuario", methods=["POST"])
+def editar_horarios_usuario(padron):
+    dias = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo']
+    turnos = ['mañana', 'tarde', 'noche']
+
+    horarios = []
+    for dia in dias:
+        for turno in turnos:
+            if request.form.get(f"{dia}_{turno}"):      # si el checkbox está marcado
+                horarios.append({"dia": dia, "turno": turno})
+
+    requests.post(f"{API_BASE}/usuario/{padron}/editar-horarios-usuario", json={"horarios": horarios})
+    
+    return redirect(url_for("usuario", padron=padron))
 
 
 @app.route("/grupos")

@@ -116,6 +116,11 @@
     font-family: 'Poppins';
 }
 
+.icono-horario {
+    width: 4rem;
+    height: 4rem;
+}
+
 #titulo-grupos {
     color: #F2F2F2;
     font-family: 'Poppins';

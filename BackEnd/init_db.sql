@@ -28,7 +28,7 @@ CREATE TABLE materias_usuarios (
 
 CREATE TABLE horarios_usuarios (
     padron INT,
-    dia ENUM('lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo') NOT NULL,
+    dia ENUM('lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo') NOT NULL,
     turno ENUM('mañana', 'tarde', 'noche') NOT NULL,
     PRIMARY KEY (padron, dia, turno),
     FOREIGN KEY (padron) REFERENCES usuarios(padron) ON DELETE CASCADE

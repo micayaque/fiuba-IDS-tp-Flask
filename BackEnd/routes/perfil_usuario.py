@@ -3,6 +3,7 @@ from db import get_connection
 
 perfil_usuario_bp = Blueprint("perfil_usuario", __name__)
 
+# Datos del usuario
 @perfil_usuario_bp.route("/usuario/<int:padron>")
 def get_perfil_usuario(padron):
     conn = get_connection()
@@ -34,6 +35,7 @@ def editar_perfil_usuario(padron):
     return "Perfil actualizado", 200
 
 
+# Materias cursando
 @perfil_usuario_bp.route("/usuario/<int:padron>/materias-cursando", methods=["GET"])
 def materias_cursando(padron):
     conn = get_connection()
@@ -52,7 +54,6 @@ def materias_cursando(padron):
     cursor.close()
     conn.close()
     return jsonify(materias), 200
-
 
 @perfil_usuario_bp.route("/usuario/<int:padron>/agregar-materia-cursando", methods=["POST"])
 def agregar_materia_cursando(padron):
@@ -90,10 +91,7 @@ def eliminar_materia_cursando(padron):
     return "Materia eliminada", 200
 
 
-
-
-
-
+# Materias aprobadas
 @perfil_usuario_bp.route("/usuario/<int:padron>/materias-aprobadas", methods=["GET"])
 def materias_aprobadas(padron):
     conn = get_connection()
@@ -150,5 +148,41 @@ def eliminar_materia_aprobada(padron):
     return "Materia eliminada", 200
 
 
+# Horarios disponibles
+@perfil_usuario_bp.route("/usuario/<int:padron>/horarios-usuario", methods=["GET"])
+def get_horarios_usuario(padron):
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute(
+        "SELECT dia, turno FROM horarios_usuarios WHERE padron = %s", (padron,)
+    )
+
+    horarios = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+    return jsonify(horarios), 200
 
 
+@perfil_usuario_bp.route("/usuario/<int:padron>/editar-horarios-usuario", methods=["POST"])
+def editar_horarios_usuario(padron):
+    data = request.get_json()
+    horarios = data.get("horarios", [])  # lista de diccionarios: {"dia": ..., "turno": ...}
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("DELETE FROM horarios_usuarios WHERE padron = %s", (padron,))
+    
+    for horario in horarios:
+        cursor.execute(
+            "INSERT INTO horarios_usuarios (padron, dia, turno) VALUES (%s, %s, %s)",
+            (padron, horario["dia"], horario["turno"])
+        )
+
+    conn.commit()
+
+    cursor.close()
+    conn.close()
+    return "Horarios actualizados", 200

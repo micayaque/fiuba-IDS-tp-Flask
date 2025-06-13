@@ -84,11 +84,20 @@
                     <div class="card-body">
                         <h5 class="card-title d-flex justify-content-between align-items-center">
                             Horarios disponibles
-                            <button id="boton_editar_horarios_disponibles" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalEditarHorarios">
+                            <button id="boton_editar_horarios_disponibles" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalEditarHorariosUsuario">
                             <img src="{{ url_for('static', filename='img/icono_lapiz_edit.png') }}" alt="Editar" width="16">
                             </button>
                         </h5>
-                        <ul class="list-group list-group-flush my-3">
+                        <ul class="list-group list-group-flush my-3 text-start">
+                            {% set simbolos = {'mañana': 'M', 'tarde': 'T', 'noche': 'N'} %}
+                            {% for dia, turnos in horarios_por_dia_usuario.items() %}
+                                <li class="list-group-item materia-background nombre-grupo mx-0 px-0">
+                                    {{ dia|capitalize }}:
+                                    {% for turno in turnos %}
+                                           {{ simbolos[turno] }}{% if not loop.last %} - {% endif %}
+                                    {% endfor %}
+                                </li>
+                            {% endfor %}
                         </ul>
                     </div>
                 </div>
@@ -125,6 +134,11 @@
             {% endfor %}
         </div>
     </div>
+
+
+
+    <!-- Modales -->
+
 
 
     <!-- Modal para editar la foto de perfil-->
@@ -321,7 +335,7 @@
 
 
     <!-- Modal para editar horarios disponibles -->
-    <div class="modal" id="modalEditarHorarios">
+    <div class="modal" id="modalEditarHorariosUsuario">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content p-4">
                 <div class="modal-header border-0">
@@ -329,7 +343,7 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form method="POST" action="/usuario/{{ usuario.padron }}/editar-horarios-usuario">
                         <div class="table-responsive">
                             <table class="table p-3 tabla-horarios text-center align-middle">
                                 <thead>
@@ -345,24 +359,20 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <th>Mañana</th>
-                                        {% for dia in ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'] %}
-                                            <td><input type="checkbox" name="{{ dia }}_mañana"></td>
-                                        {% endfor %}
-                                    </tr>
-                                    <tr>
-                                        <th>Tarde<br></th>
-                                        {% for dia in ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'] %}
-                                            <td><input type="checkbox" name="{{ dia }}_tarde"></td>
-                                        {% endfor %}
-                                    </tr>
-                                    <tr>
-                                        <th>Noche<br></th>
-                                        {% for dia in ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'] %}
-                                            <td><input type="checkbox" name="{{ dia }}_noche"></td>
-                                        {% endfor %}
-                                    </tr>
+                                    {% set imagenes_turno = {'mañana': 'mañana.png', 'tarde': 'tarde.png', 'noche': 'noche.png'} %}
+                                    {% for turno in ['mañana', 'tarde', 'noche'] %}
+                                        <tr>
+                                            <th>
+                                                <img src="{{ url_for('static', filename='img/horarios/' + imagenes_turno[turno]) }}" alt="{{ turno }}" class="icono-horario">
+                                            </th>
+                                            {% for dia in ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'] %}
+                                                <td>
+                                                    <input type="checkbox" name="{{ dia }}_{{ turno }}"
+                                                    {% if horarios_por_dia_usuario.get(dia) and turno in horarios_por_dia_usuario[dia] %}checked{% endif %}>
+                                                </td>
+                                            {% endfor %}
+                                        </tr>
+                                    {% endfor %}
                                 </tbody>
                             </table>
                         </div>
@@ -374,6 +384,7 @@
             </div>
         </div>
     </div>
+
 
     <!-- Modal para agregar grupo -->
     <div class="modal" id="modalAgregarGrupo">
@@ -425,6 +436,7 @@
         </div>
     </div>
 
+    
     <!-- Modal para editar grupo -->
     <div class="modal" id="modalEditarGrupo">
         <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -478,6 +490,7 @@
             </div>
         </div>
     </div>
+
 </div>
 
 {% endblock %}

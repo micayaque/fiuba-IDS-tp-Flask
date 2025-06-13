@@ -55,7 +55,7 @@ def materias_cursando(padron):
 
 
 @perfil_usuario_bp.route("/usuario/<int:padron>/agregar-materia-cursando", methods=["POST"])
-def agregar_materia_usuario(padron):
+def agregar_materia_cursando(padron):
     data = request.get_json()
     materia_codigo = data.get("materia_codigo")
 
@@ -72,9 +72,8 @@ def agregar_materia_usuario(padron):
     conn.close()
     return "Materia agregada", 201
 
-
 @perfil_usuario_bp.route("/usuario/<int:padron>/eliminar-materia-cursando", methods=["POST"])
-def eliminar_materia_usuario(padron):
+def eliminar_materia_cursando(padron):
     data = request.get_json()
     materia_codigo = data.get("materia_codigo")
 
@@ -89,3 +88,67 @@ def eliminar_materia_usuario(padron):
     cursor.close()
     conn.close()
     return "Materia eliminada", 200
+
+
+
+
+
+
+@perfil_usuario_bp.route("/usuario/<int:padron>/materias-aprobadas", methods=["GET"])
+def materias_aprobadas(padron):
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute(
+        """
+        SELECT m_u.materia_codigo, m.nombre
+        FROM materias_usuarios m_u
+        JOIN materias m ON m_u.materia_codigo = m.materia_codigo
+        WHERE m_u.padron = %s AND m_u.estado = 'aprobada'
+        """, (padron,)
+    )
+
+    materias = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+    return jsonify(materias), 200
+
+
+@perfil_usuario_bp.route("/usuario/<int:padron>/agregar-materia-aprobada", methods=["POST"])
+def agregar_materia_aprobada(padron):
+    data = request.get_json()
+    materia_codigo = data.get("materia_codigo")
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "INSERT INTO materias_usuarios (padron, materia_codigo, estado) VALUES (%s, %s, 'aprobada')",
+        (padron, materia_codigo)
+    )
+    conn.commit()
+
+    cursor.close()
+    conn.close()
+    return "Materia agregada", 201
+
+@perfil_usuario_bp.route("/usuario/<int:padron>/eliminar-materia-aprobada", methods=["POST"])
+def eliminar_materia_aprobada(padron):
+    data = request.get_json()
+    materia_codigo = data.get("materia_codigo")
+
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        "DELETE FROM materias_usuarios WHERE padron = %s AND materia_codigo = %s AND estado = 'aprobada'",
+        (padron, materia_codigo)
+    )
+
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return "Materia eliminada", 200
+
+
+
+

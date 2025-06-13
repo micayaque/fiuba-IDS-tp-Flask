@@ -70,8 +70,10 @@
                                 <img src="{{ url_for('static', filename='img/icono_lapiz_edit.png') }}" alt="Editar materias" width="16">
                             </button>
                         </h5>
-                        <ul class="list-group list-group-flush my-3">
-                            <li class="list-group-item materia-background"></li>
+                        <ul class="list-group my-3">
+                            {% for materia in materias_aprobadas %}
+                                <li class="list-group-item materia-background nombre-grupo text-center">{{ materia.nombre }}</li>
+                            {% endfor %}
                         </ul>
                     </div>
                 </div>
@@ -241,8 +243,8 @@
                     </ul>
                     <form method="POST" action="/usuario/{{ usuario.padron }}/editar-materias-cursando">
                         <div class="text-start mb-2"><label class="form-label">Seleccioná tus materias:</label></div>
-                        <div class="mb-3 d-flex gap-2 align-items-center">
-                            {% for materia in materias_para_elegir %}
+                        <div class="mb-3 d-flex gap-2 align-items-center text-center">
+                            {% for materia in materias_para_elegir_cursando %}
                             <div class="d-flex align-items-center gap-3">
                                 <label class="check-input-materia form-label">
                                     <input type="checkbox" name="materias" value="{{ materia.materia_codigo }}" class="d-none">
@@ -265,6 +267,7 @@
             </div>
         </div>
     </div>
+
 
     <!-- Modal para editar materias aprobadas -->
     <div class="modal" id="modalEditarMateriasAprobadas">
@@ -289,10 +292,10 @@
                         </li>
                         {% endfor %}
                     </ul>
-                    <form method="POST" action="/usuario/{{ usuario.padron }}/editar-materias-cursando">
+                    <form method="POST" action="/usuario/{{ usuario.padron }}/editar-materias-aprobadas">
                         <div class="text-start mb-2"><label class="form-label">Seleccioná tus materias:</label></div>
-                        <div class="mb-3 d-flex gap-2 align-items-center">
-                            {% for materia in materias_para_elegir %}
+                        <div class="mb-3 d-flex gap-2 align-items-center text-center">
+                            {% for materia in materias_para_elegir_aprobadas %}
                             <div class="d-flex align-items-center gap-3">
                                 <label class="check-input-materia form-label">
                                     <input type="checkbox" name="materias" value="{{ materia.materia_codigo }}" class="d-none">

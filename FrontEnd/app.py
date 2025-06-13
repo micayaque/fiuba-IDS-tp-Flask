@@ -72,11 +72,21 @@ def usuario(padron):
         materias_cursando = []
 
     codigos_cursando = {m["materia_codigo"] for m in materias_cursando}
-    materias_para_elegir = [m for m in materias if m["materia_codigo"] not in codigos_cursando]
+    materias_para_elegir_cursando = [m for m in materias if m["materia_codigo"] not in codigos_cursando]
+
+    response = requests.get(f"{API_BASE}/usuario/{padron}/materias-aprobadas")
+    if response.status_code == 200:
+        materias_aprobadas = response.json()
+    else:
+        materias_aprobadas = []
+
+    codigos_aprobadas = {m["materia_codigo"] for m in materias_aprobadas}
+    materias_para_elegir_aprobadas = [m for m in materias if m["materia_codigo"] not in codigos_aprobadas]
 
     # grupos = requests.get(f"{API_BASE}/grupos").json()
 
-    return render_template("perfil_de_usuario.html", usuario=usuario, avatares=avatares, materias_cursando=materias_cursando, materias_para_elegir=materias_para_elegir)
+    return render_template("perfil_de_usuario.html", usuario=usuario, avatares=avatares, materias_cursando=materias_cursando, materias_aprobadas=materias_aprobadas, 
+    materias_para_elegir_cursando=materias_para_elegir_cursando, materias_para_elegir_aprobadas=materias_para_elegir_aprobadas)
 
 
 @app.route("/usuario/<int:padron>/editar-perfil", methods=["POST"])
@@ -114,20 +124,13 @@ def editar_materias_cursando(padron):
         materias_usuario = response.json()
     else:
         materias_usuario = []
-    materias_actuales = [m["materia_codigo"] for m in materias_usuario]
 
+    materias_actuales = [m["materia_codigo"] for m in materias_usuario]
     materias_a_agregar = set(materias_seleccionadas) - set(materias_actuales)
-    materias_a_eliminar = set(materias_actuales) - set(materias_seleccionadas)
 
     for codigo in materias_a_agregar:
         requests.post(
             f"{API_BASE}/usuario/{padron}/agregar-materia-cursando",
-            json={"materia_codigo": codigo}
-        )
-
-    for codigo in materias_a_eliminar:
-        requests.post(
-            f"{API_BASE}/usuario/{padron}/eliminar-materia",
             json={"materia_codigo": codigo}
         )
 
@@ -144,6 +147,50 @@ def eliminar_materia_cursando(padron):
     )
 
     return redirect(url_for("usuario", padron=padron))
+
+
+@app.route("/usuario/<int:padron>/editar-materias-aprobadas", methods=["POST"])
+def editar_materias_aprobadas(padron):
+    materias_seleccionadas = request.form.getlist("materias")
+    nueva_materia = request.form.get("nueva_materia")
+    codigo_nueva_materia = request.form.get("codigo_nueva_materia")
+
+    if nueva_materia and codigo_nueva_materia:
+        requests.post(
+            f"{API_BASE}/materias",
+            json={"materia_codigo": codigo_nueva_materia, "nombre": nueva_materia}
+        )
+        materias_seleccionadas.append(codigo_nueva_materia)
+
+    response = requests.get(f"{API_BASE}/usuario/{padron}/materias-aprobadas")
+    if response.status_code == 200:
+        materias_usuario = response.json()
+    else:
+        materias_usuario = []
+
+    materias_actuales = [m["materia_codigo"] for m in materias_usuario]
+    materias_a_agregar = set(materias_seleccionadas) - set(materias_actuales)
+
+    for codigo in materias_a_agregar:
+        requests.post(
+            f"{API_BASE}/usuario/{padron}/agregar-materia-aprobada",
+            json={"materia_codigo": codigo}
+        )
+
+    return redirect(url_for("usuario", padron=padron))
+
+
+@app.route("/usuario/<int:padron>/eliminar-materia-aprobada", methods=["POST"])
+def eliminar_materia_aprobada(padron):
+    materia_codigo = request.form.get("materia_codigo")
+
+    requests.post(
+        f"{API_BASE}/usuario/{padron}/eliminar-materia-aprobada",
+        json={"materia_codigo": materia_codigo}
+    )
+
+    return redirect(url_for("usuario", padron=padron))
+
 
 
 @app.route("/grupos")

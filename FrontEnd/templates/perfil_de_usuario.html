@@ -7,13 +7,14 @@
 <div id="perfil" class="position-relative d-flex flex-column">
 
     <!-- Banner del perfil -->
-    <div id="banner_perfil" class="mb-5 position-relative" onclick="document.getElementById('color_selector_banner').click()">
-        <div>
-            <input type="color" id="color_selector_banner" onchange="cambiarColorBanner(this.value)">
-        </div>
+    <div id="banner_perfil" class="mb-5 position-relative" style="background-color: {{ usuario.banner_color }};" onclick="document.getElementById('color_selector_banner').click()">
+        <form id="formColorBanner" method="POST" action="/usuario/{{ usuario.padron }}/editar-perfil" style="display:none;">
+            <input type="hidden" name="campo" value="banner_color">
+            <input type="color" id="color_selector_banner" name="valor" value="{{ usuario.banner_color }}" onchange="document.getElementById('formColorBanner').submit();">
+        </form>
         <div id="foto_de_perfil" class="position-absolute">
             <button id="boton_editar_foto_de_perfil" class="p-0 border-0 btn" data-bs-toggle="modal" data-bs-target="#modalEditarFotoPerfil" onclick="event.stopPropagation()">
-                <img class="foto_perfil_img" src="{{ url_for('static', filename='img/avatar-default.jpg') }}" alt="Foto de perfil">
+                <img class="foto_perfil_img" src="{{ url_for('static', filename='img/avatares/' + usuario.avatar_url) }}" alt="Foto de perfil">
             </button>
         </div>
     </div>
@@ -21,30 +22,24 @@
     <!-- Datos del usuario -->
     <div id="datos_usuario" class="mt-4">
         <div class="d-flex">
-            <h4 id="nombre_usuario" class="titulo_datos_usuario">Nombre de compañer@</h4>
-            <button type="button" class="btn p-0" data-bs-toggle="modal" data-bs-target="#modalEditarCampo" onclick="abrirEditorInfo('nombre')">
+            <h4 id="nombre_usuario" class="titulo_datos_usuario">{{ usuario.nombre }}</h4>
+            <button type="button" class="btn p-0" data-bs-toggle="modal" data-bs-target="#modalEditarNombre">
                 <i class="fa-regular fa-pen-to-square"></i>
             </button>
         </div>
         <div class="d-flex my-2">
-            <h6 id="universidad_usuario" class="titulo_datos_usuario">Universidad</h6>
-            <button class="btn" data-bs-toggle="modal" data-bs-target="#modalEditarCampo" onclick="abrirEditorInfo('universidad')">
-                <i class="fa-regular fa-pen-to-square"></i>
-            </button>
-        </div>
-        <div class="d-flex my-2">
-            <h6 id="carrera_usuario" class="titulo_datos_usuario">Carrera</h6>
-            <button class="btn" data-bs-toggle="modal" data-bs-target="#modalEditarCampo" onclick="abrirEditorInfo('carrera')">
+            <h6 id="carrera_usuario" class="titulo_datos_usuario">{{ usuario.carrera }}</h6>
+            <button class="btn" data-bs-toggle="modal" data-bs-target="#modalEditarCarrera">
                 <i class="fa-regular fa-pen-to-square"></i>
             </button>
         </div>
         <div class="d-flex flex-wrap align-items-center gap-2  my-2 mb-3">
             <h6 class="titulo_datos_usuario"> Sobre mí</h6>
-            <textarea id="sobre_mi_usuario" class="w-100 p-4 border-0" placeholder="Escribí algo sobre vos..." readonly data-bs-toggle="modal" data-bs-target="#modalSobreMi" onclick="abrirEditorSobreMi()" ></textarea>
+            <textarea id="sobre_mi_usuario" class="w-100 p-4 border-0" placeholder="Escribí algo sobre vos..." readonly data-bs-toggle="modal" data-bs-target="#modalSobreMi">{{ usuario.sobre_mi }}</textarea>
         </div>
     </div>
 
-    <!-- Materias -->
+    <!-- Materias y horarios -->
     <div class="container my-3">
         <div class="row g-5 justify-content-center">
             <!-- Materias Cursando -->
@@ -53,11 +48,14 @@
                     <div class="card-body">
                         <h5 class="card-title d-flex justify-content-between align-items-center">
                             Materias cursando
-                            <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalEditarMaterias">
+                            <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalEditarMateriasCursando">
                                 <img src="{{ url_for('static', filename='img/icono_lapiz_edit.png') }}" alt="Editar materias" width="16">
                             </button>
                         </h5>
-                        <ul class="list-group list-group-flush my-3 lista-de-materias">
+                        <ul class="list-group my-3">
+                            {% for materia in materias_cursando %}
+                                <li class="list-group-item materia-background nombre-grupo text-center">{{ materia.nombre }}</li>
+                            {% endfor %}
                         </ul>
                     </div>
                 </div>
@@ -68,12 +66,14 @@
                     <div class="card-body">
                         <h5 class="card-title d-flex justify-content-between align-items-center">
                             Materias aprobadas
-                            <button id="boton_editar_materias" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalEditarMaterias">
+                            <button id="boton_editar_materias" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalEditarMateriasAprobadas">
                                 <img src="{{ url_for('static', filename='img/icono_lapiz_edit.png') }}" alt="Editar materias" width="16">
                             </button>
                         </h5>
-                        <ul class="list-group list-group-flush my-3">
-                            <li class="list-group-item materia-background"></li>
+                        <ul class="list-group my-3">
+                            {% for materia in materias_aprobadas %}
+                                <li class="list-group-item materia-background nombre-grupo text-center">{{ materia.nombre }}</li>
+                            {% endfor %}
                         </ul>
                     </div>
                 </div>
@@ -84,11 +84,20 @@
                     <div class="card-body">
                         <h5 class="card-title d-flex justify-content-between align-items-center">
                             Horarios disponibles
-                            <button id="boton_editar_horarios_disponibles" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalEditarHorarios">
+                            <button id="boton_editar_horarios_disponibles" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalEditarHorariosUsuario">
                             <img src="{{ url_for('static', filename='img/icono_lapiz_edit.png') }}" alt="Editar" width="16">
                             </button>
                         </h5>
-                        <ul class="list-group list-group-flush my-3">
+                        <ul class="list-group list-group-flush my-3 text-start">
+                            {% set simbolos = {'mañana': 'M', 'tarde': 'T', 'noche': 'N'} %}
+                            {% for dia, turnos in horarios_por_dia_usuario.items() %}
+                                <li class="list-group-item materia-background nombre-grupo mx-0 px-0">
+                                    {{ dia|capitalize }}:
+                                    {% for turno in turnos %}
+                                           {{ simbolos[turno] }}{% if not loop.last %} - {% endif %}
+                                    {% endfor %}
+                                </li>
+                            {% endfor %}
                         </ul>
                     </div>
                 </div>
@@ -127,6 +136,11 @@
     </div>
 
 
+
+    <!-- Modales -->
+
+
+
     <!-- Modal para editar la foto de perfil-->
     <div class="modal" id="modalEditarFotoPerfil">
         <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -140,9 +154,13 @@
                     <div class="row g-3 justify-content-center">
                         {% for avatar in avatares %}
                         <div class="col-4 col-sm-4 col-md-3 col-lg-2 text-center">
-                            <button type="button" class="btn p-0" onclick="cambiarFoto('{{ url_for('static', filename='img/avatares/' + avatar) }}')">
-                                <img id="avatar_img" src="{{ url_for('static', filename='img/avatares/' + avatar) }}" alt="Avatar" class="rounded-circle img-fluid">
-                            </button>
+                            <form method="POST" action="/usuario/{{ usuario.padron }}/editar-perfil">
+                                <input type="hidden" name="campo" value="avatar_url">
+                                <input type="hidden" name="valor" value="{{ avatar }}">
+                                <button type="submit" class="btn p-0">
+                                    <img id="avatar_img" src="{{ url_for('static', filename='img/avatares/' + avatar) }}" alt="Avatar" class="rounded-circle img-fluid">
+                                </button>
+                            </form>
                         </div>
                         {% endfor %}
                     </div>
@@ -151,72 +169,173 @@
         </div>
     </div>
 
-    <!-- Modal para editar datos del usuario nombre/universidad/carrera-->
-    <div class="modal" id="modalEditarCampo">
+    <!-- Modal para editar nombre-->
+    <div class="modal" id="modalEditarNombre">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header border-0">
                     <h5 class="modal-title" id="modalEditarCampoTitulo">Editar</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
-                <div class="modal-body">
-                    <input id="inputEditarCampo" class="w-100"></input>
-                </div>
-                <div class="modal-footer border-0 justify-content-center">
-                    <button type="button" class="btn btn-guardar" onclick="guardarCampoEditado()">GUARDAR</button>
-                </div>
+                <form method="POST" action="/usuario/{{ usuario.padron }}/editar-perfil">
+                    <div class="modal-body d-flex flex-column align-items-center w-100">
+                        <input type="hidden" name="campo" value="nombre" class="inputEditarCampo w-100"></input>
+                        <input type="text" name="valor" value="{{ usuario.nombre }}" class="inputEditarCampo w-100"></input>
+                    </div>
+                    <div class="modal-footer border-0 justify-content-center">
+                        <button type="button" class="btn btn-guardar"">GUARDAR</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+
+    <!-- Modal para editar carrera-->
+    <div class="modal" id="modalEditarCarrera">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title" id="modalEditarCampoTitulo">Editar</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <form method="POST" action="/usuario/{{ usuario.padron }}/editar-perfil">
+                    <div class="modal-body d-flex flex-column align-items-center w-100">
+                        <input type="hidden" name="campo" value="carrera" class="inputEditarCampo w-100"></input>
+                        <input type="text" name="valor" value="{{ usuario.carrera }}" class="inputEditarCampo w-100"></input>
+                    </div>
+                    <div class="modal-footer border-0 justify-content-center">
+                        <button type="button" class="btn btn-guardar">GUARDAR</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 
     <!-- Modal para editar el cuadro de texto "Sobre mí" -->
     <div class="modal" id="modalSobreMi">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header border-0"><h5>Editar bio</h5></div>
-                <div class="modal-body">
-                    <textarea id="textareaEditarSobreMi" class="w-100"></textarea>
-                    <div class="d-flex justify-content-center gap-2 mt-3">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CANCELAR</button>
-                        <button type="button" class="btn btn-guardar" onclick="guardarSobreMi()">GUARDAR</button>
+                <form method="POST" action="/usuario/{{ usuario.padron }}/editar-perfil">
+                    <div class="modal-body">
+                        <textarea id="textareaEditarSobreMi" name="valor" class="w-100">{{ usuario.sobre_mi }}</textarea>
+                        <input type="hidden" name="campo" value="sobre_mi">
+                        <div class="d-flex justify-content-center gap-2 mt-3">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CANCELAR</button>
+                            <button type="submit" class="btn btn-guardar">GUARDAR</button>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>
+    
 
-    <!-- Modal para editar materias -->
-    <div class="modal" id="modalEditarMaterias">
+    <!-- Modal para editar materias cursando -->
+    <div class="modal" id="modalEditarMateriasCursando">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content p-3">
-                <div class="modal-header">
-                    <h5 class="modal-title">Editar Materias</h5>
+                <div class="modal-header border-0">
+                    <h5 class="modal-title">Editar Materias Cursando</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form class="text-center">
-                        <div class="text-start"><label class="form-label ">Seleccioná tus materias:</label></div>
-                        <div class="mb-3 d-flex flex-wrap gap-2 justify-content-center">
-                            {% for materia in ['Algoritmos I', 'Algoritmos II', 'Bases de Datos', 'Teoría de algoritmos', 'Análisis Matemático I', 'Álgebra'] %}
-                                <label class="check-input-materia">
-                                    <input class="d-none" type="checkbox" name="materias" value="{{ materia }}">
-                                    <div class="materia-box p-2">{{ materia }}</div>
+                    <!-- Lista de materias cursando con botón de eliminar -->
+                    <ul class="list-group my-3">
+                        {% for materia in materias_cursando %}
+                        <li class="list-group-item d-flex justify-content-between materia-background align-items-center fw-normal">
+                            {{ materia.nombre }}
+                            <form method="POST" action="/usuario/{{ usuario.padron }}/eliminar-materia-cursando">
+                                <input type="hidden" name="materia_codigo" value="{{ materia.materia_codigo }}">
+                                <button type="submit" class="btn btn-sm btn-danger" title="Eliminar">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+                            </form>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <form method="POST" action="/usuario/{{ usuario.padron }}/editar-materias-cursando">
+                        <div class="text-start mb-2"><label class="form-label">Seleccioná tus materias:</label></div>
+                        <div class="mb-3 d-flex gap-2 align-items-center text-center">
+                            {% for materia in materias_para_elegir_cursando %}
+                            <div class="d-flex align-items-center gap-3">
+                                <label class="check-input-materia form-label">
+                                    <input type="checkbox" name="materias" value="{{ materia.materia_codigo }}" class="d-none">
+                                    <div class="materia-box p-2">{{ materia.nombre }}</div>
                                 </label>
+                            </div>
                             {% endfor %}
                         </div>
-                        <div class="text-start d-flex row">
-                            <label for="nuevaMateria" class="form-label">Agregar nueva materia:</label>
-                            <input type="text" class="p-2 input-agregar-materia" id="nuevaMateria" placeholder="Escribí una materia nueva">
+                        <div class="d-flex row my-2 gap-2 text-start px-2">
+                            <label for="nombreNuevaMateria" class="form-label mt-3">Agregar nueva materia:</label>
+                            <input type="text" class="input-agregar-materia" id="nombreNuevaMateria" name="nueva_materia" placeholder="Escribí una materia nueva">
+                            <label for="codigoNuevaMateria" class="form-label mt-3">Código de la materia:</label>
+                            <input type="text" class="input-agregar-materia" id="codigoNuevaMateria" name="codigo_nueva_materia" placeholder="Escribí el código de la materia nueva">
                         </div>
-                        <button type="submit" class="btn btn-guardar mt-3 text-center">Guardar</button>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-guardar mt-3 text-center">Guardar</button>
+                        </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 
+
+    <!-- Modal para editar materias aprobadas -->
+    <div class="modal" id="modalEditarMateriasAprobadas">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content p-3">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title">Editar Materias Aprobadas</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Lista de materias aprobadas con botón de eliminar -->
+                    <ul class="list-group my-3">
+                        {% for materia in materias_aprobadas %}
+                        <li class="list-group-item d-flex justify-content-between materia-background align-items-center fw-normal">
+                            {{ materia.nombre }}
+                            <form method="POST" action="/usuario/{{ usuario.padron }}/eliminar-materia-aprobada">
+                                <input type="hidden" name="materia_codigo" value="{{ materia.materia_codigo }}">
+                                <button type="submit" class="btn btn-sm btn-danger" title="Eliminar">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+                            </form>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <form method="POST" action="/usuario/{{ usuario.padron }}/editar-materias-aprobadas">
+                        <div class="text-start mb-2"><label class="form-label">Seleccioná tus materias:</label></div>
+                        <div class="mb-3 d-flex gap-2 align-items-center text-center">
+                            {% for materia in materias_para_elegir_aprobadas %}
+                            <div class="d-flex align-items-center gap-3">
+                                <label class="check-input-materia form-label">
+                                    <input type="checkbox" name="materias" value="{{ materia.materia_codigo }}" class="d-none">
+                                    <div class="materia-box p-2">{{ materia.nombre }}</div>
+                                </label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div class="d-flex row my-2 gap-2 text-start px-2">
+                            <label for="nombreNuevaMateria" class="form-label mt-3">Agregar nueva materia:</label>
+                            <input type="text" class="input-agregar-materia" id="nombreNuevaMateria" name="nueva_materia" placeholder="Escribí una materia nueva">
+                            <label for="codigoNuevaMateria" class="form-label mt-3">Código de la materia:</label>
+                            <input type="text" class="input-agregar-materia" id="codigoNuevaMateria" name="codigo_nueva_materia" placeholder="Escribí el código de la materia nueva">
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-guardar mt-3 text-center">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <!-- Modal para editar horarios disponibles -->
-    <div class="modal" id="modalEditarHorarios">
+    <div class="modal" id="modalEditarHorariosUsuario">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content p-4">
                 <div class="modal-header border-0">
@@ -224,7 +343,7 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form method="POST" action="/usuario/{{ usuario.padron }}/editar-horarios-usuario">
                         <div class="table-responsive">
                             <table class="table p-3 tabla-horarios text-center align-middle">
                                 <thead>
@@ -240,24 +359,20 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <th>Mañana</th>
-                                        {% for dia in ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'] %}
-                                            <td><input type="checkbox" name="{{ dia }}_mañana"></td>
-                                        {% endfor %}
-                                    </tr>
-                                    <tr>
-                                        <th>Tarde<br></th>
-                                        {% for dia in ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'] %}
-                                            <td><input type="checkbox" name="{{ dia }}_tarde"></td>
-                                        {% endfor %}
-                                    </tr>
-                                    <tr>
-                                        <th>Noche<br></th>
-                                        {% for dia in ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'] %}
-                                            <td><input type="checkbox" name="{{ dia }}_noche"></td>
-                                        {% endfor %}
-                                    </tr>
+                                    {% set imagenes_turno = {'mañana': 'mañana.png', 'tarde': 'tarde.png', 'noche': 'noche.png'} %}
+                                    {% for turno in ['mañana', 'tarde', 'noche'] %}
+                                        <tr>
+                                            <th>
+                                                <img src="{{ url_for('static', filename='img/horarios/' + imagenes_turno[turno]) }}" alt="{{ turno }}" class="icono-horario">
+                                            </th>
+                                            {% for dia in ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'] %}
+                                                <td>
+                                                    <input type="checkbox" name="{{ dia }}_{{ turno }}"
+                                                    {% if horarios_por_dia_usuario.get(dia) and turno in horarios_por_dia_usuario[dia] %}checked{% endif %}>
+                                                </td>
+                                            {% endfor %}
+                                        </tr>
+                                    {% endfor %}
                                 </tbody>
                             </table>
                         </div>
@@ -269,6 +384,7 @@
             </div>
         </div>
     </div>
+
 
     <!-- Modal para agregar grupo -->
     <div class="modal" id="modalAgregarGrupo">
@@ -306,10 +422,6 @@
                                     <input type="text" class="form-control" id="nombreIntegrante" name="nombreIntegrante" style="background-color: #1C1C21">
                                 </div>
                                 <div class="row">
-                                    <label for="apellidoIntegrante" class="form-label">Apellido de integrante X:</label>
-                                    <input type="text" class="form-control" id="apellidoIntegrante" name="apellidoIntegrante" style="background-color: #1C1C21">
-                                </div>
-                                <div class="row">
                                     <label for="faltantes" class="form-label">¿Cuántas personas faltan para formar el grupo?</label>
                                     <input type="number" class="form-control w-25" id="faltantes" name="faltantes" style="background-color: #1C1C21">
                                 </div>
@@ -324,6 +436,7 @@
         </div>
     </div>
 
+    
     <!-- Modal para editar grupo -->
     <div class="modal" id="modalEditarGrupo">
         <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -377,6 +490,7 @@
             </div>
         </div>
     </div>
+
 </div>
 
 {% endblock %}

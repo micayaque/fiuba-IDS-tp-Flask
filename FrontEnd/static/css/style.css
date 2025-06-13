@@ -8,6 +8,11 @@ body {
 
 /* Logo y Botones de registro e inicio de sesión */
 
+.alert {
+    background-color: #410443;
+    font-family: 'Poppins';
+}
+
 #contenedor_logo_header img{
     display: flex;
     height: 5rem;

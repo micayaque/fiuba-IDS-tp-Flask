@@ -11,17 +11,16 @@ CREATE TABLE usuarios (
     padron INT PRIMARY KEY,
     contrasena VARCHAR(50) NOT NULL,
     nombre VARCHAR(50) NOT NULL,
-    apellido VARCHAR(50) NOT NULL,
-    carrera VARCHAR(50),
-    sobre_mi VARCHAR(1000),
-    avatar_url VARCHAR(255),
+    carrera VARCHAR(50) DEFAULT '',
+    sobre_mi VARCHAR(1000) DEFAULT '',
+    avatar_url VARCHAR(255) DEFAULT 'avatar-default.jpg',
     banner_color VARCHAR(7) DEFAULT '#A0B4B7'
 );
 
 CREATE TABLE materias_usuarios (
     padron INT,
-    tiene_grupo BOOLEAN,
     materia_codigo VARCHAR(6),
+    estado ENUM('cursando', 'aprobada'),
     PRIMARY KEY (padron, materia_codigo),
     FOREIGN KEY (padron) REFERENCES usuarios(padron) ON DELETE CASCADE,
     FOREIGN KEY (materia_codigo) REFERENCES materias(materia_codigo) ON DELETE CASCADE
@@ -29,7 +28,7 @@ CREATE TABLE materias_usuarios (
 
 CREATE TABLE horarios_usuarios (
     padron INT,
-    dia ENUM('lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo') NOT NULL,
+    dia ENUM('lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo') NOT NULL,
     turno ENUM('mañana', 'tarde', 'noche') NOT NULL,
     PRIMARY KEY (padron, dia, turno),
     FOREIGN KEY (padron) REFERENCES usuarios(padron) ON DELETE CASCADE
@@ -73,8 +72,3 @@ CREATE TABLE solicitudes_grupos (
     FOREIGN KEY (grupo_id) REFERENCES grupos(grupo_id) ON DELETE CASCADE,
     FOREIGN KEY (padron) REFERENCES usuarios(padron) ON DELETE CASCADE
 );
-
-INSERT INTO materias (materia_codigo, nombre) VALUES
-('TB022', 'Introducción al Desarrollo de Software'),
-('CB001', 'Análisis Matemático II'),
-('TB021', 'Fundamentos de Programación');

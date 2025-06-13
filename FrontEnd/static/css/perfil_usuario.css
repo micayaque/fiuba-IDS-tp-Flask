@@ -63,6 +63,7 @@
 
 .check-input-materia {
     border: #F2F2F2 solid 1px;
+    color: #F2F2F2;
 }
 
 .check-input-materia {
@@ -78,7 +79,6 @@
 .input-agregar-materia {
     background-color: #1C1C21;
     color: #F2F2F2;
-    width: 100%;
 }
 
 .btn-guardar{
@@ -109,7 +109,7 @@
 .materia-background {
     background-color: #1C1C21;
     color: #F2F2F2;
-    font-family: 'Inter';
+    font-family: 'Poppins';
 }
 
 .materia-background h5{
@@ -162,7 +162,7 @@
 }
 
 .form-label {
-    color: #F2F2F2;
+    color: #F2F2F2 !important;
     font-family: 'Poppins';
 }
 

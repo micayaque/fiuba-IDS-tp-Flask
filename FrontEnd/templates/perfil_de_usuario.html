@@ -8,7 +8,7 @@
 
     <!-- Banner del perfil -->
     <div id="banner_perfil" class="mb-5 position-relative" style="background-color: {{ usuario.banner_color }};" onclick="document.getElementById('color_selector_banner').click()">
-        <form id="formColorBanner" method="POST" action="/usuario/{{ usuario.padron }}/editar" style="display:none;">
+        <form id="formColorBanner" method="POST" action="/usuario/{{ usuario.padron }}/editar-perfil" style="display:none;">
             <input type="hidden" name="campo" value="banner_color">
             <input type="color" id="color_selector_banner" name="valor" value="{{ usuario.banner_color }}" onchange="document.getElementById('formColorBanner').submit();">
         </form>
@@ -39,7 +39,7 @@
         </div>
     </div>
 
-    <!-- Materias -->
+    <!-- Materias y horarios -->
     <div class="container my-3">
         <div class="row g-5 justify-content-center">
             <!-- Materias Cursando -->
@@ -48,11 +48,14 @@
                     <div class="card-body">
                         <h5 class="card-title d-flex justify-content-between align-items-center">
                             Materias cursando
-                            <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalEditarMaterias">
+                            <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalEditarMateriasCursando">
                                 <img src="{{ url_for('static', filename='img/icono_lapiz_edit.png') }}" alt="Editar materias" width="16">
                             </button>
                         </h5>
-                        <ul class="list-group list-group-flush my-3 lista-de-materias">
+                        <ul class="list-group my-3">
+                            {% for materia in materias_cursando %}
+                                <li class="list-group-item materia-background nombre-grupo text-center">{{ materia.nombre }}</li>
+                            {% endfor %}
                         </ul>
                     </div>
                 </div>
@@ -63,7 +66,7 @@
                     <div class="card-body">
                         <h5 class="card-title d-flex justify-content-between align-items-center">
                             Materias aprobadas
-                            <button id="boton_editar_materias" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalEditarMaterias">
+                            <button id="boton_editar_materias" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalEditarMateriasAprobadas">
                                 <img src="{{ url_for('static', filename='img/icono_lapiz_edit.png') }}" alt="Editar materias" width="16">
                             </button>
                         </h5>
@@ -135,7 +138,7 @@
                     <div class="row g-3 justify-content-center">
                         {% for avatar in avatares %}
                         <div class="col-4 col-sm-4 col-md-3 col-lg-2 text-center">
-                            <form method="POST" action="/usuario/{{ usuario.padron }}/editar">
+                            <form method="POST" action="/usuario/{{ usuario.padron }}/editar-perfil">
                                 <input type="hidden" name="campo" value="avatar_url">
                                 <input type="hidden" name="valor" value="{{ avatar }}">
                                 <button type="submit" class="btn p-0">
@@ -158,7 +161,7 @@
                     <h5 class="modal-title" id="modalEditarCampoTitulo">Editar</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
-                <form method="POST" action="/usuario/{{ usuario.padron }}/editar">
+                <form method="POST" action="/usuario/{{ usuario.padron }}/editar-perfil">
                     <div class="modal-body d-flex flex-column align-items-center w-100">
                         <input type="hidden" name="campo" value="nombre" class="inputEditarCampo w-100"></input>
                         <input type="text" name="valor" value="{{ usuario.nombre }}" class="inputEditarCampo w-100"></input>
@@ -179,7 +182,7 @@
                     <h5 class="modal-title" id="modalEditarCampoTitulo">Editar</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
-                <form method="POST" action="/usuario/{{ usuario.padron }}/editar">
+                <form method="POST" action="/usuario/{{ usuario.padron }}/editar-perfil">
                     <div class="modal-body d-flex flex-column align-items-center w-100">
                         <input type="hidden" name="campo" value="carrera" class="inputEditarCampo w-100"></input>
                         <input type="text" name="valor" value="{{ usuario.carrera }}" class="inputEditarCampo w-100"></input>
@@ -198,7 +201,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header border-0"><h5>Editar bio</h5></div>
-                <form method="POST" action="/usuario/{{ usuario.padron }}/editar">
+                <form method="POST" action="/usuario/{{ usuario.padron }}/editar-perfil">
                     <div class="modal-body">
                         <textarea id="textareaEditarSobreMi" name="valor" class="w-100">{{ usuario.sobre_mi }}</textarea>
                         <input type="hidden" name="campo" value="sobre_mi">
@@ -213,35 +216,106 @@
     </div>
     
 
-    <!-- Modal para editar materias -->
-    <div class="modal" id="modalEditarMaterias">
+    <!-- Modal para editar materias cursando -->
+    <div class="modal" id="modalEditarMateriasCursando">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content p-3">
-                <div class="modal-header">
-                    <h5 class="modal-title">Editar Materias</h5>
+                <div class="modal-header border-0">
+                    <h5 class="modal-title">Editar Materias Cursando</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form class="text-center">
-                        <div class="text-start"><label class="form-label ">Seleccioná tus materias:</label></div>
-                        <div class="mb-3 d-flex flex-wrap gap-2 justify-content-center">
-                            {% for materia in ['Algoritmos I', 'Algoritmos II', 'Bases de Datos', 'Teoría de algoritmos', 'Análisis Matemático I', 'Álgebra'] %}
-                                <label class="check-input-materia">
-                                    <input class="d-none" type="checkbox" name="materias" value="{{ materia }}">
-                                    <div class="materia-box p-2">{{ materia }}</div>
+                    <!-- Lista de materias cursando con botón de eliminar -->
+                    <ul class="list-group my-3">
+                        {% for materia in materias_cursando %}
+                        <li class="list-group-item d-flex justify-content-between materia-background align-items-center fw-normal">
+                            {{ materia.nombre }}
+                            <form method="POST" action="/usuario/{{ usuario.padron }}/eliminar-materia-cursando">
+                                <input type="hidden" name="materia_codigo" value="{{ materia.materia_codigo }}">
+                                <button type="submit" class="btn btn-sm btn-danger" title="Eliminar">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+                            </form>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <form method="POST" action="/usuario/{{ usuario.padron }}/editar-materias-cursando">
+                        <div class="text-start mb-2"><label class="form-label">Seleccioná tus materias:</label></div>
+                        <div class="mb-3 d-flex gap-2 align-items-center">
+                            {% for materia in materias_para_elegir %}
+                            <div class="d-flex align-items-center gap-3">
+                                <label class="check-input-materia form-label">
+                                    <input type="checkbox" name="materias" value="{{ materia.materia_codigo }}" class="d-none">
+                                    <div class="materia-box p-2">{{ materia.nombre }}</div>
                                 </label>
+                            </div>
                             {% endfor %}
                         </div>
-                        <div class="text-start d-flex row">
-                            <label for="nuevaMateria" class="form-label">Agregar nueva materia:</label>
-                            <input type="text" class="p-2 input-agregar-materia" id="nuevaMateria" placeholder="Escribí una materia nueva">
+                        <div class="d-flex row my-2 gap-2 text-start px-2">
+                            <label for="nombreNuevaMateria" class="form-label mt-3">Agregar nueva materia:</label>
+                            <input type="text" class="input-agregar-materia" id="nombreNuevaMateria" name="nueva_materia" placeholder="Escribí una materia nueva">
+                            <label for="codigoNuevaMateria" class="form-label mt-3">Código de la materia:</label>
+                            <input type="text" class="input-agregar-materia" id="codigoNuevaMateria" name="codigo_nueva_materia" placeholder="Escribí el código de la materia nueva">
                         </div>
-                        <button type="submit" class="btn btn-guardar mt-3 text-center">Guardar</button>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-guardar mt-3 text-center">Guardar</button>
+                        </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Modal para editar materias aprobadas -->
+    <div class="modal" id="modalEditarMateriasAprobadas">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content p-3">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title">Editar Materias Aprobadas</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Lista de materias aprobadas con botón de eliminar -->
+                    <ul class="list-group my-3">
+                        {% for materia in materias_aprobadas %}
+                        <li class="list-group-item d-flex justify-content-between materia-background align-items-center fw-normal">
+                            {{ materia.nombre }}
+                            <form method="POST" action="/usuario/{{ usuario.padron }}/eliminar-materia-aprobada">
+                                <input type="hidden" name="materia_codigo" value="{{ materia.materia_codigo }}">
+                                <button type="submit" class="btn btn-sm btn-danger" title="Eliminar">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+                            </form>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <form method="POST" action="/usuario/{{ usuario.padron }}/editar-materias-cursando">
+                        <div class="text-start mb-2"><label class="form-label">Seleccioná tus materias:</label></div>
+                        <div class="mb-3 d-flex gap-2 align-items-center">
+                            {% for materia in materias_para_elegir %}
+                            <div class="d-flex align-items-center gap-3">
+                                <label class="check-input-materia form-label">
+                                    <input type="checkbox" name="materias" value="{{ materia.materia_codigo }}" class="d-none">
+                                    <div class="materia-box p-2">{{ materia.nombre }}</div>
+                                </label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div class="d-flex row my-2 gap-2 text-start px-2">
+                            <label for="nombreNuevaMateria" class="form-label mt-3">Agregar nueva materia:</label>
+                            <input type="text" class="input-agregar-materia" id="nombreNuevaMateria" name="nueva_materia" placeholder="Escribí una materia nueva">
+                            <label for="codigoNuevaMateria" class="form-label mt-3">Código de la materia:</label>
+                            <input type="text" class="input-agregar-materia" id="codigoNuevaMateria" name="codigo_nueva_materia" placeholder="Escribí el código de la materia nueva">
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-guardar mt-3 text-center">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <!-- Modal para editar horarios disponibles -->
     <div class="modal" id="modalEditarHorarios">

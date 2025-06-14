@@ -99,9 +99,13 @@ def usuario(padron):
     else:
         grupos = []
 
+    response = requests.get(f"{API_BASE}/usuario/{padron}/solicitudes-pendientes-grupos")
+    solicitudes_pendientes_grupos = response.json().get("pendientes")
+    session['notificacion'] = len(solicitudes_pendientes_grupos) > 0
+
     return render_template("perfil_de_usuario.html", usuario=usuario, avatares=avatares, materias_cursando=materias_cursando, materias_aprobadas=materias_aprobadas, 
     materias_para_elegir_cursando=materias_para_elegir_cursando, materias_para_elegir_aprobadas=materias_para_elegir_aprobadas, horarios_por_dia_usuario=horarios_por_dia_usuario,
-    grupos=grupos)
+    grupos=grupos, solicitudes_pendientes_grupos=solicitudes_pendientes_grupos)
 
 
 
@@ -276,6 +280,7 @@ def mostrar_grupos():
     grupos = response.json()
     return render_template("grupos.html", grupos=grupos)
 
+
 @app.route("/materias", methods=["GET"])
 def mostrar_materias():
     response = requests.get(f"{API_BASE}/materias-grupos")
@@ -300,6 +305,13 @@ def solicitar_unirse_grupo(grupo_id):
         return redirect(request.referrer or url_for('usuario', padron=padron))
     else:
         return "Error al enviar la solicitud", 400
+
+
+
+
+
+
+
 
 
 

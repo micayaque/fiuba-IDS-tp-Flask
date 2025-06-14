@@ -32,13 +32,13 @@ body {
 
 #contenedor_botones_header a {
     text-decoration: none;
-    color: #CEE5F2;
+    color: white;
     font-family: 'Poppins', sans-serif;
     font-weight: bold
 }
 
 #btn_registrarse {
-    background-color: #5C95D6;
+    background-color: #7f18a2;
     border-radius: 1rem;
 }
 
@@ -51,6 +51,11 @@ body {
     background-color: #4A7BBE;
     color: white;
     font-weight: bold;
+}
+
+.solicitud-item {
+    background-color: #303030;
+    color: white;
 }
 
 /* Navbar */

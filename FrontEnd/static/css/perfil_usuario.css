@@ -10,7 +10,6 @@
     left: clamp(20px, 6vw, 70px);
     width: clamp(80px, 13vw, 130px);
     border-radius: 50%;
-    border: 5px solid #626262;
 }
 
 .foto_perfil_img {

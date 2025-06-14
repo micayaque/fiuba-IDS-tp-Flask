@@ -83,3 +83,25 @@ def agregar_horarios_grupo(grupo_id):
     cursor.close()
     conn.close()
     return "Horarios agregados", 201
+
+
+@grupos_bp.route('/grupos/<int:grupo_id>/solicitar-unirse-grupo', methods=['POST'])
+def solicitar_unirse_grupo(grupo_id):
+    data = request.get_json()
+    padron_emisor = data.get('padron_emisor')
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "INSERT INTO solicitudes_grupos (grupo_id, padron_emisor, tipo) VALUES (%s, %s, 'usuario_a_grupo')",
+        (grupo_id, padron_emisor)
+    )
+
+    conn.commit()
+
+    cursor.close()
+    conn.close()
+    return '', 201
+
+

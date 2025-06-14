@@ -71,14 +71,16 @@ def grupos_por_materia(materia_codigo):
             "SELECT dia, turno FROM horarios_grupos WHERE grupo_id = %s",
             (grupo['grupo_id'],)
             )
-        horarios = cursor.fetchall()
-        grupo['horarios'] = horarios if horarios else []
+        
+        grupo['horarios'] = cursor.fetchall()
 
         cursor.execute(
-            "SELECT COUNT(*) AS cantidad FROM grupos_usuarios WHERE grupo_id = %s",
+            "SELECT u.padron, u.nombre FROM grupos_usuarios g_u JOIN usuarios u ON g_u.padron = u.padron WHERE g_u.grupo_id = %s",
             (grupo['grupo_id'],)
         )
-        grupo['cantidad_integrantes'] = cursor.fetchone()['cantidad']
+
+        grupo['integrantes'] = cursor.fetchall()
+        grupo['cantidad_integrantes'] = len(grupo['integrantes'])
 
     cursor.close()
     conn.close()

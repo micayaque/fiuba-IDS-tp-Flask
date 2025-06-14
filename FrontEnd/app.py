@@ -290,6 +290,19 @@ def grupos_por_materia(materia_codigo):
     return render_template("grupos_por_materia.html", nombre_materia=grupos[0]["nombre_materia"], grupos=grupos)
 
 
+@app.route('/solicitar-unirse-grupo/<int:grupo_id>', methods=['POST'])
+def solicitar_unirse_grupo(grupo_id):
+    padron = session['usuario']
+
+    response = requests.post(f"{API_BASE}/grupos/{grupo_id}/solicitar-unirse-grupo", json={"padron_emisor": padron, "tipo": "usuario_a_grupo"})
+    
+    if response.status_code == 201:
+        return redirect(request.referrer or url_for('usuario', padron=padron))
+    else:
+        return "Error al enviar la solicitud", 400
+
+
+
 @app.route("/materias/<int:codigo_materia>/companieros-sin-grupo")
 def companieros_sin_grupo_por_materia(materia_codigo):
     materia = None

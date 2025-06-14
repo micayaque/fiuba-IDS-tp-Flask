@@ -17,11 +17,12 @@
          Filtrar grupos por horarios
       </button>
    </div>
-   
+
+   <!-- Modal para filtrar por horarios -->
    <div class="modal fade" id="modalFiltroHorariosGrupos">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content p-4">
-          <div class="modal-header">
+          <div class="modal-header border-0">
             <h5 class="modal-title">Filtrar grupos por horarios</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
           </div>
@@ -70,74 +71,102 @@
 
   <div class="contentido_bottom_buscador_grupos row g-4 justify-content-center">
     {% for grupo in grupos %}
-    <div class="justify-content-center col-12 col-md-6 col-lg-4 grupo-carta" data-horarios='{{ grupo.horarios | tojson | safe }}'>
-      <div class="carta card h-100 shadow">
-        <div class="card-body d-flex flex-column justify-content-between grupo_info">
-          <div>
-            <h3 class="nombre_del_grupo card-title">{{ grupo.nombre }}</h3>
-            <p class="cantidad_integrantes card-text"> N° integrantes: {{ grupo.cantidad_integrantes }} </p>
-          </div>
-
-          <button type="button" class="boton_info btn btn-primary" data-bs-toggle="modal"
-            data-bs-target="#modalGrupo{{ grupo.id }}">
-            INFO
-          </button>
-        </div>
-      </div>
-    </div>
-
-
-    
-    <!-- Modal -->
-    <div class="modal fade" id="modalGrupo{{ grupo.id }}" tabindex="-1" aria-labelledby="modalGrupoLabel{{ grupo.id }}"
-      aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content bg-dark text-white rounded-4 p-4 border-0 position-relative">
-
-          <!-- Botón de cierre (X) -->
-          <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3"
-            data-bs-dismiss="modal" aria-label="Cerrar"></button>
-
-          <!-- Título -->
-          <h5 class="modal-title text-center text-lilac mb-4 fs-3" id="modalGrupoLabel{{ grupo.id }}">Nombre del grupo {{ grupo.id }}</h5>
-
-          <div class="modal-body d-flex flex-row justify-content-between gap-5 flex-wrap">
-
-            <!-- Integrantes -->
-            <div class="flex-fill">
-              <p class="fw-bold mb-1">Primer integrante</p>
-              <p class="fw-bold mb-1">Segundo integrante</p>
-              <p class="fw-bold mb-1">Tercer integrante</p>
-              <p class="fw-bold mb-1">Cuarto integrante</p>
-              <p class="fw-bold mb-1">...</p>
+      <div class="justify-content-center col-12 col-md-6 col-lg-4 grupo-carta" data-horarios='{{ grupo.horarios | tojson | safe }}'>
+        <div class="carta card h-100 shadow">
+          <div class="card-body d-flex flex-column justify-content-between grupo_info">
+            <div>
+              <h3 class="nombre_del_grupo card-title">{{ grupo.nombre }}</h3>
+              <p class="cantidad_integrantes card-text"> N° integrantes: {{ grupo.cantidad_integrantes }} </p>
             </div>
 
-            <!-- Horarios -->
-            <div class="flex-fill">
-              <p class="fw-bold mb-2">Horarios disponibles para trabajar junt@s:</p>
-              <p>Lu: 10:00 - 12:00</p>
-              <p>Ma: 14:00 - 16:00</p>
-              <p>Mi: —</p>
-              <p>Ju: 18:00 - 20:00</p>
-              <p>Vi: —</p>
-              <p>Sa: 15:00 - 17:00</p>
-              <p>Do: —</p>
-            </div>
-
-          </div>
-
-
-          <!-- Botón solicitar -->
-          <div class="modal-footer border-0 justify-content-end">
-            <button type="button" class="boton_solicitar_unirse btn" style="background-color: #A020F0; color: white;">
-              SOLICITAR UNIRSE
+            <button type="button" class="boton_info btn btn-primary" data-bs-toggle="modal"
+              data-bs-target="#modalGrupo{{ grupo.id }}">
+              INFO
             </button>
           </div>
         </div>
       </div>
-    </div>
+
+
+      <!-- Modal -->
+      <div class="modal fade" id="modalGrupo{{ grupo.id }}" tabindex="-1" aria-labelledby="modalGrupoLabel{{ grupo.id }}"
+          aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark text-white rounded-4 p-4 border-0 position-relative">
+
+              <!-- Botón de cierre (X) -->
+              <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3"
+                data-bs-dismiss="modal" aria-label="Cerrar"></button>
+
+              <!-- Título -->
+              <h5 class="nombre_del_grupo modal-title text-center text-lilac mb-4 fs-3" id="modalGrupoLabel{{ grupo.id }}"> {{ grupo.nombre }}</h5>
+
+              <div class="modal-body d-flex flex-row justify-content-between gap-5 flex-wrap">
+
+                <!-- Integrantes -->
+                <div class="me-5 ms-0 align-text-start">
+                  <ul class="list-unstyled">
+                    <li class="fw-light">Integrantes <img src="{{ url_for('static', filename='img/iconos/integrantes.png') }}" alt="Integrantes" width="30" height="30">  </li>
+                  {% for integrante in grupo.integrantes %}
+                    <li class="fw-bold my-1">{{ integrante.nombre }}</li>
+                  {% endfor %}
+
+                  </ul>
+                </div>
+
+                <!-- Horarios -->
+              <div class="flex-fill">
+                <p class="fw-bold mb-2">Horarios disponibles para trabajar junt@s:</p>
+                <table class="table table-sm text-center">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th>Lu</th>
+                      <th>Ma</th>
+                      <th>Mié</th>
+                      <th>Ju</th>
+                      <th>Vi</th>
+                      <th>Sá</th>
+                      <th>Do</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for turno in ['mañana', 'tarde', 'noche'] %}
+                      <tr>
+                        <th>{{ turno|capitalize }}</th>
+                        {% for dia in ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'] %}
+                          <td>
+                            {% if {'dia': dia, 'turno': turno} in grupo.horarios %}
+                              <img src="{{ url_for('static', filename='img/iconos/checked.png') }}" alt="Disponible" width="30" height="30">
+                            {% else %}
+                              <img src="{{ url_for('static', filename='img/iconos/x.png') }}" alt="No disponible" width="15" height="15">
+                            {% endif %}
+                          </td>
+                        {% endfor %}
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <!-- Botón solicitar -->
+            <div class="modal-footer border-0 justify-content-end">
+              <form method="POST" action="/solicitar-unirse-grupo/{{ grupo.grupo_id }}">
+                <button type="submit" class="boton_solicitar_unirse btn" style="background-color: #A020F0; color: white;">
+                  SOLICITAR UNIRSE
+                  <img src="{{ url_for('static', filename='img/iconos/send.png') }}" alt="Enviar solicitud" width="30" height="30">
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
     {% endfor %}
   </div>
 
+
+    
 </div>
 {% endblock %}

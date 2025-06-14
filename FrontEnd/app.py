@@ -93,9 +93,15 @@ def usuario(padron):
     for horario in horarios_usuario:
         horarios_por_dia_usuario.setdefault(horario["dia"], []).append(horario["turno"])     # agrupa a los turnos por día para mostrarlos más fácil en el html
 
+    response = requests.get(f"{API_BASE}/usuario/{padron}/grupos")
+    if response.status_code == 200:
+        grupos = response.json()
+    else:
+        grupos = []
 
     return render_template("perfil_de_usuario.html", usuario=usuario, avatares=avatares, materias_cursando=materias_cursando, materias_aprobadas=materias_aprobadas, 
-    materias_para_elegir_cursando=materias_para_elegir_cursando, materias_para_elegir_aprobadas=materias_para_elegir_aprobadas, horarios_por_dia_usuario=horarios_por_dia_usuario)
+    materias_para_elegir_cursando=materias_para_elegir_cursando, materias_para_elegir_aprobadas=materias_para_elegir_aprobadas, horarios_por_dia_usuario=horarios_por_dia_usuario,
+    grupos=grupos)
 
 
 
@@ -216,6 +222,58 @@ def editar_horarios_usuario(padron):
     requests.post(f"{API_BASE}/usuario/{padron}/editar-horarios-usuario", json={"horarios": horarios})
     
     return redirect(url_for("usuario", padron=padron))
+
+
+@app.route("/usuario/<int:padron>/agregar-grupo", methods=["POST"])
+def agregar_grupo(padron):
+    materia_codigo = request.form.get("materiaGrupo")
+    nombre_grupo = request.form.get("nombreGrupo")
+    max_integrantes = request.form.get("cantidadMaxIntegrantes")
+    padrones_str = request.form.get("padrones_integrantes", "")
+    integrantes = [p for p in padrones_str.split(",") if p]
+    dias = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo']
+    turnos = ['mañana', 'tarde', 'noche']
+
+    # creamos el grupo en la base de datos
+    response = requests.post(f"{API_BASE}/agregar-grupo", json={
+        "materia_codigo": materia_codigo,
+        "nombre": nombre_grupo,
+        "maximo_integrantes": max_integrantes,
+    })
+
+    grupo_id = response.json().get("grupo_id")
+    for padron_integrante in integrantes:
+        requests.post(f"{API_BASE}/grupos/{grupo_id}/agregar-integrante", json={
+            "padron": padron_integrante,
+            "materia_codigo": materia_codigo
+        })
+
+    if response.status_code != 201:
+        return "Error al crear grupo", 400
+    grupo_id = response.json().get("grupo_id")
+
+    for padron_integrante in integrantes:
+        requests.post(f"{API_BASE}/grupos/{grupo_id}/agregar-integrante", json={
+            "grupo_id": grupo_id,
+            "padron": padron_integrante,
+            "materia_codigo": materia_codigo
+        })
+
+    horarios = []
+    for dia in dias:
+        for turno in turnos:
+            if request.form.get(f"grupo_horario_{dia}_{turno}"):
+                horarios.append({"dia": dia, "turno": turno})
+    requests.post(f"{API_BASE}/grupos/{grupo_id}/agregar-horarios-grupo", json={"horarios": horarios})
+
+    return redirect(url_for("usuario", padron=padron))
+
+
+
+
+
+
+
 
 
 @app.route("/grupos")

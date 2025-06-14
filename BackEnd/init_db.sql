@@ -11,7 +11,7 @@ CREATE TABLE usuarios (
     padron INT PRIMARY KEY,
     contrasena VARCHAR(50) NOT NULL,
     nombre VARCHAR(50) NOT NULL,
-    carrera VARCHAR(50) DEFAULT '',
+    carrera VARCHAR(50) DEFAULT 'Contanos qué carrera estudiás',
     sobre_mi VARCHAR(1000) DEFAULT '',
     avatar_url VARCHAR(255) DEFAULT 'avatar-default.jpg',
     banner_color VARCHAR(7) DEFAULT '#A0B4B7'

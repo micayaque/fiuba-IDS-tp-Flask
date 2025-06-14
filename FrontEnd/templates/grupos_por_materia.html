@@ -5,7 +5,6 @@
 {% block content %}
 <div class="contenido_buscador_grupos">
 
-  <!-- Parte superior -->
   <div class="contentido_top_buscador_grupos d-flex flex-column justify-content-center align-items-center gap-3 mb-4">
     <h2 class="nombre_materia text-center">{{ nombre_materia }}</h2>
 
@@ -13,18 +12,72 @@
 
   </div>
 
-  <!-- Parte inferior: Cartas -->
+     <div class="d-flex justify-content-center mb-5">
+      <button id="btnAbrirFiltroHorarios" type="button" class="btn btn-guardar justify-content-center" data-bs-toggle="modal" data-bs-target="#modalFiltroHorariosGrupos">
+         Filtrar grupos por horarios
+      </button>
+   </div>
+   
+   <div class="modal fade" id="modalFiltroHorariosGrupos">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-4">
+          <div class="modal-header">
+            <h5 class="modal-title">Filtrar grupos por horarios</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">
+            <form id="form-filtro-horarios">
+                <div class="table-responsive">
+                  <table class="table tabla-horarios text-center">
+                      <thead>
+                          <tr>
+                              <th><i class="fa-regular fa-clock"></i></th>
+                              <th>Lu</th>
+                              <th>Ma</th>
+                              <th>Mié</th>
+                              <th>Ju</th>
+                              <th>Vi</th>
+                              <th>Sá</th>
+                              <th>Do</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          {% set imagenes_turno = {'mañana': 'mañana.png', 'tarde': 'tarde.png', 'noche': 'noche.png'} %}
+                          {% for turno in ['mañana', 'tarde', 'noche'] %}
+                              <tr>
+                                  <th>
+                                      <img src="{{ url_for('static', filename='img/horarios/' + imagenes_turno[turno]) }}" alt="{{ turno }}" class="icono-horario">
+                                  </th>
+                                  {% for dia in ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'] %}
+                                      <td>
+                                          <input type="checkbox" name="{{dia}}_{{turno}}">
+                                      </td>
+                                  {% endfor %}
+                              </tr>
+                          {% endfor %}
+                      </tbody>
+                  </table>
+                </div>
+                <div class="my-3 text-center">
+                  <button type="button" class="btn btn-guardar" onclick="filtrarGruposPorHorarios()">Filtrar</button>
+                </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
   <div class="contentido_bottom_buscador_grupos row g-4 justify-content-center">
     {% for grupo in grupos %}
-    <div class="d-flex justify-content-center col-12 col-md-6 col-lg-4">
+    <div class="justify-content-center col-12 col-md-6 col-lg-4 grupo-carta" data-horarios='{{ grupo.horarios | tojson | safe }}'>
       <div class="carta card h-100 shadow">
         <div class="card-body d-flex flex-column justify-content-between grupo_info">
           <div>
             <h3 class="nombre_del_grupo card-title">{{ grupo.nombre }}</h3>
-            <p class="cantidad_integrantes card-text">Cantidad de Integrantes</p>
+            <p class="cantidad_integrantes card-text"> N° integrantes: {{ grupo.cantidad_integrantes }} </p>
           </div>
 
-          <!-- Botón que abre su modal -->
           <button type="button" class="boton_info btn btn-primary" data-bs-toggle="modal"
             data-bs-target="#modalGrupo{{ grupo.id }}">
             INFO
@@ -33,6 +86,8 @@
       </div>
     </div>
 
+
+    
     <!-- Modal -->
     <div class="modal fade" id="modalGrupo{{ grupo.id }}" tabindex="-1" aria-labelledby="modalGrupoLabel{{ grupo.id }}"
       aria-hidden="true">

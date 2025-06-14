@@ -54,9 +54,13 @@ def cerrar_sesion():
 @app.route("/", methods=["GET"])
 def inicio():
 
-    response = requests.get(f"{API_BASE}/usuario/{session['usuario']}/solicitudes-pendientes-grupos")
-    solicitudes_pendientes_grupos = response.json().get("pendientes")
-    session['notificacion'] = len(solicitudes_pendientes_grupos) > 0
+    if session.get('usuario'):
+        response = requests.get(f"{API_BASE}/usuario/{session['usuario']}/solicitudes-pendientes-grupos")
+        solicitudes_pendientes_grupos = response.json().get("pendientes")
+        session['notificacion'] = len(solicitudes_pendientes_grupos) > 0
+    else:
+        session['notificacion'] = False
+        solicitudes_pendientes_grupos = []
 
     return render_template("index.html", solicitudes_pendientes_grupos=solicitudes_pendientes_grupos)
 
@@ -284,9 +288,13 @@ def mostrar_grupos():
     response = requests.get(f"{API_BASE}/grupos")
     grupos = response.json()
 
-    response = requests.get(f"{API_BASE}/usuario/{session['usuario']}/solicitudes-pendientes-grupos")
-    solicitudes_pendientes_grupos = response.json().get("pendientes")
-    session['notificacion'] = len(solicitudes_pendientes_grupos) > 0
+    if session.get('usuario'):
+        response = requests.get(f"{API_BASE}/usuario/{session['usuario']}/solicitudes-pendientes-grupos")
+        solicitudes_pendientes_grupos = response.json().get("pendientes")
+        session['notificacion'] = len(solicitudes_pendientes_grupos) > 0
+    else:
+        session['notificacion'] = False
+        solicitudes_pendientes_grupos = []
 
     return render_template("grupos.html", grupos=grupos, solicitudes_pendientes_grupos=solicitudes_pendientes_grupos)
 
@@ -296,9 +304,13 @@ def mostrar_materias():
     response = requests.get(f"{API_BASE}/materias-grupos")
     materias = response.json()
 
-    response = requests.get(f"{API_BASE}/usuario/{session['usuario']}/solicitudes-pendientes-grupos")
-    solicitudes_pendientes_grupos = response.json().get("pendientes")
-    session['notificacion'] = len(solicitudes_pendientes_grupos) > 0
+    if session.get('usuario'):
+        response = requests.get(f"{API_BASE}/usuario/{session['usuario']}/solicitudes-pendientes-grupos")
+        solicitudes_pendientes_grupos = response.json().get("pendientes")
+        session['notificacion'] = len(solicitudes_pendientes_grupos) > 0
+    else:
+        session['notificacion'] = False
+        solicitudes_pendientes_grupos = []
 
     return render_template('materias.html', materias=materias, solicitudes_pendientes_grupos=solicitudes_pendientes_grupos)
 
@@ -308,23 +320,29 @@ def grupos_por_materia(materia_codigo):
     response = requests.get(f"{API_BASE}/materias/{materia_codigo}/grupos-por-materia")
     grupos = response.json()
 
-    response = requests.get(f"{API_BASE}/usuario/{session['usuario']}/solicitudes-pendientes-grupos")
-    solicitudes_pendientes_grupos = response.json().get("pendientes")
-    session['notificacion'] = len(solicitudes_pendientes_grupos) > 0
+    if session.get('usuario'):
+        response = requests.get(f"{API_BASE}/usuario/{session['usuario']}/solicitudes-pendientes-grupos")
+        solicitudes_pendientes_grupos = response.json().get("pendientes")
+        session['notificacion'] = len(solicitudes_pendientes_grupos) > 0
+    else:
+        session['notificacion'] = False
+        solicitudes_pendientes_grupos = []
 
     return render_template("grupos_por_materia.html", nombre_materia=grupos[0]["nombre_materia"], grupos=grupos, solicitudes_pendientes_grupos=solicitudes_pendientes_grupos)
 
 
 @app.route('/solicitar-unirse-grupo/<int:grupo_id>', methods=['POST'])
 def solicitar_unirse_grupo(grupo_id):
-    padron = session['usuario']
 
-    response = requests.post(f"{API_BASE}/grupos/{grupo_id}/solicitar-unirse-grupo", json={"padron_emisor": padron, "tipo": "usuario_a_grupo"})
-    
-    if response.status_code == 201:
-        return redirect(request.referrer or url_for('usuario', padron=padron))
+    if session.get('usuario'):
+        padron = session['usuario']
+        response = requests.post(f"{API_BASE}/grupos/{grupo_id}/solicitar-unirse-grupo", json={"padron_emisor": padron, "tipo": "usuario_a_grupo"})
+        if response.status_code == 201:
+            return redirect(request.referrer or url_for('usuario', padron=padron))
+        else:
+            return "Error al enviar la solicitud", 400
     else:
-        return "Error al enviar la solicitud", 400
+        return redirect(request.referrer or url_for('inicio'))
 
 
 

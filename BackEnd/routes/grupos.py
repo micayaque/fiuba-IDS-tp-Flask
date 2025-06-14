@@ -7,18 +7,35 @@ grupos_bp = Blueprint("grupos", __name__)
 def get_grupos():
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
+    
     cursor.execute(
         """
-        SELECT grupos.grupo_id, grupos.nombre, materias.nombre AS materia
+        SELECT grupos.*, materias.nombre AS nombre_materia
         FROM grupos
         JOIN materias ON grupos.materia_codigo = materias.materia_codigo
         WHERE NOT grupos.tp_terminado
         """
     )    
     grupos = cursor.fetchall()
+
+    for grupo in grupos:
+        cursor.execute(
+            "SELECT dia, turno FROM horarios_grupos WHERE grupo_id = %s",
+            (grupo['grupo_id'],)
+        )
+        grupo['horarios'] = cursor.fetchall()
+
+        cursor.execute(
+            "SELECT u.padron, u.nombre FROM grupos_usuarios g_u JOIN usuarios u ON g_u.padron = u.padron WHERE g_u.grupo_id = %s",
+            (grupo['grupo_id'],)
+        )
+        grupo['integrantes'] = cursor.fetchall()
+        grupo['cantidad_integrantes'] = len(grupo['integrantes'])
+
     cursor.close()
     conn.close()
     return jsonify(grupos)
+
 
 @grupos_bp.route("/agregar-grupo", methods=["POST"])
 def crear_grupo():

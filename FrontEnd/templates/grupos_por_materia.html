@@ -115,51 +115,51 @@
                 </div>
 
                 <!-- Horarios -->
-              <div class="flex-fill">
-                <p class="fw-bold mb-2">Horarios disponibles para trabajar junt@s:</p>
-                <table class="table table-sm text-center">
-                  <thead>
-                    <tr>
-                      <th></th>
-                      <th>Lu</th>
-                      <th>Ma</th>
-                      <th>Mié</th>
-                      <th>Ju</th>
-                      <th>Vi</th>
-                      <th>Sá</th>
-                      <th>Do</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {% for turno in ['mañana', 'tarde', 'noche'] %}
+                <div class="flex-fill">
+                  <p class="fw-bold mb-2">Horarios disponibles para trabajar junt@s:</p>
+                  <table class="table table-sm text-center">
+                    <thead>
                       <tr>
-                        <th>{{ turno|capitalize }}</th>
-                        {% for dia in ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'] %}
-                          <td>
-                            {% if {'dia': dia, 'turno': turno} in grupo.horarios %}
-                              <img src="{{ url_for('static', filename='img/iconos/checked.png') }}" alt="Disponible" width="30" height="30">
-                            {% else %}
-                              <img src="{{ url_for('static', filename='img/iconos/x.png') }}" alt="No disponible" width="15" height="15">
-                            {% endif %}
-                          </td>
-                        {% endfor %}
+                        <th></th>
+                        <th>Lu</th>
+                        <th>Ma</th>
+                        <th>Mié</th>
+                        <th>Ju</th>
+                        <th>Vi</th>
+                        <th>Sá</th>
+                        <th>Do</th>
                       </tr>
-                    {% endfor %}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {% for turno in ['mañana', 'tarde', 'noche'] %}
+                        <tr>
+                          <th>{{ turno|capitalize }}</th>
+                          {% for dia in ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'] %}
+                            <td>
+                              {% if {'dia': dia, 'turno': turno} in grupo.horarios %}
+                                <img src="{{ url_for('static', filename='img/iconos/checked.png') }}" alt="Disponible" width="30" height="30">
+                              {% else %}
+                                <img src="{{ url_for('static', filename='img/iconos/x.png') }}" alt="No disponible" width="15" height="15">
+                              {% endif %}
+                            </td>
+                          {% endfor %}
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <!-- Botón solicitar -->
+              <div class="modal-footer border-0 justify-content-end">
+                <form method="POST" action="/solicitar-unirse-grupo/{{ grupo.grupo_id }}">
+                  <button type="submit" class="boton_solicitar_unirse btn" style="background-color: #A020F0; color: white;">
+                    SOLICITAR UNIRSE
+                    <img src="{{ url_for('static', filename='img/iconos/send.png') }}" alt="Enviar solicitud" width="30" height="30">
+                  </button>
+                </form>
               </div>
             </div>
-            <!-- Botón solicitar -->
-            <div class="modal-footer border-0 justify-content-end">
-              <form method="POST" action="/solicitar-unirse-grupo/{{ grupo.grupo_id }}">
-                <button type="submit" class="boton_solicitar_unirse btn" style="background-color: #A020F0; color: white;">
-                  SOLICITAR UNIRSE
-                  <img src="{{ url_for('static', filename='img/iconos/send.png') }}" alt="Enviar solicitud" width="30" height="30">
-                </button>
-              </form>
-            </div>
           </div>
-        </div>
       </div>
 
 

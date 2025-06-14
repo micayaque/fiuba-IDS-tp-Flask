@@ -51,12 +51,17 @@ def cerrar_sesion():
     return redirect(url_for("inicio"))
 
 
-@app.route("/")
+@app.route("/", methods=["GET"])
 def inicio():
-    return render_template("index.html")
+
+    response = requests.get(f"{API_BASE}/usuario/{session['usuario']}/solicitudes-pendientes-grupos")
+    solicitudes_pendientes_grupos = response.json().get("pendientes")
+    session['notificacion'] = len(solicitudes_pendientes_grupos) > 0
+
+    return render_template("index.html", solicitudes_pendientes_grupos=solicitudes_pendientes_grupos)
 
 
-@app.route("/usuario/<int:padron>")
+@app.route("/usuario/<int:padron>", methods=["GET"])
 def usuario(padron):
     avatares = ["pepe.jpg", "tiger.jpg", "mulan.jpg", "jon.jpg", "lisa.jpg", "snoopy.jpg", "this_is_fine.jpg", "tom.jpg", "coraje.jpg"]
         
@@ -278,21 +283,36 @@ def agregar_grupo(padron):
 def mostrar_grupos():
     response = requests.get(f"{API_BASE}/grupos")
     grupos = response.json()
-    return render_template("grupos.html", grupos=grupos)
+
+    response = requests.get(f"{API_BASE}/usuario/{session['usuario']}/solicitudes-pendientes-grupos")
+    solicitudes_pendientes_grupos = response.json().get("pendientes")
+    session['notificacion'] = len(solicitudes_pendientes_grupos) > 0
+
+    return render_template("grupos.html", grupos=grupos, solicitudes_pendientes_grupos=solicitudes_pendientes_grupos)
 
 
 @app.route("/materias", methods=["GET"])
 def mostrar_materias():
     response = requests.get(f"{API_BASE}/materias-grupos")
     materias = response.json()
-    return render_template('materias.html', materias=materias)
+
+    response = requests.get(f"{API_BASE}/usuario/{session['usuario']}/solicitudes-pendientes-grupos")
+    solicitudes_pendientes_grupos = response.json().get("pendientes")
+    session['notificacion'] = len(solicitudes_pendientes_grupos) > 0
+
+    return render_template('materias.html', materias=materias, solicitudes_pendientes_grupos=solicitudes_pendientes_grupos)
 
 
 @app.route("/materias/<string:materia_codigo>/grupos-por-materia", methods=["GET"])
 def grupos_por_materia(materia_codigo):
     response = requests.get(f"{API_BASE}/materias/{materia_codigo}/grupos-por-materia")
     grupos = response.json()
-    return render_template("grupos_por_materia.html", nombre_materia=grupos[0]["nombre_materia"], grupos=grupos)
+
+    response = requests.get(f"{API_BASE}/usuario/{session['usuario']}/solicitudes-pendientes-grupos")
+    solicitudes_pendientes_grupos = response.json().get("pendientes")
+    session['notificacion'] = len(solicitudes_pendientes_grupos) > 0
+
+    return render_template("grupos_por_materia.html", nombre_materia=grupos[0]["nombre_materia"], grupos=grupos, solicitudes_pendientes_grupos=solicitudes_pendientes_grupos)
 
 
 @app.route('/solicitar-unirse-grupo/<int:grupo_id>', methods=['POST'])

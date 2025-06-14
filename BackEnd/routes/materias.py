@@ -49,10 +49,11 @@ def agregar_materia():
     return "Materia agregada", 200
 
 
-@materias_bp.route("/materias/<string:materia_codigo>/grupos")
+@materias_bp.route("/materias/<string:materia_codigo>/grupos-por-materia", methods=["GET"])
 def grupos_por_materia(materia_codigo):
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
+    
     cursor.execute(
         """
         SELECT grupos.*,
@@ -62,8 +63,23 @@ def grupos_por_materia(materia_codigo):
         WHERE grupos.materia_codigo = %s AND NOT grupos.tp_terminado
         """, (materia_codigo,)
     )
+    
     grupos_de_materia = cursor.fetchall()
+
+    for grupo in grupos_de_materia:
+        cursor.execute(
+            "SELECT dia, turno FROM horarios_grupos WHERE grupo_id = %s",
+            (grupo['grupo_id'],)
+            )
+        horarios = cursor.fetchall()
+        grupo['horarios'] = horarios if horarios else []
+
+        cursor.execute(
+            "SELECT COUNT(*) AS cantidad FROM grupos_usuarios WHERE grupo_id = %s",
+            (grupo['grupo_id'],)
+        )
+        grupo['cantidad_integrantes'] = cursor.fetchone()['cantidad']
+
     cursor.close()
     conn.close()
-    
     return jsonify(grupos_de_materia)

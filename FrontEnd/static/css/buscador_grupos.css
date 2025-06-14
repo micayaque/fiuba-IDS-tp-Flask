@@ -5,6 +5,10 @@
   font-weight: bold;
 }
 
+.grupo-carta {
+    display: flex;
+}
+
 .contenido_buscador_grupos {
     margin-top: 3rem;
     height: 100%;

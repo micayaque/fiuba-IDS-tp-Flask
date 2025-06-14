@@ -3,7 +3,7 @@ from db import get_connection
 
 grupos_bp = Blueprint("grupos", __name__)
 
-@grupos_bp.route("/grupos")
+@grupos_bp.route("/grupos", methods=["GET"])
 def get_grupos():
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
@@ -19,7 +19,6 @@ def get_grupos():
     cursor.close()
     conn.close()
     return jsonify(grupos)
-
 
 @grupos_bp.route("/agregar-grupo", methods=["POST"])
 def crear_grupo():

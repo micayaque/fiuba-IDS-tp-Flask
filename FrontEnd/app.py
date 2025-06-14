@@ -270,31 +270,24 @@ def agregar_grupo(padron):
 
 
 
-
-
-
-
-
-
-@app.route("/grupos")
+@app.route("/grupos", methods=["GET"])
 def mostrar_grupos():
     response = requests.get(f"{API_BASE}/grupos")
     grupos = response.json()
     return render_template("grupos.html", grupos=grupos)
 
-
-@app.route("/materias")
+@app.route("/materias", methods=["GET"])
 def mostrar_materias():
     response = requests.get(f"{API_BASE}/materias-grupos")
     materias = response.json()
     return render_template('materias.html', materias=materias)
 
 
-@app.route("/materias/<string:materia_codigo>/grupos")
+@app.route("/materias/<string:materia_codigo>/grupos-por-materia", methods=["GET"])
 def grupos_por_materia(materia_codigo):
-    response = requests.get(f"{API_BASE}/materias/{materia_codigo}/grupos")
+    response = requests.get(f"{API_BASE}/materias/{materia_codigo}/grupos-por-materia")
     grupos = response.json()
-    return render_template("grupos_por_materia.html", nombre_materia=grupos[0]["nombre_materia"], materia_codigo=grupos[0]["materia_codigo"], grupos=grupos)
+    return render_template("grupos_por_materia.html", nombre_materia=grupos[0]["nombre_materia"], grupos=grupos)
 
 
 @app.route("/materias/<int:codigo_materia>/companieros-sin-grupo")

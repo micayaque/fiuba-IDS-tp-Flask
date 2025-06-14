@@ -121,6 +121,11 @@
     height: 4rem;
 }
 
+.icono-lapiz img {
+    width: 2rem;
+    height: 2rem;
+}
+
 #titulo-grupos {
     color: #F2F2F2;
     font-family: 'Poppins';
@@ -160,6 +165,11 @@
 
 #btn-agregar-grupo {
     color: #626262;
+}
+
+#btn-agregar-grupo img {
+    width: 2rem;
+    height: 2rem;
 }
 
 #nombreGrupo {

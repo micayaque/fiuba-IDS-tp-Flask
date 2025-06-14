@@ -186,3 +186,24 @@ def editar_horarios_usuario(padron):
     cursor.close()
     conn.close()
     return "Horarios actualizados", 200
+
+
+@perfil_usuario_bp.route("/usuario/<int:padron>/grupos")
+def grupos_de_usuario(padron):
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute("""
+        SELECT g.grupo_id, g.nombre, g.materia_codigo, m.nombre AS materia, COUNT(g_u.padron) AS integrantes
+        FROM grupos g
+        JOIN grupos_usuarios g_u ON g.grupo_id = g_u.grupo_id
+        JOIN materias m ON g.materia_codigo = m.materia_codigo
+        WHERE g_u.padron = %s
+        GROUP BY g.grupo_id
+    """, (padron,))
+
+    grupos = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+    return jsonify(grupos)

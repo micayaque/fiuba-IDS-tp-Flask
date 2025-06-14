@@ -109,3 +109,46 @@ function guardarSobreMi() {
     const modal = bootstrap.Modal.getInstance(document.getElementById('modalSobreMi'));
     modal.hide();
 }
+
+
+
+
+
+
+
+// lista de integrantes a agregar en el grupo en el perfil del usuario
+
+let integrantes = [];
+
+function actualizarListaIntegrantes() {
+    const lista = document.getElementById('listaIntegrantes');
+    lista.innerHTML = '';
+    integrantes.forEach((padron, indice) => {
+        const div = document.createElement('div');
+        div.className = 'btn text-white d-flex align-items-center border-0';
+        div.innerHTML = `
+            <span>${padron}</span>
+            <button type="button" class="btn btn-sm" onclick="eliminarIntegrante(${indice})">
+                <img src="/static/img/iconos/cerrar.png" alt="Eliminar integrante" width="16" height="16">
+            </button>
+        `;
+        lista.appendChild(div); // mostramos al integrante
+    });
+    document.getElementById('padronesIntegrantesInput').value = integrantes.join(','); // agregamos el integrante al input para que lo envíe al back separando a cada uno con comas
+}
+
+function eliminarIntegrante(indice) {
+    integrantes.splice(indice, 1);
+    actualizarListaIntegrantes();
+}
+
+function agregarIntegrante() {
+    const input = document.getElementById('padronIntegrante');
+    const padron = input.value.trim();
+    if (padron && !integrantes.includes(padron)) {
+        integrantes.push(padron);
+        actualizarListaIntegrantes();
+        input.value = '';
+    }
+}
+

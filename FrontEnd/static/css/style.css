@@ -68,7 +68,6 @@ nav {
 #opciones_menu {
     justify-content: center;
     flex-wrap: wrap;
-    gap: 3rem;
 }
 
 #opciones_menu a:hover {

@@ -1,23 +1,83 @@
 {% extends "base.html" %}
 
-{% block title %}Compañeros sin grupo - {{ materia.nombre }}{% endblock %}
+{% block title %}Compañeros sin grupo - {{ materia['nombre'] }}{% endblock %}
 
 {% block content %}
 
-    <h2 class="titulo_nombre_materia">{{ materia.nombre }}</h2>
-    
-    <div class="contenedor_btn_ver_grupos_compañerxs">
-        <a class="btn" href="">VER GRUPOS FORMADOS</a>
+<div class="contenido_buscador_grupos">
+
+    <div class="contentido_top_buscador_grupos d-flex flex-column justify-content-center align-items-center gap-3 mb-4">
+        <h2 class="titulo_nombre_materia">{{ materia['nombre'] }}</h2>
+ 
+        <a class="btn boton_compañeros" href="/materias/{{ materia['materia_codigo'] }}/grupos-por-materia">VER GRUPOS FORMADOS</a>
+
     </div>
+
+    <div class="d-flex justify-content-center mb-5">
+      <button id="btnAbrirFiltroHorarios" type="button" class="btn btn-guardar justify-content-center" data-bs-toggle="modal" data-bs-target="#modalFiltroHorariosUsuarios">
+         Filtrar compañerxs por horarios
+      </button>
+   </div>
+
+   <!-- Modal para filtrar por horarios -->
+   <div class="modal fade" id="modalFiltroHorariosUsuarios">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-4">
+          <div class="modal-header border-0">
+            <h5 class="modal-title">Filtrar compañerxs por horarios</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">
+            <form id="form-filtro-horarios">
+                <div class="table-responsive">
+                  <table class="table tabla-horarios text-center">
+                      <thead>
+                          <tr>
+                              <th><i class="fa-regular fa-clock"></i></th>
+                              <th>Lu</th>
+                              <th>Ma</th>
+                              <th>Mié</th>
+                              <th>Ju</th>
+                              <th>Vi</th>
+                              <th>Sá</th>
+                              <th>Do</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          {% set imagenes_turno = {'mañana': 'mañana.png', 'tarde': 'tarde.png', 'noche': 'noche.png'} %}
+                          {% for turno in ['mañana', 'tarde', 'noche'] %}
+                              <tr>
+                                  <th>
+                                      <img src="{{ url_for('static', filename='img/horarios/' + imagenes_turno[turno]) }}" alt="{{ turno }}" class="icono-horario">
+                                  </th>
+                                  {% for dia in ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'] %}
+                                      <td>
+                                          <input type="checkbox" name="{{dia}}_{{turno}}">
+                                      </td>
+                                  {% endfor %}
+                              </tr>
+                          {% endfor %}
+                      </tbody>
+                  </table>
+                </div>
+                <div class="my-3 text-center">
+                  <button type="button" class="btn btn-guardar" onclick="filtrarGruposPorHorarios()">Filtrar</button>
+                </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
 
     <div id="contenedor_compañerxs_sin_grupo" class="container">
         <div class="row">
-            {% for compañero in compañeros %}
+            {% for compañerx in compañerxs %}
             <div class="carta col-12 col-md-6 col-lg-4">
                 <div id="compañerx_sin_grupo" class="card">
                     <div class="card-body">
                         <div id="contenedor_compañerx_sin_grupo_nombre">
-                            <h5>{{ compañero.nombre }}</h5>
+                            <h5>{{ compañerx['nombre'] }}</h5>
                         </div>
                         <a href="#" class="btn">INFO</a>
                     </div>
@@ -26,4 +86,8 @@
             {% endfor %}
         </div>
     </div>
+
+</div>
+
+
 {% endblock %}

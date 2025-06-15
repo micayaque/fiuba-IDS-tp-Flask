@@ -328,7 +328,17 @@ def grupos_por_materia(materia_codigo):
         session['notificacion'] = False
         solicitudes_pendientes = []
 
-    return render_template("grupos_por_materia.html", nombre_materia=grupos[0]["nombre_materia"], grupos=grupos, solicitudes_pendientes=solicitudes_pendientes)
+    return render_template("grupos_por_materia.html", materia_codigo = materia_codigo, nombre_materia=grupos[0]["nombre_materia"], grupos=grupos, solicitudes_pendientes=solicitudes_pendientes)
+
+
+@app.route("/materias/<string:materia_codigo>/companierxs-sin-grupo", methods=["GET"])
+def companierxs_sin_grupo_por_materia(materia_codigo):
+    response = requests.get(f"{API_BASE}/materias/{materia_codigo}/companierxs-sin-grupo")
+    data = response.json()
+    materia = data["materia"]
+    companierxs = data["companierxs"]
+
+    return render_template("compañerxs_sin_grupo.html", materia=materia, compañerxs=companierxs)
 
 
 
@@ -365,25 +375,6 @@ def aceptar_solicitud(solicitud_id):
 def rechazar_solicitud(solicitud_id):
     requests.post(f"{API_BASE}/solicitudes/{solicitud_id}/actualizar", json={"estado": "rechazada"})
     return redirect(request.referrer or url_for('usuario', padron=session["usuario"]))
-
-
-
-@app.route("/materias/<int:codigo_materia>/companieros-sin-grupo")
-def companieros_sin_grupo_por_materia(materia_codigo):
-    materia = None
-    for m in materias:
-        if m["codigo_materia"] == materia_codigo:
-            materia = m
-            break
-
-    compañeros_sin_grupo = [
-        {"padron": 543211, "nombre": "Compañerx 1"},
-        {"padron": 543212, "nombre": "Compañerx 2"},
-        {"padron": 543213, "nombre": "Compañerx 3"},
-        {"padron": 543214, "nombre": "Compañerx 4"},
-    ]
-
-    return render_template("compañerxs_sin_grupo.html", materia=materia, compañeros=compañeros_sin_grupo)
 
 
 if __name__ == '__main__':

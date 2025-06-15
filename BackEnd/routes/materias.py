@@ -85,3 +85,32 @@ def grupos_por_materia(materia_codigo):
     cursor.close()
     conn.close()
     return jsonify(grupos_de_materia)
+
+
+
+@materias_bp.route("/materias/<string:materia_codigo>/companierxs-sin-grupo", methods=["GET"])
+def companierxs_sin_grupo(materia_codigo):
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute("""
+        SELECT u.padron, u.nombre
+        FROM usuarios u
+        JOIN materias_usuarios mu ON u.padron = mu.padron
+        WHERE mu.materia_codigo = %s
+        AND mu.estado = 'cursando'
+        AND u.padron NOT IN (
+            SELECT g_u.padron
+            FROM grupos_usuarios g_u
+            JOIN grupos g ON g_u.grupo_id = g.grupo_id
+            WHERE g.materia_codigo = %s
+        )
+    """, (materia_codigo, materia_codigo))
+    companierxs = cursor.fetchall()
+
+    cursor.execute("SELECT * FROM materias WHERE materia_codigo = %s", (materia_codigo,))
+    materia = cursor.fetchone()
+
+    cursor.close()
+    conn.close()
+    return jsonify({"materia": materia, "companierxs": companierxs})

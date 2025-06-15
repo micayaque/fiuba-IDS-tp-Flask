@@ -108,17 +108,23 @@ def solicitar_unirse_grupo(grupo_id):
     padron_emisor = data.get('padron_emisor')
 
     conn = get_connection()
-    cursor = conn.cursor()
+    cursor = conn.cursor(dictionary=True)
 
     cursor.execute(
-        "INSERT INTO solicitudes_grupos (grupo_id, padron_emisor, tipo) VALUES (%s, %s, 'usuario_a_grupo')",
-        (grupo_id, padron_emisor)
+        "SELECT padron FROM grupos_usuarios WHERE grupo_id = %s",
+        (grupo_id,)
     )
+    integrantes = cursor.fetchall()
+
+    for integrante in integrantes:
+        padron_receptor = integrante['padron']
+        cursor.execute(
+            "INSERT INTO solicitudes_grupos (grupo_id, padron_emisor, padron_receptor, tipo) VALUES (%s, %s, %s, 'usuario_a_grupo')",
+            (grupo_id, padron_emisor, padron_receptor)
+        )
 
     conn.commit()
 
     cursor.close()
     conn.close()
     return '', 201
-
-

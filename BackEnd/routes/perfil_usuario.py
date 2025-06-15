@@ -211,19 +211,21 @@ def grupos_de_usuario(padron):
 
 
 
-@perfil_usuario_bp.route('/usuario/<int:padron>/solicitudes-pendientes-grupos', methods=['GET'])
+@perfil_usuario_bp.route('/usuario/<int:padron>/solicitudes-pendientes', methods=['GET'])
 def solicitudes_pendientes(padron):
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
 
     cursor.execute("""
-        SELECT s_g.*, g.nombre AS grupo_nombre, g.materia_codigo, m.nombre AS materia_nombre
+        SELECT s_g.*, g.nombre AS grupo_nombre, g.materia_codigo, m.nombre AS materia_nombre,
+               u.nombre AS nombre_emisor
         FROM solicitudes_grupos s_g
         JOIN grupos g ON s_g.grupo_id = g.grupo_id
         JOIN materias m ON g.materia_codigo = m.materia_codigo
+        JOIN usuarios u ON s_g.padron_emisor = u.padron
         WHERE s_g.padron_receptor = %s AND s_g.estado = 'pendiente'
     """, (padron,))
-    solicitudes = cursor.fetchall() 
+    solicitudes = cursor.fetchall()
 
     for solicitud in solicitudes:
         cursor.execute(
@@ -231,11 +233,9 @@ def solicitudes_pendientes(padron):
             (solicitud['grupo_id'],)
         )
         horarios = cursor.fetchall()
-        horarios_grupo = {}
         horarios_por_dia_grupo = {}
         for horario in horarios:
             horarios_por_dia_grupo.setdefault(horario["dia"], []).append(horario["turno"])
-
         solicitud['horarios_grupo'] = horarios_por_dia_grupo
 
         cursor.execute(
@@ -244,9 +244,16 @@ def solicitudes_pendientes(padron):
         )
         solicitud['integrantes'] = cursor.fetchall()
 
+        cursor.execute(
+            "SELECT dia, turno FROM horarios_usuarios WHERE padron = %s",
+            (solicitud['padron_emisor'],)
+        )
+        horarios_emisor = cursor.fetchall()
+        horarios_por_dia_emisor = {}
+        for horario in horarios_emisor:
+            horarios_por_dia_emisor.setdefault(horario["dia"], []).append(horario["turno"])
+        solicitud['horarios_emisor'] = horarios_por_dia_emisor
+
     cursor.close()
     conn.close()
     return jsonify({"pendientes": solicitudes})
-
-
-

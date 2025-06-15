@@ -21,7 +21,7 @@ def registrarse():
 
     if response.status_code == 200:
         session['usuario'] = padron
-        return redirect(url_for("inicio"))
+        return redirect(url_for("usuario", padron=padron))
     elif response.status_code == 400 and response.text == "El usuario ya existe":
         return render_template("index.html", error="El usuario ya existe")
     else:
@@ -40,7 +40,7 @@ def iniciar_sesion():
 
     if response.status_code == 200:
         session['usuario'] = padron
-        return redirect(url_for("inicio"))
+        return redirect(url_for("usuario", padron=padron))
     else:
         return render_template("index.html", error="Padron o contraseña incorrectos")
 
@@ -55,14 +55,14 @@ def cerrar_sesion():
 def inicio():
 
     if session.get('usuario'):
-        response = requests.get(f"{API_BASE}/usuario/{session['usuario']}/solicitudes-pendientes-grupos")
-        solicitudes_pendientes_grupos = response.json().get("pendientes")
-        session['notificacion'] = len(solicitudes_pendientes_grupos) > 0
+        response = requests.get(f"{API_BASE}/usuario/{session['usuario']}/solicitudes-pendientes")
+        solicitudes_pendientes = response.json().get("pendientes")
+        session['notificacion'] = len(solicitudes_pendientes) > 0
     else:
         session['notificacion'] = False
-        solicitudes_pendientes_grupos = []
+        solicitudes_pendientes = []
 
-    return render_template("index.html", solicitudes_pendientes_grupos=solicitudes_pendientes_grupos)
+    return render_template("index.html", solicitudes_pendientes=solicitudes_pendientes)
 
 
 @app.route("/usuario/<int:padron>", methods=["GET"])
@@ -108,13 +108,13 @@ def usuario(padron):
     else:
         grupos = []
 
-    response = requests.get(f"{API_BASE}/usuario/{padron}/solicitudes-pendientes-grupos")
-    solicitudes_pendientes_grupos = response.json().get("pendientes")
-    session['notificacion'] = len(solicitudes_pendientes_grupos) > 0
+    response = requests.get(f"{API_BASE}/usuario/{padron}/solicitudes-pendientes")
+    solicitudes_pendientes = response.json().get("pendientes")
+    session['notificacion'] = len(solicitudes_pendientes) > 0
 
     return render_template("perfil_de_usuario.html", usuario=usuario, avatares=avatares, materias_cursando=materias_cursando, materias_aprobadas=materias_aprobadas, 
     materias_para_elegir_cursando=materias_para_elegir_cursando, materias_para_elegir_aprobadas=materias_para_elegir_aprobadas, horarios_por_dia_usuario=horarios_por_dia_usuario,
-    grupos=grupos, solicitudes_pendientes_grupos=solicitudes_pendientes_grupos)
+    grupos=grupos, solicitudes_pendientes=solicitudes_pendientes)
 
 
 
@@ -289,14 +289,14 @@ def mostrar_grupos():
     grupos = response.json()
 
     if session.get('usuario'):
-        response = requests.get(f"{API_BASE}/usuario/{session['usuario']}/solicitudes-pendientes-grupos")
-        solicitudes_pendientes_grupos = response.json().get("pendientes")
-        session['notificacion'] = len(solicitudes_pendientes_grupos) > 0
+        response = requests.get(f"{API_BASE}/usuario/{session['usuario']}/solicitudes-pendientes")
+        solicitudes_pendientes = response.json().get("pendientes")
+        session['notificacion'] = len(solicitudes_pendientes) > 0
     else:
         session['notificacion'] = False
-        solicitudes_pendientes_grupos = []
+        solicitudes_pendientes = []
 
-    return render_template("grupos.html", grupos=grupos, solicitudes_pendientes_grupos=solicitudes_pendientes_grupos)
+    return render_template("grupos.html", grupos=grupos, solicitudes_pendientes=solicitudes_pendientes)
 
 
 @app.route("/materias", methods=["GET"])
@@ -305,14 +305,14 @@ def mostrar_materias():
     materias = response.json()
 
     if session.get('usuario'):
-        response = requests.get(f"{API_BASE}/usuario/{session['usuario']}/solicitudes-pendientes-grupos")
-        solicitudes_pendientes_grupos = response.json().get("pendientes")
-        session['notificacion'] = len(solicitudes_pendientes_grupos) > 0
+        response = requests.get(f"{API_BASE}/usuario/{session['usuario']}/solicitudes-pendientes")
+        solicitudes_pendientes = response.json().get("pendientes")
+        session['notificacion'] = len(solicitudes_pendientes) > 0
     else:
         session['notificacion'] = False
-        solicitudes_pendientes_grupos = []
+        solicitudes_pendientes = []
 
-    return render_template('materias.html', materias=materias, solicitudes_pendientes_grupos=solicitudes_pendientes_grupos)
+    return render_template('materias.html', materias=materias, solicitudes_pendientes=solicitudes_pendientes)
 
 
 @app.route("/materias/<string:materia_codigo>/grupos-por-materia", methods=["GET"])
@@ -321,19 +321,19 @@ def grupos_por_materia(materia_codigo):
     grupos = response.json()
 
     if session.get('usuario'):
-        response = requests.get(f"{API_BASE}/usuario/{session['usuario']}/solicitudes-pendientes-grupos")
-        solicitudes_pendientes_grupos = response.json().get("pendientes")
-        session['notificacion'] = len(solicitudes_pendientes_grupos) > 0
+        response = requests.get(f"{API_BASE}/usuario/{session['usuario']}/solicitudes-pendientes")
+        solicitudes_pendientes = response.json().get("pendientes")
+        session['notificacion'] = len(solicitudes_pendientes) > 0
     else:
         session['notificacion'] = False
-        solicitudes_pendientes_grupos = []
+        solicitudes_pendientes = []
 
-    return render_template("grupos_por_materia.html", nombre_materia=grupos[0]["nombre_materia"], grupos=grupos, solicitudes_pendientes_grupos=solicitudes_pendientes_grupos)
+    return render_template("grupos_por_materia.html", nombre_materia=grupos[0]["nombre_materia"], grupos=grupos, solicitudes_pendientes=solicitudes_pendientes)
+
 
 
 @app.route('/solicitar-unirse-grupo/<int:grupo_id>', methods=['POST'])
 def solicitar_unirse_grupo(grupo_id):
-
     if session.get('usuario'):
         padron = session['usuario']
         response = requests.post(f"{API_BASE}/grupos/{grupo_id}/solicitar-unirse-grupo", json={"padron_emisor": padron, "tipo": "usuario_a_grupo"})
@@ -345,11 +345,26 @@ def solicitar_unirse_grupo(grupo_id):
         return redirect(request.referrer or url_for('inicio'))
 
 
+@app.route('/solicitud/<int:solicitud_id>/aceptar', methods=['POST'])
+def aceptar_solicitud(solicitud_id):
+    response = requests.get(f"{API_BASE}/solicitud/{solicitud_id}")
+    solicitud = response.json()
+
+    requests.post(f"{API_BASE}/solicitudes/{solicitud_id}/actualizar", json={"estado": "aceptada"})
+
+    if solicitud["tipo"] == "usuario_a_grupo":
+        grupo_id = solicitud["grupo_id"]
+        padron_emisor = solicitud["padron_emisor"]
+        materia_codigo = solicitud["materia_codigo"]
+        requests.post(f"{API_BASE}/grupos/{grupo_id}/agregar-integrante", json={"padron": padron_emisor, "materia_codigo": materia_codigo})
+
+    return redirect(request.referrer or url_for('usuario', padron=session["usuario"]))
 
 
-
-
-
+@app.route('/solicitud/<int:solicitud_id>/rechazar', methods=['POST'])
+def rechazar_solicitud(solicitud_id):
+    requests.post(f"{API_BASE}/solicitudes/{solicitud_id}/actualizar", json={"estado": "rechazada"})
+    return redirect(request.referrer or url_for('usuario', padron=session["usuario"]))
 
 
 

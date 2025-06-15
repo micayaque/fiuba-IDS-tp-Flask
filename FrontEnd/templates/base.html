@@ -26,7 +26,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Gentium+Book+Plus:ital,wght@0,400;0,700;1,400;1,700&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Poetsen+One&display=swap" rel="stylesheet">
         <!--Fin fuentes de texto-->
 
-        <link rel="icon" href="{{ url_for('static', filename='/img/icono_pagina.png', _external=True) }}">
+        <link rel="icon" href="{{ url_for('static', filename='/img/iconos/logo.png', _external=True) }}">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title>{% block title %}{% endblock %}</title>
@@ -40,9 +40,11 @@
     <body>
         
         <header>
-            <div id="contenedor_header" class="container">        
-                <div id="contenedor_logo_header" class="start-0 mt-3">
-                    <a href="/"><img src="{{ url_for('static', filename='img/logo_header.png') }}" alt="Logo"></a>
+            <div id="contenedor_header" class="container d-flex gap-5">        
+                <div id="contenedor_logo_header" class="ms-3 mt-3 d-flex flex-column align-items-center">
+                    <a href="/" class="text-decoration-none"><img src="{{ url_for('static', filename='img/iconos/logo.png') }}" alt="Logo">
+                        <h4 class="text-white mt-0 fw-bold text-center text-decoration-none" style="font-family: 'Poppins';" >TP BUDDY</h4>
+                    </a>
                 </div>
                 <div id="contenedor_botones_header">
                     {% if session['usuario'] %}
@@ -197,7 +199,7 @@
             <div class="container" id="contenedor_footer">
 
                 <div id="contenedor_logo_footer" class="flex-md-row">
-                    <img id="img_footer" src="{{ url_for('static', filename='img/logo_footer.png') }}" alt="Logo Footer"> 
+                    <img id="img_footer" src="{{ url_for('static', filename='img/iconos/logo-blanco-negro.png') }}" alt="Logo Footer"> 
                     <h4>TP Buddy</h4>
                 </div>
 
@@ -213,7 +215,7 @@
             </div>
         </footer>
 
-        <!-- Modal de Solicitudes Pendientes Responsive -->
+        <!-- Modal de Solicitudes Pendientes -->
         <div class="modal fade" id="modalSolicitudesPendientes" tabindex="-1" aria-labelledby="modalSolicitudesPendientesLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
             <div class="modal-content modal-dark p-4">
@@ -222,30 +224,47 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
             </div>
             <div class="modal-body">
-                {% if solicitudes_pendientes_grupos | length > 0 %}
+                {% if solicitudes_pendientes | length > 0 %}
                 <ul class="list-group gap-3 rounded-4">
-                    {% for solicitud in solicitudes_pendientes_grupos %}
+                    {% for solicitud in solicitudes_pendientes %}
                     <li class="list-group-item solicitud-item border-0">
-                        <div class="row g-2 align-items-center">
+                        <div class="row g-2 align-items-center text-center fw-lighter">
                         <div class="col-12 col-md-4">
-                            <strong>Grupo:</strong> {{ solicitud.grupo_nombre }}<br>
-                            <strong>Materia:</strong> {{ solicitud.materia_nombre }}<br>
-                            <strong>Integrantes:</strong>
-                            <ul class="list-unstyled mb-0">
-                            {% for integrante in solicitud.integrantes %}
-                                <li>{{ integrante.nombre }} ({{ integrante.padron }})</li>
-                            {% endfor %}
-                            </ul>
+                            {% if solicitud.tipo == 'usuario_a_grupo' %}
+                                <p>{{ solicitud.nombre_emisor | capitalize }} ({{ solicitud.padron_emisor }}) quiere unirse a tu grupo {{ solicitud.grupo_nombre }}
+                                de la materia {{ solicitud.materia_nombre }} </p>
+                            {% elif solicitud.tipo == 'grupo_a_usuario' %}
+                                <p>El grupo {{ solicitud.grupo_nombre }}
+                                de la materia {{ solicitud.materia_nombre }}
+                                con integrantes:</p>
+                                <ul class="list-unstyled mb-0">
+                                    {% for integrante in solicitud.integrantes %}
+                                        <li>{{ integrante.nombre }} ({{ integrante.padron }})</li>
+                                    {% endfor %}
+                                </ul>
+                                <p>quiere que te unas a su grupo.</p>
+                            {% endif %}
                         </div>
                         <div class="col-12 col-md-4">
-                            <strong>Horarios disponibles:</strong>
-                            <ul class="list-unstyled mb-0">
-                            {% for dia in ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'] %}
-                                {% for turno in solicitud.horarios_grupo[dia] %}
-                                    <li>{{ dia|capitalize }} - {{ turno }}</li>
+                            {% if solicitud.tipo == 'usuario_a_grupo' %}
+                                <p>Sus horarios disponibles son:</p>
+                                <ul class="list-unstyled mb-0">
+                                    {% for dia in ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'] %}
+                                        {% for turno in solicitud.horarios_emisor[dia] %}
+                                            <li>{{ dia|capitalize }} - {{ turno }}</li>
+                                        {% endfor %}
+                                    {% endfor %}
+                                </ul>
+                            {% elif solicitud.tipo == 'grupo_a_usuario' %}
+                                <p>Horarios disponibles del grupo:</p>
+                                <ul class="list-unstyled mb-0">
+                                {% for dia in ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'] %}
+                                    {% for turno in solicitud.horarios_grupo[dia] %}
+                                        <li>{{ dia|capitalize }} - {{ turno }}</li>
+                                    {% endfor %}
                                 {% endfor %}
-                            {% endfor %}
-                            </ul>
+                                </ul>
+                            {% endif %}
                         </div>
                         <div class="col-12 col-md-4 text-center">
                             <form method="POST" action="/solicitud/{{ solicitud.solicitud_id }}/aceptar" class="d-inline">

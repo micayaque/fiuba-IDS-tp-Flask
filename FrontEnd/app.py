@@ -21,7 +21,7 @@ def registrarse():
 
     if response.status_code == 200:
         session['usuario'] = padron
-        return redirect(url_for("inicio"))
+        return redirect(url_for("usuario", padron=padron))
     elif response.status_code == 400 and response.text == "El usuario ya existe":
         return render_template("index.html", error="El usuario ya existe")
     else:
@@ -40,7 +40,7 @@ def iniciar_sesion():
 
     if response.status_code == 200:
         session['usuario'] = padron
-        return redirect(url_for("inicio"))
+        return redirect(url_for("usuario", padron=padron))
     else:
         return render_template("index.html", error="Padron o contraseña incorrectos")
 
@@ -51,12 +51,21 @@ def cerrar_sesion():
     return redirect(url_for("inicio"))
 
 
-@app.route("/")
+@app.route("/", methods=["GET"])
 def inicio():
-    return render_template("index.html")
+
+    if session.get('usuario'):
+        response = requests.get(f"{API_BASE}/usuario/{session['usuario']}/solicitudes-pendientes")
+        solicitudes_pendientes = response.json().get("pendientes")
+        session['notificacion'] = len(solicitudes_pendientes) > 0
+    else:
+        session['notificacion'] = False
+        solicitudes_pendientes = []
+
+    return render_template("index.html", solicitudes_pendientes=solicitudes_pendientes)
 
 
-@app.route("/usuario/<int:padron>")
+@app.route("/usuario/<int:padron>", methods=["GET"])
 def usuario(padron):
     avatares = ["pepe.jpg", "tiger.jpg", "mulan.jpg", "jon.jpg", "lisa.jpg", "snoopy.jpg", "this_is_fine.jpg", "tom.jpg", "coraje.jpg"]
         
@@ -99,9 +108,13 @@ def usuario(padron):
     else:
         grupos = []
 
+    response = requests.get(f"{API_BASE}/usuario/{padron}/solicitudes-pendientes")
+    solicitudes_pendientes = response.json().get("pendientes")
+    session['notificacion'] = len(solicitudes_pendientes) > 0
+
     return render_template("perfil_de_usuario.html", usuario=usuario, avatares=avatares, materias_cursando=materias_cursando, materias_aprobadas=materias_aprobadas, 
     materias_para_elegir_cursando=materias_para_elegir_cursando, materias_para_elegir_aprobadas=materias_para_elegir_aprobadas, horarios_por_dia_usuario=horarios_por_dia_usuario,
-    grupos=grupos)
+    grupos=grupos, solicitudes_pendientes=solicitudes_pendientes)
 
 
 
@@ -274,38 +287,94 @@ def agregar_grupo(padron):
 def mostrar_grupos():
     response = requests.get(f"{API_BASE}/grupos")
     grupos = response.json()
-    return render_template("grupos.html", grupos=grupos)
+
+    if session.get('usuario'):
+        response = requests.get(f"{API_BASE}/usuario/{session['usuario']}/solicitudes-pendientes")
+        solicitudes_pendientes = response.json().get("pendientes")
+        session['notificacion'] = len(solicitudes_pendientes) > 0
+    else:
+        session['notificacion'] = False
+        solicitudes_pendientes = []
+
+    return render_template("grupos.html", grupos=grupos, solicitudes_pendientes=solicitudes_pendientes)
+
 
 @app.route("/materias", methods=["GET"])
 def mostrar_materias():
     response = requests.get(f"{API_BASE}/materias-grupos")
     materias = response.json()
-    return render_template('materias.html', materias=materias)
+
+    if session.get('usuario'):
+        response = requests.get(f"{API_BASE}/usuario/{session['usuario']}/solicitudes-pendientes")
+        solicitudes_pendientes = response.json().get("pendientes")
+        session['notificacion'] = len(solicitudes_pendientes) > 0
+    else:
+        session['notificacion'] = False
+        solicitudes_pendientes = []
+
+    return render_template('materias.html', materias=materias, solicitudes_pendientes=solicitudes_pendientes)
 
 
 @app.route("/materias/<string:materia_codigo>/grupos-por-materia", methods=["GET"])
 def grupos_por_materia(materia_codigo):
     response = requests.get(f"{API_BASE}/materias/{materia_codigo}/grupos-por-materia")
     grupos = response.json()
-    return render_template("grupos_por_materia.html", nombre_materia=grupos[0]["nombre_materia"], grupos=grupos)
+
+    if session.get('usuario'):
+        response = requests.get(f"{API_BASE}/usuario/{session['usuario']}/solicitudes-pendientes")
+        solicitudes_pendientes = response.json().get("pendientes")
+        session['notificacion'] = len(solicitudes_pendientes) > 0
+    else:
+        session['notificacion'] = False
+        solicitudes_pendientes = []
+
+    return render_template("grupos_por_materia.html", materia_codigo = materia_codigo, nombre_materia=grupos[0]["nombre_materia"], grupos=grupos, solicitudes_pendientes=solicitudes_pendientes)
 
 
-@app.route("/materias/<int:codigo_materia>/companieros-sin-grupo")
-def companieros_sin_grupo_por_materia(materia_codigo):
-    materia = None
-    for m in materias:
-        if m["codigo_materia"] == materia_codigo:
-            materia = m
-            break
+@app.route("/materias/<string:materia_codigo>/companierxs-sin-grupo", methods=["GET"])
+def companierxs_sin_grupo_por_materia(materia_codigo):
+    response = requests.get(f"{API_BASE}/materias/{materia_codigo}/companierxs-sin-grupo")
+    data = response.json()
+    materia = data["materia"]
+    companierxs = data["companierxs"]
 
-    compañeros_sin_grupo = [
-        {"padron": 543211, "nombre": "Compañerx 1"},
-        {"padron": 543212, "nombre": "Compañerx 2"},
-        {"padron": 543213, "nombre": "Compañerx 3"},
-        {"padron": 543214, "nombre": "Compañerx 4"},
-    ]
+    return render_template("compañerxs_sin_grupo.html", materia=materia, compañerxs=companierxs)
 
-    return render_template("compañerxs_sin_grupo.html", materia=materia, compañeros=compañeros_sin_grupo)
+
+
+@app.route('/solicitar-unirse-grupo/<int:grupo_id>', methods=['POST'])
+def solicitar_unirse_grupo(grupo_id):
+    if session.get('usuario'):
+        padron = session['usuario']
+        response = requests.post(f"{API_BASE}/grupos/{grupo_id}/solicitar-unirse-grupo", json={"padron_emisor": padron, "tipo": "usuario_a_grupo"})
+        if response.status_code == 201:
+            return redirect(request.referrer or url_for('usuario', padron=padron))
+        else:
+            return "Error al enviar la solicitud", 400
+    else:
+        return redirect(request.referrer or url_for('inicio'))
+
+
+@app.route('/solicitud/<int:solicitud_id>/aceptar', methods=['POST'])
+def aceptar_solicitud(solicitud_id):
+    response = requests.get(f"{API_BASE}/solicitud/{solicitud_id}")
+    solicitud = response.json()
+
+    requests.post(f"{API_BASE}/solicitudes/{solicitud_id}/actualizar", json={"estado": "aceptada"})
+
+    if solicitud["tipo"] == "usuario_a_grupo":
+        grupo_id = solicitud["grupo_id"]
+        padron_emisor = solicitud["padron_emisor"]
+        materia_codigo = solicitud["materia_codigo"]
+        requests.post(f"{API_BASE}/grupos/{grupo_id}/agregar-integrante", json={"padron": padron_emisor, "materia_codigo": materia_codigo})
+
+    return redirect(request.referrer or url_for('usuario', padron=session["usuario"]))
+
+
+@app.route('/solicitud/<int:solicitud_id>/rechazar', methods=['POST'])
+def rechazar_solicitud(solicitud_id):
+    requests.post(f"{API_BASE}/solicitudes/{solicitud_id}/actualizar", json={"estado": "rechazada"})
+    return redirect(request.referrer or url_for('usuario', padron=session["usuario"]))
 
 
 if __name__ == '__main__':

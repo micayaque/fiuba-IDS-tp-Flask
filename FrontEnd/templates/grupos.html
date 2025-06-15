@@ -2,90 +2,162 @@
 {% block tittle %}Grupos{% endblock %}
 
 {% block content %}
-<div class="container my-5" id="contenedor-grupos">
+<div class="container my-5 contenido_buscador_grupos" id="contenedor-grupos">
+
+  
 
    <div class="align-items-center d-flex flex-column my-5">
-      <h2 class="fw-bold text-center">Grupos disponibles</h2>
+      <h2 class="text-center">Grupos disponibles</h2>
    </div>
 
-   <div class="d-flex justify-content-center mb-5">
-   <button type="button" class="btn btn-guardar justify-content-center" data-bs-toggle="modal" data-bs-target="#modalFiltroHorarios">
-      Filtrar grupos por horarios
-   </button>
-   </div>
-   
-   <div class="modal fade" id="modalFiltroHorarios" tabindex="-1" aria-labelledby="modalFiltroHorariosLabel" aria-hidden="true">
-   <div class="modal-dialog modal-lg modal-dialog-centered">
-      <div class="modal-content p-4">
-         <div class="modal-header">
-         <h5 class="modal-title" id="modalFiltroHorariosLabel">Filtrar grupos por horarios</h5>
-         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-         </div>
-         <div class="modal-body">
-         <form id="form-filtro-horarios">
-            <div class="table-responsive">
-               <table class="table p-3 tabla-horarios text-center align-middle">
-               <thead>
-                  <tr>
-                     <th><i class="fa-regular fa-clock"></i></th>
-                     <th>Lu</th>
-                     <th>Ma</th>
-                     <th>Mié</th>
-                     <th>Ju</th>
-                     <th>Vi</th>
-                     <th>Sá</th>
-                     <th>Do</th>
-                  </tr>
-               </thead>
-               <tbody>
-                  <tr>
-                     <th>Mañana</th>
-                     {% for dia in ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'] %}
-                     <td><input type="checkbox" name="{{ dia }}_mañana"></td>
-                     {% endfor %}
-                  </tr>
-                  <tr>
-                     <th>Tarde</th>
-                     {% for dia in ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'] %}
-                     <td><input type="checkbox" name="{{ dia }}_tarde"></td>
-                     {% endfor %}
-                  </tr>
-                  <tr>
-                     <th>Noche</th>
-                     {% for dia in ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'] %}
-                     <td><input type="checkbox" name="{{ dia }}_noche"></td>
-                     {% endfor %}
-                  </tr>
-               </tbody>
-               </table>
-            </div>
-            <div class="my-3 text-center">
-               <button type="button" class="btn btn-guardar" onclick="filtrarGruposPorHorarios()">Filtrar</button>
-            </div>
-         </form>
-         </div>
+      <!-- Modal para filtrar por horarios -->
+   <div class="modal fade" id="modalFiltroHorariosGrupos">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-4">
+          <div class="modal-header border-0">
+            <h5 class="modal-title">Filtrar grupos por horarios</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">
+            <form id="form-filtro-horarios">
+                <div class="table-responsive">
+                  <table class="table tabla-horarios text-center">
+                      <thead>
+                          <tr>
+                              <th><i class="fa-regular fa-clock"></i></th>
+                              <th>Lu</th>
+                              <th>Ma</th>
+                              <th>Mié</th>
+                              <th>Ju</th>
+                              <th>Vi</th>
+                              <th>Sá</th>
+                              <th>Do</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          {% set imagenes_turno = {'mañana': 'mañana.png', 'tarde': 'tarde.png', 'noche': 'noche.png'} %}
+                          {% for turno in ['mañana', 'tarde', 'noche'] %}
+                              <tr>
+                                  <th>
+                                      <img src="{{ url_for('static', filename='img/horarios/' + imagenes_turno[turno]) }}" alt="{{ turno }}" class="icono-horario">
+                                  </th>
+                                  {% for dia in ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'] %}
+                                      <td>
+                                          <input type="checkbox" name="{{dia}}_{{turno}}">
+                                      </td>
+                                  {% endfor %}
+                              </tr>
+                          {% endfor %}
+                      </tbody>
+                  </table>
+                </div>
+                <div class="my-3 text-center">
+                  <button type="button" class="btn btn-guardar" onclick="filtrarGruposPorHorarios()">Filtrar</button>
+                </div>
+            </form>
+          </div>
+        </div>
       </div>
-   </div>
-   </div>
+    </div>
 
-   <div class="barra_desplazamiento_grupos">
-      <div class="row my-5 me-2 d-flex justify-content-center mt-0 pt-0">
-         {% for grupo in grupos %}
-         <div class="col-12 col-sm-6 col-md-4 col-lg-3 pt-0">
-            <div class="grupo-card card rounded-4 h-90 mb-4 mx-1 pt-0" data-horarios="{{ grupo.horarios|join(',') }}">
-                  <div id="items_barra_desplazamiento_grupos" class="card-body d-flex flex-column pt-0">
-                     <div id="contenedor_nombre_grupo_nombre_materia" class="p-3 w-100 text-left rounded-4">
-                        <h5 class="card-title fw-bold">{{ grupo.nombre }}</h5>
-                        <p class="card-text small text-white fw-light">{{ grupo.materia }}</p>
-                     </div>
-                     <div id="contenedor_boton_informacion_grupo" class="w-100 my-3 rounded-4 text-center d-flex justify-content-center align-items-center">
-                        <a href="/grupo/{{ grupo.id }}" class="btn btn-primary rounded-pill px-4 fw-bold w-100">INFO</a>
-                     </div>
-                  </div>
+
+  <div class="contentido_bottom_buscador_grupos row g-4 justify-content-center">
+    {% for grupo in grupos %}
+      <div class="justify-content-center col-12 col-md-6 col-lg-4 grupo-carta" data-horarios='{{ grupo.horarios | tojson | safe }}'>
+        <div class="carta card h-100 shadow">
+          <div class="card-body d-flex flex-column justify-content-between grupo_info">
+            <div>
+              <h3 class="nombre_del_grupo card-title">{{ grupo.nombre }}</h3>
+              <p class="cantidad_integrantes card-text"> N° integrantes: {{ grupo.cantidad_integrantes }} </p>
             </div>
-         </div>
-         {% endfor %}
+
+            <button type="button" class="boton_info btn btn-primary" data-bs-toggle="modal"
+              data-bs-target="#modalGrupo{{ grupo.id }}">
+              INFO
+            </button>
+          </div>
+        </div>
       </div>
-   </div>
+
+
+      <!-- Modal -->
+      <div class="modal fade" id="modalGrupo{{ grupo.id }}" tabindex="-1" aria-labelledby="modalGrupoLabel{{ grupo.id }}"
+          aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark text-white rounded-4 p-4 border-0 position-relative">
+
+              <!-- Botón de cierre (X) -->
+              <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3"
+                data-bs-dismiss="modal" aria-label="Cerrar"></button>
+
+              <!-- Título -->
+              <h5 class="nombre_del_grupo modal-title text-center text-lilac mb-4 fs-3" id="modalGrupoLabel{{ grupo.id }}"> {{ grupo.nombre }}</h5>
+
+              <div class="modal-body d-flex flex-row justify-content-between gap-5 flex-wrap">
+
+                <!-- Integrantes -->
+                <div class="me-5 ms-0 align-text-start">
+                  <ul class="list-unstyled">
+                    <li class="fw-light">Integrantes <img src="{{ url_for('static', filename='img/iconos/integrantes.png') }}" alt="Integrantes" width="30" height="30">  </li>
+                  {% for integrante in grupo.integrantes %}
+                    <li class="fw-bold my-1">{{ integrante.nombre }}</li>
+                  {% endfor %}
+
+                  </ul>
+                </div>
+
+                <!-- Horarios -->
+                <div class="flex-fill">
+                  <p class="fw-bold mb-2">Horarios disponibles para trabajar junt@s:</p>
+                  <table class="table table-sm text-center">
+                    <thead>
+                      <tr>
+                        <th></th>
+                        <th>Lu</th>
+                        <th>Ma</th>
+                        <th>Mié</th>
+                        <th>Ju</th>
+                        <th>Vi</th>
+                        <th>Sá</th>
+                        <th>Do</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for turno in ['mañana', 'tarde', 'noche'] %}
+                        <tr>
+                          <th>{{ turno|capitalize }}</th>
+                          {% for dia in ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'] %}
+                            <td>
+                              {% if {'dia': dia, 'turno': turno} in grupo.horarios %}
+                                <img src="{{ url_for('static', filename='img/iconos/checked.png') }}" alt="Disponible" width="30" height="30">
+                              {% else %}
+                                <img src="{{ url_for('static', filename='img/iconos/x.png') }}" alt="No disponible" width="15" height="15">
+                              {% endif %}
+                            </td>
+                          {% endfor %}
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <!-- Botón solicitar -->
+              <div class="modal-footer border-0 justify-content-end">
+                <form method="POST" action="/solicitar-unirse-grupo/{{ grupo.grupo_id }}">
+                  <button type="submit" class="boton_solicitar_unirse btn" style="background-color: #A020F0; color: white;">
+                    SOLICITAR UNIRSE
+                    <img src="{{ url_for('static', filename='img/iconos/send.png') }}" alt="Enviar solicitud" width="30" height="30">
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+      </div>
+
+
+    {% endfor %}
+  </div>
+
+
 </div>
 {% endblock %}

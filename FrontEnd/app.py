@@ -244,22 +244,15 @@ def agregar_grupo(padron):
     max_integrantes = request.form.get("cantidadMaxIntegrantes")
     padrones_str = request.form.get("padrones_integrantes", "")
     integrantes = [p for p in padrones_str.split(",") if p]
-    dias = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo']
-    turnos = ['mañana', 'tarde', 'noche']
 
-    # creamos el grupo en la base de datos
+    if session.get('usuario') and session['usuario'] not in integrantes:
+        integrantes.append(session['usuario'])
+
     response = requests.post(f"{API_BASE}/agregar-grupo", json={
         "materia_codigo": materia_codigo,
         "nombre": nombre_grupo,
         "maximo_integrantes": max_integrantes,
     })
-
-    grupo_id = response.json().get("grupo_id")
-    for padron_integrante in integrantes:
-        requests.post(f"{API_BASE}/grupos/{grupo_id}/agregar-integrante", json={
-            "padron": padron_integrante,
-            "materia_codigo": materia_codigo
-        })
 
     if response.status_code != 201:
         return "Error al crear grupo", 400
@@ -267,12 +260,13 @@ def agregar_grupo(padron):
 
     for padron_integrante in integrantes:
         requests.post(f"{API_BASE}/grupos/{grupo_id}/agregar-integrante", json={
-            "grupo_id": grupo_id,
             "padron": padron_integrante,
             "materia_codigo": materia_codigo
         })
 
     horarios = []
+    dias = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo']
+    turnos = ['mañana', 'tarde', 'noche']
     for dia in dias:
         for turno in turnos:
             if request.form.get(f"grupo_horario_{dia}_{turno}"):
@@ -280,7 +274,6 @@ def agregar_grupo(padron):
     requests.post(f"{API_BASE}/grupos/{grupo_id}/agregar-horarios-grupo", json={"horarios": horarios})
 
     return redirect(url_for("usuario", padron=padron))
-
 
 
 @app.route("/grupos", methods=["GET"])

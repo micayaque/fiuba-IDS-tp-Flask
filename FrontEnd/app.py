@@ -368,7 +368,7 @@ def grupos_por_materia(materia_codigo):
             session['notificacion'] = False
             solicitudes_pendientes = []
 
-        if not grupos:
+        if grupos:
             nombre_materia = grupos[0]["nombre_materia"]
         else:
             response_materia = requests.get(f"{API_BASE}/materias/{materia_codigo}")

@@ -15,6 +15,19 @@ def get_materias_list():
     conn.close()
     return jsonify(materias)
 
+@materias_bp.route("/materias/<string:materia_codigo>", methods=["GET"])
+def get_materia(materia_codigo):
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM materias WHERE materia_codigo = %s", (materia_codigo,))
+    materia = cursor.fetchone()
+    cursor.close()
+    conn.close()
+    if materia:
+        return jsonify(materia)
+    else:
+        return jsonify({"error": "Materia no encontrada"}), 404
+
 @materias_bp.route("/materias-grupos", methods=["GET"])
 def get_materias_grupos():
     conn = get_connection()
@@ -23,7 +36,9 @@ def get_materias_grupos():
         """
         SELECT DISTINCT materias.materia_codigo, materias.nombre 
         FROM materias
-        INNER JOIN grupos ON materias.materia_codigo = grupos.materia_codigo
+        LEFT JOIN grupos ON materias.materia_codigo = grupos.materia_codigo
+        LEFT JOIN materias_usuarios ON materias.materia_codigo = materias_usuarios.materia_codigo
+        WHERE grupos.grupo_id IS NOT NULL OR materias_usuarios.padron IS NOT NULL
         """)
     materias = cursor.fetchall()
     cursor.close()

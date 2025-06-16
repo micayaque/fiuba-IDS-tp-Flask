@@ -249,12 +249,17 @@ def agregar_grupo(padron):
 
     # creamos el grupo en la base de datos
     response = requests.post(f"{API_BASE}/agregar-grupo", json={
-        "materia_codigo": materia_codigo,
-        "nombre": nombre_grupo,
-        "maximo_integrantes": max_integrantes,
-    })
+    "materia_codigo": materia_codigo,
+    "nombre": nombre_grupo,
+    "maximo_integrantes": max_integrantes,
+})
 
-    grupo_id = response.json().get("grupo_id")
+    try:
+        grupo_id = response.json().get("grupo_id")
+    except ValueError:
+        print("Respuesta inválida del backend:", response.text)
+        return "Error al crear grupo (respuesta no válida)", 500
+
     for padron_integrante in integrantes:
         requests.post(f"{API_BASE}/grupos/{grupo_id}/agregar-integrante", json={
             "padron": padron_integrante,
@@ -301,45 +306,69 @@ def mostrar_grupos():
 
 @app.route("/materias", methods=["GET"])
 def mostrar_materias():
-    response = requests.get(f"{API_BASE}/materias-grupos")
-    materias = response.json()
+    try: 
+        response = requests.get(f"{API_BASE}/materias-grupos")
+        materias = response.json()
 
-    if session.get('usuario'):
-        response = requests.get(f"{API_BASE}/usuario/{session['usuario']}/solicitudes-pendientes")
-        solicitudes_pendientes = response.json().get("pendientes")
-        session['notificacion'] = len(solicitudes_pendientes) > 0
-    else:
-        session['notificacion'] = False
-        solicitudes_pendientes = []
+        if session.get('usuario'):
+            response = requests.get(f"{API_BASE}/usuario/{session['usuario']}/solicitudes-pendientes")
+            solicitudes_pendientes = response.json().get("pendientes")
+            session['notificacion'] = len(solicitudes_pendientes) > 0
+        else:
+            session['notificacion'] = False
+            solicitudes_pendientes = []
 
-    return render_template('materias.html', materias=materias, solicitudes_pendientes=solicitudes_pendientes)
-
+        return render_template('materias.html', materias=materias, solicitudes_pendientes=solicitudes_pendientes)
+    
+    except Exception:
+        return render_template("index.html", error=f"No se pudo ingresar a la sección de materias")
 
 @app.route("/materias/<string:materia_codigo>/grupos-por-materia", methods=["GET"])
 def grupos_por_materia(materia_codigo):
-    response = requests.get(f"{API_BASE}/materias/{materia_codigo}/grupos-por-materia")
-    grupos = response.json()
+    try:
+        response = requests.get(f"{API_BASE}/materias/{materia_codigo}/grupos-por-materia")
+        grupos = response.json()
 
-    if session.get('usuario'):
-        response = requests.get(f"{API_BASE}/usuario/{session['usuario']}/solicitudes-pendientes")
-        solicitudes_pendientes = response.json().get("pendientes")
-        session['notificacion'] = len(solicitudes_pendientes) > 0
-    else:
-        session['notificacion'] = False
-        solicitudes_pendientes = []
+        if session.get('usuario'):
+            response = requests.get(f"{API_BASE}/usuario/{session['usuario']}/solicitudes-pendientes")
+            solicitudes_pendientes = response.json().get("pendientes")
+            session['notificacion'] = len(solicitudes_pendientes) > 0
+        else:
+            session['notificacion'] = False
+            solicitudes_pendientes = []
 
-    return render_template("grupos_por_materia.html", materia_codigo = materia_codigo, nombre_materia=grupos[0]["nombre_materia"], grupos=grupos, solicitudes_pendientes=solicitudes_pendientes)
+        if grupos is None:
+            grupos = []
 
+        if grupos:
+            nombre_materia = grupos[0]["nombre_materia"]
+        else:
+            response_materia = requests.get(f"{API_BASE}/materias/{materia_codigo}")
+            if response_materia.status_code == 200:
+                nombre_materia = response_materia.json().get("nombre", "Error para mostrar nombre")
+            else:
+                nombre_materia = ""
+
+        return render_template("grupos_por_materia.html", materia_codigo=materia_codigo, nombre_materia=nombre_materia, grupos=grupos, solicitudes_pendientes=solicitudes_pendientes)
+        
+    except Exception: 
+        return render_template("materias.html", error="Error a la hora de mostrar los grupos")
 
 @app.route("/materias/<string:materia_codigo>/companierxs-sin-grupo", methods=["GET"])
 def companierxs_sin_grupo_por_materia(materia_codigo):
-    response = requests.get(f"{API_BASE}/materias/{materia_codigo}/companierxs-sin-grupo")
-    data = response.json()
-    materia = data["materia"]
-    companierxs = data["companierxs"]
+    try:
+        response = requests.get(f"{API_BASE}/materias/{materia_codigo}/companierxs-sin-grupo")
+        data = response.json()
+        materia = data["materia"]
+        companierxs = data["companierxs"]
 
-    return render_template("compañerxs_sin_grupo.html", materia=materia, compañerxs=companierxs)
+        if companierxs is None:
+            companierxs = []
 
+        return render_template("compañerxs_sin_grupo.html", materia=materia, compañerxs=companierxs)
+    
+    except Exception: 
+        return render_template("materias.html", error="Error a la hora de mostrar compañeros")
 
 
 @app.route('/solicitar-unirse-grupo/<int:grupo_id>', methods=['POST'])

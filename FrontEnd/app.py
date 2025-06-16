@@ -134,30 +134,29 @@ def usuario(padron):
     solicitudes_pendientes = response.json().get("pendientes")
     session['notificacion'] = len(solicitudes_pendientes) > 0
 
+    usuario_session = session.get('usuario')
+
     return render_template("perfil_de_usuario.html", usuario=usuario, avatares=avatares, materias_cursando=materias_cursando, materias_aprobadas=materias_aprobadas, 
     materias_para_elegir_cursando=materias_para_elegir_cursando, materias_para_elegir_aprobadas=materias_para_elegir_aprobadas, horarios_por_dia_usuario=horarios_por_dia_usuario,
-    grupos=grupos, solicitudes_pendientes=solicitudes_pendientes)
+    grupos=grupos, solicitudes_pendientes=solicitudes_pendientes, padron=str(padron), usuario_session=usuario_session)
 
 
 
 @app.route("/usuario/<int:padron>/editar-perfil", methods=["POST"])
 def editar_perfil_usuario(padron):
-    if session['usuario'] == padron:
-        campo = request.form.get("campo")
-        valor = request.form.get("valor")
-        # Envía el request al backend como JSON
-        response = requests.post(
-            f"{API_BASE}/usuario/{padron}/editar-perfil",
-            json={"campo": campo, "valor": valor}
-        )
-        # Puedes manejar la respuesta JSON si lo deseas
-        if response.status_code == 200:
-            return redirect(url_for("usuario", padron=padron))
-        else:
-            # Puedes mostrar un mensaje de error si quieres
-            return "Error al actualizar el perfil", 400
+    campo = request.form.get("campo")
+    valor = request.form.get("valor")
+    # Envía el request al backend como JSON
+    response = requests.post(
+        f"{API_BASE}/usuario/{padron}/editar-perfil",
+        json={"campo": campo, "valor": valor}
+    )
+    # Puedes manejar la respuesta JSON si lo deseas
+    if response.status_code == 200:
+        return redirect(url_for("usuario", padron=padron, ))
     else:
-        return "No puede editar el perfil"
+        # Puedes mostrar un mensaje de error si quieres
+        return "Error al actualizar el perfil", 400
     
 
 @app.route("/usuario/<int:padron>/editar-materias-cursando", methods=["POST"])

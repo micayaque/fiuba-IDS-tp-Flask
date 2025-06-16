@@ -1,3 +1,11 @@
+# Secciones:
+# Registro/ Inicio Sesión/ Cerrar Sesión
+# Index
+# Perfil Usuario
+# Grupos
+# Materias
+# Solicitud Grupos
+
 from flask import Flask, render_template, session, redirect, url_for, request, jsonify
 import requests
 
@@ -6,6 +14,10 @@ app = Flask(__name__)
 app.secret_key = 'clave-secreta'  # necesaria para usar session
 
 API_BASE = "http://localhost:5000"
+
+
+########################################################## Registro/ Inicio Sesión/ Cerrar Sesión ######################################################################################
+
 
 @app.route("/registrarse", methods=["POST"])
 def registrarse():
@@ -51,6 +63,11 @@ def cerrar_sesion():
     return redirect(url_for("inicio"))
 
 
+########################################################## FIN Regstro/ Inicio Sesión/ Cerrar Sesión ######################################################################################
+
+################################################################################ Index ####################################################################################################
+
+
 @app.route("/", methods=["GET"])
 def inicio():
 
@@ -63,6 +80,11 @@ def inicio():
         solicitudes_pendientes = []
 
     return render_template("index.html", solicitudes_pendientes=solicitudes_pendientes)
+
+
+############################################################################### FIN Index ##################################################################################################
+
+####################################################################### Perfil Usuario ######################################################################################################
 
 
 @app.route("/usuario/<int:padron>", methods=["GET"])
@@ -287,6 +309,10 @@ def agregar_grupo(padron):
     return redirect(url_for("usuario", padron=padron))
 
 
+####################################################################### FIN Perfil Usuario ###################################################################################################
+
+################################################################################ Grupos ######################################################################################################
+
 
 @app.route("/grupos", methods=["GET"])
 def mostrar_grupos():
@@ -302,6 +328,11 @@ def mostrar_grupos():
         solicitudes_pendientes = []
 
     return render_template("grupos.html", grupos=grupos, solicitudes_pendientes=solicitudes_pendientes)
+
+
+############################################################################# FIN Grupos #####################################################################################################
+
+############################################################################## Materias ######################################################################################################
 
 
 @app.route("/materias", methods=["GET"])
@@ -337,10 +368,7 @@ def grupos_por_materia(materia_codigo):
             session['notificacion'] = False
             solicitudes_pendientes = []
 
-        if grupos is None:
-            grupos = []
-
-        if grupos:
+        if not grupos:
             nombre_materia = grupos[0]["nombre_materia"]
         else:
             response_materia = requests.get(f"{API_BASE}/materias/{materia_codigo}")
@@ -362,14 +390,15 @@ def companierxs_sin_grupo_por_materia(materia_codigo):
         materia = data["materia"]
         companierxs = data["companierxs"]
 
-        if companierxs is None:
-            companierxs = []
-
         return render_template("compañerxs_sin_grupo.html", materia=materia, compañerxs=companierxs)
     
     except Exception: 
         return render_template("materias.html", error="Error a la hora de mostrar compañeros")
 
+
+########################################################################## FIn Materias ######################################################################################################
+
+####################################################################### Solicitud Grupos #####################################################################################################
 
 @app.route('/solicitar-unirse-grupo/<int:grupo_id>', methods=['POST'])
 def solicitar_unirse_grupo(grupo_id):
@@ -404,6 +433,9 @@ def aceptar_solicitud(solicitud_id):
 def rechazar_solicitud(solicitud_id):
     requests.post(f"{API_BASE}/solicitudes/{solicitud_id}/actualizar", json={"estado": "rechazada"})
     return redirect(request.referrer or url_for('usuario', padron=session["usuario"]))
+
+
+##################################################################### FIN Solicitud Grupos ###################################################################################################
 
 
 if __name__ == '__main__':

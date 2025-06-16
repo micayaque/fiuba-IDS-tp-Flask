@@ -90,7 +90,7 @@ def inicio():
 @app.route("/usuario/<int:padron>", methods=["GET"])
 def usuario(padron):
     avatares = ["pepe.jpg", "tiger.jpg", "mulan.jpg", "jon.jpg", "lisa.jpg", "snoopy.jpg", "this_is_fine.jpg", "tom.jpg", "coraje.jpg"]
-        
+    
     response = requests.get(f"{API_BASE}/usuario/{padron}")     # datos del usuario: nombre, carrera, "sobre mi", avatar, color del banner del perfil
     usuario = response.json()
 
@@ -142,19 +142,22 @@ def usuario(padron):
 
 @app.route("/usuario/<int:padron>/editar-perfil", methods=["POST"])
 def editar_perfil_usuario(padron):
-    campo = request.form.get("campo")
-    valor = request.form.get("valor")
-    # Envía el request al backend como JSON
-    response = requests.post(
-        f"{API_BASE}/usuario/{padron}/editar-perfil",
-        json={"campo": campo, "valor": valor}
-    )
-    # Puedes manejar la respuesta JSON si lo deseas
-    if response.status_code == 200:
-        return redirect(url_for("usuario", padron=padron))
+    if session['usuario'] == padron:
+        campo = request.form.get("campo")
+        valor = request.form.get("valor")
+        # Envía el request al backend como JSON
+        response = requests.post(
+            f"{API_BASE}/usuario/{padron}/editar-perfil",
+            json={"campo": campo, "valor": valor}
+        )
+        # Puedes manejar la respuesta JSON si lo deseas
+        if response.status_code == 200:
+            return redirect(url_for("usuario", padron=padron))
+        else:
+            # Puedes mostrar un mensaje de error si quieres
+            return "Error al actualizar el perfil", 400
     else:
-        # Puedes mostrar un mensaje de error si quieres
-        return "Error al actualizar el perfil", 400
+        return "No puede editar el perfil"
     
 
 @app.route("/usuario/<int:padron>/editar-materias-cursando", methods=["POST"])
@@ -261,6 +264,7 @@ def editar_horarios_usuario(padron):
 
 @app.route("/usuario/<int:padron>/agregar-grupo", methods=["POST"])
 def agregar_grupo(padron):
+#    if session[padron]
     materia_codigo = request.form.get("materiaGrupo")
     nombre_grupo = request.form.get("nombreGrupo")
     max_integrantes = request.form.get("cantidadMaxIntegrantes")

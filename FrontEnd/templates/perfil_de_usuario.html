@@ -7,15 +7,26 @@
 <div id="perfil" class="position-relative d-flex flex-column">
 
     <!-- Banner del perfil -->
+    
+    {% if session['usuario'] == padron %}
     <div id="banner_perfil" class="mb-5 position-relative" style="background-color: {{ usuario.banner_color }};" onclick="document.getElementById('color_selector_banner').click()">
         <form id="formColorBanner" method="POST" action="/usuario/{{ usuario.padron }}/editar-perfil" style="display:none;">
             <input type="hidden" name="campo" value="banner_color">
             <input type="color" id="color_selector_banner" name="valor" value="{{ usuario.banner_color }}" onchange="document.getElementById('formColorBanner').submit();">
         </form>
+    {% else %}
+    <div id="banner_perfil" class="mb-5 position-relative" style="background-color: {{ usuario.banner_color }};">
+            <input type="hidden" name="campo" value="banner_color">
+            <input type="color" id="color_selector_banner" name="valor" value="{{ usuario.banner_color }}">
+    {% endif %}
         <div id="foto_de_perfil" class="position-absolute">
-            <button id="boton_editar_foto_de_perfil" class="p-0 border-0 btn" data-bs-toggle="modal" data-bs-target="#modalEditarFotoPerfil" onclick="event.stopPropagation()">
+            {% if session['usuario'] == padron %}
+                <button id="boton_editar_foto_de_perfil" class="p-0 border-0 btn" data-bs-toggle="modal" data-bs-target="#modalEditarFotoPerfil" onclick="event.stopPropagation()">
+                    <img class="foto_perfil_img" src="{{ url_for('static', filename='img/avatares/' + usuario.avatar_url) }}" alt="Foto de perfil">
+                </button>
+            {% else %}
                 <img class="foto_perfil_img" src="{{ url_for('static', filename='img/avatares/' + usuario.avatar_url) }}" alt="Foto de perfil">
-            </button>
+            {% endif %}
         </div>
     </div>
 
@@ -23,19 +34,25 @@
     <div id="datos_usuario" class="mt-4">
         <div class="d-flex">
             <h4 id="nombre_usuario" class="titulo_datos_usuario">{{ usuario.nombre }}</h4>
-            <button type="button" class="btn p-0 icono-lapiz border-0" data-bs-toggle="modal" data-bs-target="#modalEditarNombre">
-                <img src="{{ url_for('static', filename='img/iconos/lapiz.png') }}" alt="Editar" width="16">
-            </button>
+            {% if session['usuario'] == padron %}
+                <button type="button" class="btn p-0 icono-lapiz border-0" data-bs-toggle="modal" data-bs-target="#modalEditarNombre">
+                    <img src="{{ url_for('static', filename='img/iconos/lapiz.png') }}" alt="Editar" width="16">
+                </button>
+            {% endif %}
         </div>
         <div class="d-flex my-2">
             <h5 id="carrera_usuario" class="titulo_datos_usuario">{{ usuario.carrera }}</h5>
-            <button class="btn icono-lapiz border-0" data-bs-toggle="modal" data-bs-target="#modalEditarCarrera">
-                <img src="{{ url_for('static', filename='img/iconos/lapiz.png') }}" alt="Editar" width="16">
-            </button>
+            {% if session['usuario'] == padron %}
+                <button class="btn icono-lapiz border-0" data-bs-toggle="modal" data-bs-target="#modalEditarCarrera">
+                    <img src="{{ url_for('static', filename='img/iconos/lapiz.png') }}" alt="Editar" width="16">
+                </button>
+            {% endif %}
         </div>
         <div class="d-flex flex-wrap align-items-center gap-2  my-2 mb-3">
             <h6 class="titulo_datos_usuario"> Sobre mí</h6>
-            <textarea id="sobre_mi_usuario" class="w-100 p-4 border-0" placeholder="Escribí algo sobre vos..." readonly data-bs-toggle="modal" data-bs-target="#modalSobreMi">{{ usuario.sobre_mi }}</textarea>
+            {% if session['usuario'] == padron %}
+                <textarea id="sobre_mi_usuario" class="w-100 p-4 border-0" placeholder="Escribí algo sobre vos..." readonly data-bs-toggle="modal" data-bs-target="#modalSobreMi">{{ usuario.sobre_mi }}</textarea>
+            {% endif %}
         </div>
     </div>
 
@@ -48,9 +65,11 @@
                     <div class="card-body">
                         <h5 class="card-title d-flex justify-content-between align-items-center">
                             Materias cursando
-                            <button class="btn border-0 icono-lapiz" data-bs-toggle="modal" data-bs-target="#modalEditarMateriasCursando">
-                                <img src="{{ url_for('static', filename='img/iconos/lapiz.png') }}" alt="Editar materias" width="16">
-                            </button>
+                            {% if session['usuario'] == padron %}
+                                <button class="btn border-0 icono-lapiz" data-bs-toggle="modal" data-bs-target="#modalEditarMateriasCursando">
+                                    <img src="{{ url_for('static', filename='img/iconos/lapiz.png') }}" alt="Editar materias" width="16">
+                                </button>
+                            {% endif %}
                         </h5>
                         <ul class="list-group my-3">
                             {% for materia in materias_cursando %}
@@ -66,9 +85,11 @@
                     <div class="card-body">
                         <h5 class="card-title d-flex justify-content-between align-items-center">
                             Materias aprobadas
-                            <button id="boton_editar_materias" class="btn icono-lapiz border-0" data-bs-toggle="modal" data-bs-target="#modalEditarMateriasAprobadas">
-                                <img src="{{ url_for('static', filename='img/iconos/lapiz.png') }}" alt="Editar materias" width="16">
-                            </button>
+                            {% if session['usuario'] == padron %}
+                                <button id="boton_editar_materias" class="btn icono-lapiz border-0" data-bs-toggle="modal" data-bs-target="#modalEditarMateriasAprobadas">
+                                    <img src="{{ url_for('static', filename='img/iconos/lapiz.png') }}" alt="Editar materias" width="16">
+                                </button>
+                            {% endif %}
                         </h5>
                         <ul class="list-group my-3">
                             {% for materia in materias_aprobadas %}
@@ -84,9 +105,11 @@
                     <div class="card-body">
                         <h5 class="card-title d-flex justify-content-between align-items-center">
                             Horarios disponibles
-                            <button id="boton_editar_horarios_disponibles" class="btn icono-lapiz border-0" data-bs-toggle="modal" data-bs-target="#modalEditarHorariosUsuario">
-                                <img src="{{ url_for('static', filename='img/iconos/lapiz.png') }}" alt="Editar" width="16">
-                            </button>
+                            {% if session['usuario'] == padron %}
+                                <button id="boton_editar_horarios_disponibles" class="btn icono-lapiz border-0" data-bs-toggle="modal" data-bs-target="#modalEditarHorariosUsuario">
+                                    <img src="{{ url_for('static', filename='img/iconos/lapiz.png') }}" alt="Editar" width="16">
+                                </button>
+                            {% endif %}
                         </h5>
                         <ul class="list-group list-group-flush my-3 text-start">
                             {% set simbolos = {'mañana': 'M', 'tarde': 'T', 'noche': 'N'} %}
@@ -108,9 +131,11 @@
     <!-- Grupos -->
     <div class="container mb-5">
         <h4 class="text-center mb-4" id="titulo-grupos"><u>Grupos</u>
-            <button id="btn-agregar-grupo" class="btn border-0" data-bs-toggle="modal" data-bs-target="#modalAgregarGrupo">
-                <img src="{{ url_for('static', filename='img/iconos/agregar.png') }}" alt="Agregar grupo">
-            </button>
+            {% if session['usuario'] == padron %}
+                <button id="btn-agregar-grupo" class="btn border-0" data-bs-toggle="modal" data-bs-target="#modalAgregarGrupo">
+                    <img src="{{ url_for('static', filename='img/iconos/agregar.png') }}" alt="Agregar grupo">
+                </button>
+            {% endif %}
         </h4>
         <div class="row g-4 justify-content-center">
             {% for grupo in grupos %}

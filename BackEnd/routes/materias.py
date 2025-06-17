@@ -94,17 +94,17 @@ def companierxs_sin_grupo(materia_codigo):
     cursor = conn.cursor(dictionary=True)
 
     cursor.execute("""
-        SELECT u.padron, u.nombre
-        FROM usuarios u
-        JOIN materias_usuarios mu ON u.padron = mu.padron
-        WHERE mu.materia_codigo = %s
-        AND mu.estado = 'cursando'
-        AND u.padron NOT IN (
-            SELECT g_u.padron
-            FROM grupos_usuarios g_u
-            JOIN grupos g ON g_u.grupo_id = g.grupo_id
-            WHERE g.materia_codigo = %s
-        )
+    SELECT u.padron, u.nombre, u.carrera
+    FROM usuarios u
+    JOIN materias_usuarios mu ON u.padron = mu.padron
+    WHERE mu.materia_codigo = %s
+    AND mu.estado = 'cursando'
+    AND u.padron NOT IN (
+        SELECT g_u.padron
+        FROM grupos_usuarios g_u
+        JOIN grupos g ON g_u.grupo_id = g.grupo_id
+        WHERE g.materia_codigo = %s
+    )
     """, (materia_codigo, materia_codigo))
     companierxs = cursor.fetchall()
 

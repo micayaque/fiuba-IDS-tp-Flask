@@ -136,11 +136,92 @@
                         <span>{{ grupo.cantidad_integrantes }} integrantes</span>
                     </div>
                     <div class="mt-2 d-block justify-content-center">
-                        <button id="btn-info-grupo" class="btn btn-sm w-100 me-2 my-1">INFO</button>
-                        <button id="btn-estado-tp" class="btn btn-success btn-sm w-100 my-1">ENTREGADO</button>
+                        <button type="button" class="btn_info btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#modalGrupo{{ grupo.grupo_id }}">
+                            INFO
+                        </button>
+                        {% if grupo.tp_terminado %}
+                            <button class="btn-estado-tp" class="btn w-100 my-1 btn-primary">
+                                ENTREGADO
+                            </button>
+                        {% else %}
+                            <button class="btn-estado-tp" class="btn w-100 my-1 btn-primary">
+                                EN CURSO
+                            </button>
+                        {% endif %}
                     </div>
                 </div>
             </div>
+
+
+
+                  <!-- Modal -->
+            <div class="modal fade" id="modalGrupo{{ grupo.grupo_id }}" tabindex="-1" aria-labelledby="modalGrupoLabel{{ grupo.grupo_id }}" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content bg-dark text-white rounded-4 p-4 border-0 position-relative">
+
+                    <!-- Botón de cierre (X) -->
+                    <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3"
+                        data-bs-dismiss="modal" aria-label="Cerrar"></button>
+
+                    <!-- Título -->
+                    <h5 class="nombre_del_grupo modal-title text-center text-lilac mb-4 fs-3" id="modalGrupoLabel{{ grupo.grupo_id }}"> {{ grupo.nombre }}</h5>
+
+                    <div class="modal-body d-flex flex-row justify-content-between gap-5 flex-wrap">
+
+                        <!-- Integrantes -->
+                        <div class="me-5 ms-0 align-text-start">
+                        <ul class="list-unstyled">
+                            <li class="fw-light">Integrantes <img src="{{ url_for('static', filename='img/iconos/integrantes.png') }}" alt="Integrantes" width="30" height="30">  </li>
+                        {% for integrante in grupo.integrantes %}
+                            <li class="fw-bold my-1">{{ integrante.nombre }}</li>
+                        {% endfor %}
+
+                        </ul>
+                        </div>
+
+                        <!-- Horarios -->
+                        <div class="flex-fill">
+                        <p class="fw-bold mb-2">Horarios disponibles para trabajar junt@s:</p>
+                        <table class="table table-sm text-center">
+                            <thead>
+                            <tr>
+                                <th></th>
+                                <th>Lu</th>
+                                <th>Ma</th>
+                                <th>Mié</th>
+                                <th>Ju</th>
+                                <th>Vi</th>
+                                <th>Sá</th>
+                                <th>Do</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for turno in ['mañana', 'tarde', 'noche'] %}
+                                <tr>
+                                <th>{{ turno|capitalize }}</th>
+                                {% for dia in ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'] %}
+                                    <td>
+                                    {% if {'dia': dia, 'turno': turno} in grupo.horarios %}
+                                        <img src="{{ url_for('static', filename='img/iconos/checked.png') }}" alt="Disponible" width="30" height="30">
+                                    {% else %}
+                                        <img src="{{ url_for('static', filename='img/iconos/x.png') }}" alt="No disponible" width="15" height="15">
+                                    {% endif %}
+                                    </td>
+                                {% endfor %}
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
             {% endfor %}
         </div>
     </div>

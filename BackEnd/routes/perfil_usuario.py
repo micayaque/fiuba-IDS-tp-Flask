@@ -194,12 +194,12 @@ def grupos_de_usuario(padron):
     cursor = conn.cursor(dictionary=True)
 
     cursor.execute("""
-        SELECT g.grupo_id, g.nombre, g.materia_codigo, m.nombre AS materia_nombre
-        FROM grupos g
-        JOIN grupos_usuarios g_u ON g.grupo_id = g_u.grupo_id
-        JOIN materias m ON g.materia_codigo = m.materia_codigo
-        WHERE g_u.padron = %s
-        GROUP BY g.grupo_id
+    SELECT g.grupo_id, g.nombre, g.materia_codigo, m.nombre AS materia_nombre, g.tp_terminado
+    FROM grupos g
+    JOIN grupos_usuarios g_u ON g.grupo_id = g_u.grupo_id
+    JOIN materias m ON g.materia_codigo = m.materia_codigo
+    WHERE g_u.padron = %s
+    GROUP BY g.grupo_id
     """, (padron,))
 
     grupos = cursor.fetchall()

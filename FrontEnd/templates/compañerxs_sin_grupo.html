@@ -61,7 +61,7 @@
                   </table>
                 </div>
                 <div class="my-3 text-center">
-                  <button type="button" class="btn btn-guardar" onclick="filtrarGruposPorHorarios()">Filtrar</button>
+                  <button type="button" class="btn btn-guardar" onclick="filtrarPorHorarios('.carta-companierx', '#modalFiltroHorariosUsuarios');">Filtrar</button>
                 </div>
             </form>
           </div>
@@ -73,16 +73,72 @@
     <div id="contenedor_compañerxs_sin_grupo" class="container">
         <div class="row">
             {% for compañerx in compañerxs %}
-            <div class="carta col-12 col-md-6 col-lg-4">
-                <div id="compañerx_sin_grupo" class="card">
-                    <div class="card-body">
-                        <div id="contenedor_compañerx_sin_grupo_nombre">
-                            <h5>{{ compañerx['nombre'] }}</h5>
+                <div class="carta carta-companierx col-12 col-md-6 col-lg-4"
+                    data-horarios='{{ compañerx.horarios}}'>
+                    <div id="compañerx_sin_grupo" class="card">
+                        <div class="card-body">
+                            <div id="contenedor_compañerx_sin_grupo_nombre">
+                                <h5>{{ compañerx['nombre'] }}</h5>
+                            </div>
+                            <button type="button" class="boton_info btn btn-primary"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modalCompanierx{{ compañerx.padron }}">
+                                INFO
+                            </button>
                         </div>
-                        <a href="#" class="btn">INFO</a>
                     </div>
                 </div>
-            </div>
+
+
+
+                <div class="modal fade" id="modalCompanierx{{ compañerx.padron }}" tabindex="-1" aria-labelledby="modalCompanierxLabel{{ compañerx.padron }}" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content bg-dark text-white rounded-4 p-4 border-0 position-relative">
+                    <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3"
+                        data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    <h5 class="modal-title text-center mb-4 fs-3" id="modalCompanierxLabel{{ compañerx.padron }}">
+                        {{ compañerx.nombre }}
+                    </h5>
+                    <div class="modal-body">
+                        <p class="fw-bold mb-2">Padrón: {{ compañerx.padron }}</p>
+                        <p class="fw-bold mb-2">Carrera: {{ compañerx.carrera }}</p>
+                        <!-- Horarios -->
+                        <p class="fw-bold mb-2">Horarios disponibles:</p>
+                        <table class="table table-sm text-center">
+                        <thead>
+                            <tr>
+                            <th></th>
+                            <th>Lu</th>
+                            <th>Ma</th>
+                            <th>Mié</th>
+                            <th>Ju</th>
+                            <th>Vi</th>
+                            <th>Sá</th>
+                            <th>Do</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for turno in ['mañana', 'tarde', 'noche'] %}
+                            <tr>
+                                <th>{{ turno|capitalize }}</th>
+                                {% for dia in ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'] %}
+                                <td>
+                                    {% if {'dia': dia, 'turno': turno} in compañerx.horarios %}
+                                    <img src="{{ url_for('static', filename='img/iconos/checked.png') }}" alt="Disponible" width="30" height="30">
+                                    {% else %}
+                                    <img src="{{ url_for('static', filename='img/iconos/x.png') }}" alt="No disponible" width="15" height="15">
+                                    {% endif %}
+                                </td>
+                                {% endfor %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                        </table>
+                    </div>
+                    </div>
+                </div>
+                </div>
+
             {% endfor %}
         </div>
     </div>

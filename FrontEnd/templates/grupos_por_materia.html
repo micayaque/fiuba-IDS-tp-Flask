@@ -60,7 +60,7 @@
                   </table>
                 </div>
                 <div class="my-3 text-center">
-                  <button type="button" class="btn btn-guardar" onclick="filtrarGruposPorHorarios()">Filtrar</button>
+                  <button type="button" class="btn btn-guardar" onclick="filtrarPorHorarios('.grupo-carta', '#modalFiltroHorariosGrupos');">Filtrar</button>
                 </div>
             </form>
           </div>
@@ -105,7 +105,6 @@
 
                 <!-- Integrantes -->
                 <div class="me-5 ms-0 align-text-start">
-                  <h6 class="fw-bold mb-3">Materia: {{ grupo.nombre_materia }} </h6>
                   <ul class="list-unstyled">
                     <li class="fw-light">Integrantes <img src="{{ url_for('static', filename='img/iconos/integrantes.png') }}" alt="Integrantes" width="30" height="30">  </li>
                   {% for integrante in grupo.integrantes %}

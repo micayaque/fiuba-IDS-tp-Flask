@@ -157,33 +157,34 @@ function cambiarDatalistPadrones() {
 
 
 
-// filtro de grupos por horarios
-function filtrarGruposPorHorarios() {
+
+
+
+function filtrarPorHorarios(selectorCartas, selectorModal) {
     const horariosSeleccionados = [];
-    const dias = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'];
-    const turnos = ['mañana', 'tarde', 'noche'];
-    dias.forEach(dia => {
-        turnos.forEach(turno => {
-            const checkbox = document.querySelector(`#modalFiltroHorariosGrupos input[name="${dia}_${turno}"]`);
+    ['mañana', 'tarde', 'noche'].forEach(turno => {
+        ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'].forEach(dia => {
+            const checkbox = document.querySelector(`${selectorModal} input[name="${dia}_${turno}"]`);
             if (checkbox.checked) {
-                horariosSeleccionados.push(`${dia}_${turno}`);
+                horariosSeleccionados.push({dia: dia, turno: turno});
             }
         });
     });
 
-    document.querySelectorAll('.grupo-carta').forEach(carta => {
-        const horariosGrupo = JSON.parse(carta.getAttribute('data-horarios'));  // convertimos el string del DOM a un objeto JSON
-        const horariosGrupoSet = new Set(horariosGrupo.map(horario => `${horario.dia}_${horario.turno}`));  // convertimos los horarios del grupo como dia_turno
-        const coincideHorario = horariosSeleccionados.every(horario => horariosGrupoSet.has(horario));
-        if (horariosSeleccionados.length === 0 || coincideHorario) {
+    document.querySelectorAll(selectorCartas).forEach(carta => {
+        const horarios = JSON.parse(carta.getAttribute('data-horarios') || "[]");
+        if (horariosSeleccionados.length === 0) {
             carta.style.display = '';
-        } else {
-            carta.style.display = 'none';
+            return;
         }
+        const coincide = horarios.some(h => horariosSeleccionados.some(sel => h.dia === sel.dia && h.turno === sel.turno)
+        );
+        carta.style.display = coincide ? '' : 'none';
     });
 
-    const modal = bootstrap.Modal.getInstance(document.getElementById('modalFiltroHorariosGrupos'));
-    modal.hide();
+    const modalElement = document.querySelector(selectorModal);
+    const modalInstance = bootstrap.Modal.getInstance(modalElement);
+    if (modalInstance) modalInstance.hide();
 }
 
 

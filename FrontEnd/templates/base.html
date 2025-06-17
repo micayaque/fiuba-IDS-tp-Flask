@@ -243,6 +243,8 @@
                                     {% endfor %}
                                 </ul>
                                 <p>quiere que te unas a su grupo.</p>
+                            {% elif solicitud.tipo == 'usuario_a_usuario' %}
+                                <p>{{ solicitud.nombre_emisor | capitalize }} ({{ solicitud.padron_emisor }}) quiere formar un grupo con vos para la materia {{ solicitud.materia_nombre }}.</p>
                             {% endif %}
                         </div>
                         <div class="col-12 col-md-4">
@@ -263,6 +265,15 @@
                                         <li>{{ dia|capitalize }} - {{ turno }}</li>
                                     {% endfor %}
                                 {% endfor %}
+                                </ul>
+                            {% elif solicitud.tipo == 'usuario_a_usuario' %}
+                                <p>Sus horarios disponibles son:</p>
+                                <ul class="list-unstyled mb-0">
+                                    {% for dia in ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'] %}
+                                        {% for turno in solicitud.horarios_emisor[dia] %}
+                                            <li>{{ dia|capitalize }} - {{ turno }}</li>
+                                        {% endfor %}
+                                    {% endfor %}
                                 </ul>
                             {% endif %}
                         </div>

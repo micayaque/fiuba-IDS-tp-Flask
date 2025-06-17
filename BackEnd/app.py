@@ -6,8 +6,11 @@ from routes.grupos import grupos_bp
 from routes.perfil_usuario import perfil_usuario_bp
 from routes.solicitudes import solicitudes_bp
 
+from flasgger import Swagger
+
 app = Flask(__name__)
 CORS(app)
+swagger = Swagger(app)
 
 app.register_blueprint(registrar_iniciar_sesion_bp)
 app.register_blueprint(materias_bp)

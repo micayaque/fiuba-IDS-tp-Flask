@@ -43,6 +43,8 @@ def crear_grupo():
     materia_codigo = data.get("materia_codigo")
     nombre = data.get("nombre")
     maximo_integrantes = data.get("maximo_integrantes")
+    integrantes = data.get("integrantes", [])
+    creador = data.get("padron_creador")
 
     conn = get_connection()
     cursor = conn.cursor()
@@ -53,6 +55,18 @@ def crear_grupo():
     )
 
     grupo_id = cursor.lastrowid
+
+    cursor.execute(
+        "INSERT INTO grupos_usuarios (grupo_id, padron, materia_codigo) VALUES (%s, %s, %s)",
+        (grupo_id, creador, materia_codigo)
+    )
+
+    for padron in integrantes:
+        if str(padron) != str(creador):
+            cursor.execute(
+                "INSERT INTO solicitudes_grupos (grupo_id, padron_emisor, padron_receptor, tipo) VALUES (%s, %s, %s, 'grupo_a_usuario')",
+                (grupo_id, creador, padron)
+            )
 
     conn.commit()
     cursor.close()

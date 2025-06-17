@@ -266,17 +266,13 @@ def agregar_grupo(padron):
         "materia_codigo": materia_codigo,
         "nombre": nombre_grupo,
         "maximo_integrantes": max_integrantes,
+        "integrantes": integrantes,
+        "padron_creador": padron
     })
 
     if response.status_code != 201:
         return "Error al crear grupo", 400
     grupo_id = response.json().get("grupo_id")
-
-    for padron_integrante in integrantes:
-        requests.post(f"{API_BASE}/grupos/{grupo_id}/agregar-integrante", json={
-            "padron": padron_integrante,
-            "materia_codigo": materia_codigo
-        })
 
     horarios = []
     dias = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo']
@@ -367,22 +363,23 @@ def aceptar_solicitud(solicitud_id):
     response = requests.get(f"{API_BASE}/solicitud/{solicitud_id}")
     solicitud = response.json()
 
-    requests.post(f"{API_BASE}/solicitudes/{solicitud_id}/actualizar", json={"estado": "aceptada"})
-
-    if solicitud["tipo"] == "usuario_a_grupo":
-        grupo_id = solicitud["grupo_id"]
-        padron_emisor = solicitud["padron_emisor"]
-        materia_codigo = solicitud["materia_codigo"]
-        requests.post(f"{API_BASE}/grupos/{grupo_id}/agregar-integrante", json={"padron": padron_emisor, "materia_codigo": materia_codigo})
+    requests.post(f"{API_BASE}/solicitudes/{solicitud_id}/actualizar", 
+        json={"estado": "aceptada", "materia_codigo": solicitud["materia_codigo"], "padron_emisor": solicitud["padron_emisor"],
+              "grupo_id": solicitud["grupo_id"], "tipo": solicitud["tipo"], "padron_receptor": session["usuario"]})
 
     return redirect(request.referrer or url_for('usuario', padron=session["usuario"]))
 
 
 @app.route('/solicitud/<int:solicitud_id>/rechazar', methods=['POST'])
 def rechazar_solicitud(solicitud_id):
-    requests.post(f"{API_BASE}/solicitudes/{solicitud_id}/actualizar", json={"estado": "rechazada"})
-    return redirect(request.referrer or url_for('usuario', padron=session["usuario"]))
+    response = requests.get(f"{API_BASE}/solicitud/{solicitud_id}")
+    solicitud = response.json()
 
+    requests.post(f"{API_BASE}/solicitudes/{solicitud_id}/actualizar", 
+        json={"estado": "rechazada", "materia_codigo": solicitud["materia_codigo"], "padron_emisor": solicitud["padron_emisor"],
+              "grupo_id": solicitud["grupo_id"], "tipo": solicitud["tipo"], "padron_receptor": session["usuario"]})
+
+    return redirect(request.referrer or url_for('usuario', padron=session["usuario"]))
 
 
 @app.route("/grupos/<int:grupo_id>/editar", methods=["POST"])

@@ -127,7 +127,7 @@
                                 data-nombre="{{ grupo.nombre }}"
                                 data-maximo-integrantes="{{ grupo.maximo_integrantes }}"
                                 data-integrantes='{{ grupo.integrantes | tojson }}'
-                                data-horarios='{{ grupo.horarios | tojson }}'
+                                data-horarios='{{ grupo.horarios | default([]) | tojson }}'
                                 onclick="abrirModalEditarGrupo(this)">
                                 <img src="{{ url_for('static', filename='img/iconos/lapiz.png') }}" alt="editar grupo">
                             </button>

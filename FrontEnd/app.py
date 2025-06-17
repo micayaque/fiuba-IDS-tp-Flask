@@ -298,6 +298,9 @@ def mostrar_grupos():
     else:
         session['notificacion'] = False
         solicitudes_pendientes = []
+    
+    padron_usuario = session.get('usuario')
+    grupos = [g for g in grupos if str(padron_usuario) not in [str(i['padron']) for i in g['integrantes']]]
 
     return render_template("grupos.html", grupos=grupos, solicitudes_pendientes=solicitudes_pendientes)
 

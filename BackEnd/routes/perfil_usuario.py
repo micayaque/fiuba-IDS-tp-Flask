@@ -194,7 +194,7 @@ def grupos_de_usuario(padron):
     cursor = conn.cursor(dictionary=True)
 
     cursor.execute("""
-        SELECT g.grupo_id, g.nombre, g.materia_codigo, m.nombre AS materia, COUNT(g_u.padron) AS integrantes
+        SELECT g.grupo_id, g.nombre, g.materia_codigo, m.nombre AS materia_nombre
         FROM grupos g
         JOIN grupos_usuarios g_u ON g.grupo_id = g_u.grupo_id
         JOIN materias m ON g.materia_codigo = m.materia_codigo
@@ -203,6 +203,30 @@ def grupos_de_usuario(padron):
     """, (padron,))
 
     grupos = cursor.fetchall()
+
+    # Para cada grupo, obtener los integrantes
+    for grupo in grupos:
+        cursor.execute(
+            "SELECT u.padron, u.nombre FROM grupos_usuarios gu JOIN usuarios u ON gu.padron = u.padron WHERE gu.grupo_id = %s",
+            (grupo['grupo_id'],)
+        )
+        integrantes = cursor.fetchall()
+        grupo['integrantes'] = integrantes
+        grupo['cantidad_integrantes'] = len(integrantes)
+
+    cursor.execute(
+        "SELECT maximo_integrantes FROM grupos WHERE grupo_id = %s",
+        (grupo['grupo_id'],)
+    )
+    grupo['maximo_integrantes'] = cursor.fetchone()['maximo_integrantes']
+
+    cursor.execute(
+        "SELECT dia, turno FROM horarios_grupos WHERE grupo_id = %s",
+        (grupo['grupo_id'],)
+    )
+    horarios = cursor.fetchall()
+    grupo['horarios'] = [f"{h['dia']}-{h['turno']}" for h in horarios]
+        
 
     cursor.close()
     conn.close()
@@ -257,3 +281,10 @@ def solicitudes_pendientes(padron):
     cursor.close()
     conn.close()
     return jsonify({"pendientes": solicitudes})
+
+
+
+
+
+
+

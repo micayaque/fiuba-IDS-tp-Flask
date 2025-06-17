@@ -111,7 +111,7 @@ function guardarSobreMi() {
 }
 
 
-// lista de integrantes a agregar en el grupo en el perfil del usuario
+// agregar grupo en el perfil del usuario
 let integrantes = [];
 
 function actualizarListaIntegrantes() {
@@ -119,7 +119,7 @@ function actualizarListaIntegrantes() {
     lista.innerHTML = '';
     integrantes.forEach((padron, indice) => {
         const div = document.createElement('div');
-        div.className = 'btn text-white d-flex align-items-center border-0';
+        div.className = 'btn btn-outline-light d-flex align-items-center gap-2';
         div.innerHTML = `
             <span>${padron}</span>
             <button type="button" class="btn btn-sm" onclick="eliminarIntegrante(${indice})">
@@ -174,4 +174,60 @@ function filtrarGruposPorHorarios() {
 
     const modal = bootstrap.Modal.getInstance(document.getElementById('modalFiltroHorariosGrupos'));
     modal.hide();
+}
+
+
+
+
+// editar grupo en el perfil del usuario
+function actualizarIntegrantesEditar() {
+    const lista = document.getElementById('editarListaIntegrantes');
+    lista.innerHTML = '';
+    integrantesEditar.forEach((padron, indice) => {
+        const div = document.createElement('div');
+        div.className = "btn btn-outline-light d-flex align-items-center gap-2";
+        div.innerHTML = `${padron} <button type="button" class="btn btn-sm" onclick="eliminarIntegranteEditar(${indice})"><img src="/static/img/iconos/cerrar.png" alt="Eliminar integrante" width="16" height="16"></button>`;
+        lista.appendChild(div);
+    });
+    document.getElementById('editarPadronesIntegrantesInput').value = integrantesEditar.join(',');
+}
+
+function agregarIntegranteEditar() {
+    const input = document.getElementById('editarPadronIntegrante');
+    const padron = input.value.trim();
+    if (padron && !integrantesEditar.includes(padron)) {
+        integrantesEditar.push(padron);
+        actualizarIntegrantesEditar();
+        input.value = '';
+    }
+}
+
+function eliminarIntegranteEditar(indice) {
+    integrantesEditar.splice(indice, 1);
+    actualizarIntegrantesEditar();
+}
+
+
+function abrirModalEditarGrupo(btn) {
+    const grupoId = btn.getAttribute('data-grupo-id');
+    const nombre = btn.getAttribute('data-nombre');
+    const max = btn.getAttribute('data-maximo-integrantes');
+    const lista_integrantes = JSON.parse(btn.getAttribute('data-integrantes'));
+    const integrantes = lista_integrantes.map(i => i.padron);
+
+    integrantesEditar = integrantes.slice();
+    actualizarIntegrantesEditar();
+
+    document.getElementById('formEditarGrupo').action = `/grupos/${grupoId}/editar`;
+    document.getElementById('editarNombreGrupo').value = nombre;
+    document.getElementById('editarCantidadMaxIntegrantes').value = max;
+
+    const horarios = JSON.parse(btn.getAttribute('data-horarios'));
+    for (const dia of ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo']) {
+        for (const turno of ['mañana', 'tarde', 'noche']) {
+            const cb = document.getElementById(`editarGrupoHorario_${dia}_${turno}`);
+            if (cb) cb.checked = horarios.includes(`${dia}-${turno}`);
+            else cb.checked = false;
+        }
+    }
 }

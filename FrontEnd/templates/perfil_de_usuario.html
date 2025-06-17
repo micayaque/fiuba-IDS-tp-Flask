@@ -119,12 +119,21 @@
                     <div class="info-grupo-background">
                         <div class="d-flex justify-content-between align-items-center mb-2">
                             <span id="nombre-grupo" class="fw-bold">{{ grupo.nombre }}</span>
-                            <button class="btn border-0 icono-lapiz" data-bs-toggle="modal" data-bs-target="#modalEditarGrupo">
+                            <!-- para identificar a cada grupo con su botón de editar -->
+                            <button class="btn border-0 icono-lapiz"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modalEditarGrupo"
+                                data-grupo-id="{{ grupo.grupo_id }}"    
+                                data-nombre="{{ grupo.nombre }}"
+                                data-maximo-integrantes="{{ grupo.maximo_integrantes }}"
+                                data-integrantes='{{ grupo.integrantes | tojson }}'
+                                data-horarios='{{ grupo.horarios | tojson }}'
+                                onclick="abrirModalEditarGrupo(this)">
                                 <img src="{{ url_for('static', filename='img/iconos/lapiz.png') }}" alt="editar grupo">
                             </button>
                         </div>
                         <span>{{ grupo.materia }}</span><br>
-                        <span>{{ grupo.integrantes }} integrante</span>
+                        <span>{{ grupo.cantidad_integrantes }} integrantes</span>
                     </div>
                     <div class="mt-2 d-block justify-content-center">
                         <button id="btn-info-grupo" class="btn btn-sm w-100 me-2 my-1">INFO</button>
@@ -135,6 +144,8 @@
             {% endfor %}
         </div>
     </div>
+
+
 
 
 
@@ -466,6 +477,7 @@
     </div>
 
     
+
     <!-- Modal para editar grupo -->
     <div class="modal" id="modalEditarGrupo">
         <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -474,51 +486,70 @@
                     <h5 class="modal-title w-100 text-center">Editar grupo</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
-                <div class="modal-body">
-                    <div class="mb-2 row align-items-center">
-                        <label for="editarNombreGrupo" class="col-form-label">Nombre del grupo</label>
-                        <div class="">
-                            <input type="text" class="form-control border-secondary" id="editarNombreGrupo">
-                        </div>
-                    </div>
-                    <div class="contenedor-eliminar-integrante mb-2">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <label class="form-label">Integrantes actuales</label>
-                            <small><i class="fa-solid fa-xmark"></i> Eliminar integrante</small>
-                        </div>
-                        <div class="d-flex flex-wrap gap-2">
-                            <div class="btn btn-outline-light d-flex align-items-center justify-content-between gap-2">
-                                Integrante 1 <i class="fa-solid fa-xmark"></i>
+                <form id="formEditarGrupo" method="POST">
+                    <div class="modal-body d-flex flex-column">
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label for="editarNombreGrupo" class="form-label">Nombre del grupo</label>
+                                <input type="text" class="form-control" id="editarNombreGrupo" name="nombreGrupo">
                             </div>
-                            <div class="btn btn-outline-light d-flex align-items-center justify-content-between gap-2">
-                                Integrante 2 <i class="fa-solid fa-xmark"></i>
+                            <div class="col">
+                                <label for="editarCantidadMaxIntegrantes" class="form-label">Cantidad máxima de integrantes</label>
+                                <input type="number" class="form-control" id="editarCantidadMaxIntegrantes" name="cantidadMaxIntegrantes">
                             </div>
                         </div>
-                    </div>
-                    <div class="mb-2 row align-items-center">
-                        <p class="mt-2 mb-0">Agregar integrante</p>
-                        <label for="padronNuevoIntegrante" class="col-form-label">Padrón de integrante X:</label>
-                    <div class="">
-                        <input type="text" class="form-control" id="padronNuevoIntegrante">
-                    </div>
-                    </div>
-                    <p class="text-info small">
-                        Est@ compañer@ ya tiene grupo / est@ compañer@ no está registrad@
-                    </p>
-                    <div class="mb-2 row align-items-center">
-                        <label for="faltanIntegrantes" class="col-form-label">¿Cuántas personas faltan para formar el grupo?</label>
-                        <div class="">
-                            <input type="number" class="form-control" id="faltanIntegrantes">
+                        <div class="mb-3">
+                            <label class="form-label">Integrantes actuales:</label>
+                            <div id="editarListaIntegrantes" class="d-flex flex-wrap gap-2">
+                                <!-- el código de js agrega/elimina los integrantes del modal -->
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editarPadronIntegrante" class="form-label">Agregar integrante (padrón):</label>
+                            <div class="input-group gap-3">
+                                <input type="text" id="editarPadronIntegrante" class="form-control">
+                                <button type="button" class="btn btn-lg text-white fw-bold icono-lapiz" id="btnEditarAgregarIntegrante" onclick="agregarIntegranteEditar()">
+                                    <img src="{{ url_for('static', filename='img/iconos/agregar-integrante.png') }}" alt="Añadir integrante">
+                                </button>
+                            </div>
+                        </div>
+                        <input type="hidden" name="padrones_integrantes" id="editarPadronesIntegrantesInput">
+                        <label class="form-label mt-3">Horarios disponibles del grupo:</label>
+                        <div class="table-responsive justify-content-center">
+                            <table class="table p-3 tabla-horarios text-center align-middle">
+                                <thead>
+                                    <tr>
+                                        <th><i class="fa-regular fa-clock"></i></th>
+                                        <th>Lu</th><th>Ma</th><th>Mié</th><th>Ju</th><th>Vi</th><th>Sá</th><th>Do</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% set imagenes_turno = {'mañana': 'mañana.png', 'tarde': 'tarde.png', 'noche': 'noche.png'} %}
+                                    {% for turno in ['mañana', 'tarde', 'noche'] %}
+                                        <tr>
+                                            <th>
+                                                <img src="{{ url_for('static', filename='img/horarios/' + imagenes_turno[turno]) }}" alt="{{ turno }}" class="icono-horario">
+                                            </th>
+                                            {% for dia in ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'] %}
+                                                <td>
+                                                    <input type="checkbox" name="grupo_horario_{{ dia }}_{{ turno }}" id="editarGrupoHorario_{{ dia }}_{{ turno }}">
+                                                </td>
+                                            {% endfor %}
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-lg text-white fw-bold btn-guardar">GUARDAR CAMBIOS</button>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer border-0 justify-content-center">
-                    <button type="button" class="btn btn-eliminar-grupo"><i class="fa-solid fa-trash-can"></i> ELIMINAR GRUPO</button>
-                    <button type="button" class="btn btn-guardar">GUARDAR CAMBIOS</button>
-                </div>
+                </form>
             </div>
         </div>
     </div>
+
+
 
 </div>
 

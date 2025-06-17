@@ -128,3 +128,43 @@ def solicitar_unirse_grupo(grupo_id):
     cursor.close()
     conn.close()
     return '', 201
+
+
+
+@grupos_bp.route("/grupos/<int:grupo_id>/editar", methods=["POST"])
+def editar_grupo(grupo_id):
+    data = request.get_json()
+    nombre = data.get("nombre")
+    maximo_integrantes = data.get("maximo_integrantes")
+    integrantes = data.get("integrantes", [])
+    horarios = data.get("horarios", [])
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "UPDATE grupos SET nombre = %s, maximo_integrantes = %s WHERE grupo_id = %s",
+        (nombre, maximo_integrantes, grupo_id)
+    )
+
+    cursor.execute("DELETE FROM grupos_usuarios WHERE grupo_id = %s", (grupo_id,))
+    cursor.execute("SELECT materia_codigo FROM grupos WHERE grupo_id = %s", (grupo_id,))
+    materia_codigo = cursor.fetchone()[0]
+    for padron in integrantes:
+        if padron:
+            cursor.execute(
+                "INSERT INTO grupos_usuarios (grupo_id, padron, materia_codigo) VALUES (%s, %s, %s)",
+                (grupo_id, padron, materia_codigo)
+            )
+
+    cursor.execute("DELETE FROM horarios_grupos WHERE grupo_id = %s", (grupo_id,))
+    for horario in horarios:
+        cursor.execute(
+            "INSERT INTO horarios_grupos (grupo_id, dia, turno) VALUES (%s, %s, %s)",
+            (grupo_id, horario["dia"], horario["turno"])
+        )
+
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return "Grupo actualizado", 200

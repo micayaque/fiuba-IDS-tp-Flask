@@ -370,5 +370,33 @@ def rechazar_solicitud(solicitud_id):
     return redirect(request.referrer or url_for('usuario', padron=session["usuario"]))
 
 
+
+@app.route("/grupos/<int:grupo_id>/editar", methods=["POST"])
+def editar_grupo(grupo_id):
+    nombre = request.form.get("nombreGrupo")
+    maximo_integrantes = request.form.get("cantidadMaxIntegrantes")
+    integrantes = request.form.get("padrones_integrantes", "").split(",")
+
+    horarios = []
+    for dia in ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo']:
+        for turno in ['mañana', 'tarde', 'noche']:
+            if request.form.get(f"grupo_horario_{dia}_{turno}"):
+                horarios.append({"dia": dia, "turno": turno})
+
+    response = requests.post(f"{API_BASE}/grupos/{grupo_id}/editar", json={
+        "nombre": nombre,
+        "maximo_integrantes": maximo_integrantes,
+        "integrantes": integrantes,
+        "horarios": horarios
+    })
+
+    if response.status_code == 200:
+        return redirect(url_for('usuario', padron=session['usuario']))
+    else:
+        return "Error al editar grupo", 400
+
+
+
+
 if __name__ == '__main__':
     app.run('localhost', port=8000, debug=True)

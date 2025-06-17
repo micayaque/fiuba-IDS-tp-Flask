@@ -16,41 +16,42 @@ def get_materias_list():
     
     cursor.close()
     conn.close()
-    return jsonify(materias)
+
+    if materias:
+        return jsonify(materias), 200
+    return "No hay materias disponibles", 404
 
 
-@materias_bp.route("/materias-grupos", methods=["GET"])
-def get_materias_grupos():
+@materias_bp.route("/materias/<string:materia_codigo>/companierxs-sin-grupo", methods=["GET"])
+def companierxs_sin_grupo(materia_codigo):
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
-    cursor.execute(
-        """
-        SELECT DISTINCT materias.materia_codigo, materias.nombre 
-        FROM materias
-        INNER JOIN grupos ON materias.materia_codigo = grupos.materia_codigo
-        """)
-    materias = cursor.fetchall()
-    cursor.close()
-    conn.close()
-    return jsonify(materias)
 
-@materias_bp.route("/materias", methods=["POST"])
-def agregar_materia():
-    data = request.get_json()
-    materia_codigo = data.get("materia_codigo")
-    nombre = data.get("nombre")
-
-    conn = get_connection()
-    cursor = conn.cursor()
-    cursor.execute(
-        "INSERT INTO materias (materia_codigo, nombre) VALUES (%s, %s)",
-        (materia_codigo, nombre)
+    cursor.execute("""
+    SELECT u.padron, u.nombre, u.carrera
+    FROM usuarios u
+    JOIN materias_usuarios mu ON u.padron = mu.padron
+    WHERE mu.materia_codigo = %s
+    AND mu.estado = 'cursando'
+    AND u.padron NOT IN (
+        SELECT g_u.padron
+        FROM grupos_usuarios g_u
+        JOIN grupos g ON g_u.grupo_id = g.grupo_id
+        WHERE g.materia_codigo = %s
     )
-    
-    conn.commit()
+    """, (materia_codigo, materia_codigo))
+    companierxs = cursor.fetchall()
+
+    cursor.execute("SELECT * FROM materias WHERE materia_codigo = %s", (materia_codigo,))
+    materia = cursor.fetchone()
+
     cursor.close()
     conn.close()
-    return "Materia agregada", 200
+
+    if materia and companierxs:
+        return jsonify({"materia": materia, "companierxs": companierxs}), 200
+    else:
+        return jsonify({"materia": materia, "companierxs": []}), 200
 
 
 @materias_bp.route("/materias/<string:materia_codigo>/grupos-por-materia", methods=["GET"])
@@ -88,32 +89,74 @@ def grupos_por_materia(materia_codigo):
 
     cursor.close()
     conn.close()
-    return jsonify({ "nombre_materia": nombre_materia, "grupos": grupos_de_materia })
+
+    if grupos_de_materia:
+        return jsonify({ "materia": nombre_materia, "grupos": grupos_de_materia }), 200
+    return jsonify({ "materia": nombre_materia, "grupos": [] }), 200
 
 
-@materias_bp.route("/materias/<string:materia_codigo>/companierxs-sin-grupo", methods=["GET"])
-def companierxs_sin_grupo(materia_codigo):
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@materias_bp.route("/materias-grupos", methods=["GET"])
+def get_materias_grupos():
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
-
-    cursor.execute("""
-    SELECT u.padron, u.nombre, u.carrera
-    FROM usuarios u
-    JOIN materias_usuarios mu ON u.padron = mu.padron
-    WHERE mu.materia_codigo = %s
-    AND mu.estado = 'cursando'
-    AND u.padron NOT IN (
-        SELECT g_u.padron
-        FROM grupos_usuarios g_u
-        JOIN grupos g ON g_u.grupo_id = g.grupo_id
-        WHERE g.materia_codigo = %s
-    )
-    """, (materia_codigo, materia_codigo))
-    companierxs = cursor.fetchall()
-
-    cursor.execute("SELECT * FROM materias WHERE materia_codigo = %s", (materia_codigo,))
-    materia = cursor.fetchone()
-
+    cursor.execute(
+        """
+        SELECT DISTINCT materias.materia_codigo, materias.nombre 
+        FROM materias
+        INNER JOIN grupos ON materias.materia_codigo = grupos.materia_codigo
+        """)
+    materias = cursor.fetchall()
     cursor.close()
     conn.close()
-    return jsonify({"materia": materia, "companierxs": companierxs})
+    return jsonify(materias)
+
+@materias_bp.route("/materias", methods=["POST"])
+def agregar_materia():
+    data = request.get_json()
+    materia_codigo = data.get("materia_codigo")
+    nombre = data.get("nombre")
+
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        "INSERT INTO materias (materia_codigo, nombre) VALUES (%s, %s)",
+        (materia_codigo, nombre)
+    )
+    
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return "Materia agregada", 200
+
+
+
+

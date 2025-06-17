@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request, render_template
+from flask import Blueprint, jsonify, request
 from db import get_connection
 
 grupos_bp = Blueprint("grupos", __name__)

@@ -332,6 +332,9 @@ def mostrar_grupos():
         session['notificacion'] = False
         solicitudes_pendientes = []
 
+    padron_usuario = session.get('usuario')
+    grupos = [g for g in grupos if str(padron_usuario) not in [str(i['padron']) for i in g['integrantes']]]
+
     return render_template("grupos.html", grupos=grupos, solicitudes_pendientes=solicitudes_pendientes)
 
 
@@ -379,7 +382,16 @@ def grupos_por_materia(materia_codigo):
         else:
             nombre_materia = ""
 
-    return render_template("grupos_por_materia.html", materia_codigo=materia_codigo, nombre_materia=nombre_materia, grupos=grupos, solicitudes_pendientes=solicitudes_pendientes)
+    padron_usuario = session.get('usuario')
+
+    grupos_de_materia = grupos["grupos"]
+    grupos_filtrados = []
+    for grupo in grupos_de_materia:
+        integrantes_padrones = [str(i['padron']) for i in grupo['integrantes']]
+        if str(padron_usuario) not in integrantes_padrones:
+            grupos_filtrados.append(grupo)
+
+    return render_template("grupos_por_materia.html", materia_codigo = materia_codigo, nombre_materia=grupos["nombre_materia"], grupos=grupos_filtrados, solicitudes_pendientes=solicitudes_pendientes)
 
 @app.route("/materias/<string:materia_codigo>/companierxs-sin-grupo", methods=["GET"])
 def companierxs_sin_grupo_por_materia(materia_codigo):
@@ -388,6 +400,9 @@ def companierxs_sin_grupo_por_materia(materia_codigo):
     data = response.json()
     materia = data["materia"]
     companierxs = data["companierxs"]
+
+    padron_usuario = session.get('usuario')
+    companierxs = [c for c in companierxs if str(c["padron"]) != str(padron_usuario)]
 
     return render_template("compañerxs_sin_grupo.html", materia=materia, compañerxs=companierxs)
     

@@ -304,7 +304,7 @@ def mostrar_grupos():
 
 @app.route("/materias", methods=["GET"])
 def mostrar_materias():
-    response = requests.get(f"{API_BASE}/materias-grupos")
+    response = requests.get(f"{API_BASE}/materias")
     materias = response.json()
 
     if session.get('usuario'):
@@ -331,7 +331,7 @@ def grupos_por_materia(materia_codigo):
         session['notificacion'] = False
         solicitudes_pendientes = []
 
-    return render_template("grupos_por_materia.html", materia_codigo = materia_codigo, nombre_materia=grupos[0]["nombre_materia"], grupos=grupos, solicitudes_pendientes=solicitudes_pendientes)
+    return render_template("grupos_por_materia.html", materia_codigo = materia_codigo, nombre_materia=grupos["nombre_materia"], grupos=grupos["grupos"], solicitudes_pendientes=solicitudes_pendientes)
 
 
 @app.route("/materias/<string:materia_codigo>/companierxs-sin-grupo", methods=["GET"])
@@ -365,7 +365,7 @@ def aceptar_solicitud(solicitud_id):
 
     requests.post(f"{API_BASE}/solicitudes/{solicitud_id}/actualizar", 
         json={"estado": "aceptada", "materia_codigo": solicitud["materia_codigo"], "padron_emisor": solicitud["padron_emisor"],
-              "grupo_id": solicitud["grupo_id"], "tipo": solicitud["tipo"], "padron_receptor": session["usuario"]})
+              "grupo_id": solicitud["grupo_id"], "tipo": solicitud["tipo"], "padron_receptor": solicitud["padron_receptor"]})
 
     return redirect(request.referrer or url_for('usuario', padron=session["usuario"]))
 
@@ -377,7 +377,7 @@ def rechazar_solicitud(solicitud_id):
 
     requests.post(f"{API_BASE}/solicitudes/{solicitud_id}/actualizar", 
         json={"estado": "rechazada", "materia_codigo": solicitud["materia_codigo"], "padron_emisor": solicitud["padron_emisor"],
-              "grupo_id": solicitud["grupo_id"], "tipo": solicitud["tipo"], "padron_receptor": session["usuario"]})
+              "grupo_id": solicitud["grupo_id"], "tipo": solicitud["tipo"], "padron_receptor": solicitud["padron_receptor"]})
 
     return redirect(request.referrer or url_for('usuario', padron=session["usuario"]))
 
@@ -406,6 +406,37 @@ def editar_grupo(grupo_id):
     else:
         return "Error al editar grupo", 400
 
+
+
+
+@app.route('/enviar-solicitud-companierx/<int:padron_receptor>', methods=['POST'])
+def enviar_solicitud_companierx(padron_receptor):
+    if not session.get('usuario'):
+        return redirect(url_for('inicio'))
+
+    padron_emisor = session['usuario']
+    materia_codigo = request.form.get('materia_codigo')
+
+    response = requests.get(f"{API_BASE}/usuario/{padron_emisor}/grupos")
+    grupos = response.json()
+    grupo_materia = next((g for g in grupos if g['materia_codigo'] == materia_codigo), None)
+
+    if grupo_materia:   # si el usuario ya esta en un grupo de esa materia
+        grupo_id = grupo_materia['grupo_id']
+        requests.post(f"{API_BASE}/solicitud/grupo-a-usuario", json={
+            "grupo_id": grupo_id,
+            "padron_emisor": padron_emisor,
+            "padron_receptor": padron_receptor,
+            "materia_codigo": materia_codigo
+        })
+    else:
+        requests.post(f"{API_BASE}/solicitud/usuario-a-usuario", json={
+            "padron_emisor": padron_emisor,
+            "padron_receptor": padron_receptor,
+            "materia_codigo": materia_codigo
+        })
+
+    return redirect(request.referrer or url_for('usuario', padron=padron_emisor))
 
 
 

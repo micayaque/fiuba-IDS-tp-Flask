@@ -85,6 +85,13 @@
                                 data-bs-target="#modalCompanierx{{ compañerx.padron }}">
                                 INFO
                             </button>
+                            <form method="POST" action="/enviar-solicitud-companierx/{{ compañerx.padron }}">
+                                <input type="hidden" name="materia_codigo" value="{{ materia.materia_codigo }}">
+                                <button type="submit" class="boton_solicitar_unirse btn rounded-5 w-100" style="background-color: #A020F0; color: white;">
+                                    ENVIAR SOLICITUD
+                                    <img src="{{ url_for('static', filename='img/iconos/send.png') }}" alt="Enviar solicitud" width="30" height="30">
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>

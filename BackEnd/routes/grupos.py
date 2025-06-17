@@ -37,6 +37,41 @@ def get_grupos():
     return jsonify(grupos)
 
 
+@grupos_bp.route("/grupos/<int:grupo_id>", methods=["GET"])
+def get_grupo(grupo_id):
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+    
+    cursor.execute(
+        """
+        SELECT grupos.*, materias.nombre AS nombre_materia
+        FROM grupos
+        JOIN materias ON grupos.materia_codigo = materias.materia_codigo
+        WHERE grupos.grupo_id = %s
+        """,
+        (grupo_id,)
+    )
+    grupo = cursor.fetchone()
+
+    cursor.execute(
+        "SELECT dia, turno FROM horarios_grupos WHERE grupo_id = %s",
+        (grupo['grupo_id'],)
+    )
+    grupo['horarios'] = cursor.fetchall()
+
+    cursor.execute(
+        "SELECT u.padron, u.nombre FROM grupos_usuarios g_u JOIN usuarios u ON g_u.padron = u.padron WHERE g_u.grupo_id = %s",
+        (grupo['grupo_id'],)
+    )
+    grupo['integrantes'] = cursor.fetchall()
+    grupo['cantidad_integrantes'] = len(grupo['integrantes'])
+
+    cursor.close()
+    conn.close()
+    return jsonify(grupo)
+
+
+
 @grupos_bp.route("/agregar-grupo", methods=["POST"])
 def crear_grupo():
     data = request.get_json()
@@ -182,3 +217,23 @@ def editar_grupo(grupo_id):
     cursor.close()
     conn.close()
     return "Grupo actualizado", 200
+
+
+@grupos_bp.route('/grupos/<int:grupo_id>/cambiar-estado-tp', methods=['POST'])
+def cambiar_estado_tp(grupo_id):
+    data = request.get_json()
+    tp_terminado = data.get('tp_terminado')
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "UPDATE grupos SET tp_terminado = %s WHERE grupo_id = %s",
+        (tp_terminado, grupo_id)
+    )
+
+    conn.commit()
+
+    cursor.close()
+    conn.close()
+    return "Estado del TP actualizado", 200

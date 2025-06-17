@@ -440,5 +440,15 @@ def enviar_solicitud_companierx(padron_receptor):
 
 
 
+@app.route('/usuario/<int:padron>/cambiar-estado-tp/<int:grupo_id>', methods=['POST'])
+def cambiar_estado_tp(padron, grupo_id):
+    grupo = requests.get(f"{API_BASE}/grupos/{grupo_id}").json()
+
+    nuevo_estado = not grupo['tp_terminado']
+
+    requests.post(f"{API_BASE}/grupos/{grupo_id}/cambiar-estado-tp", json={"tp_terminado": nuevo_estado})
+    return redirect(url_for('usuario', padron=padron))
+
+
 if __name__ == '__main__':
     app.run('localhost', port=8000, debug=True)

@@ -146,6 +146,16 @@ function agregarIntegrante() {
     }
 }
 
+function cambiarDatalistPadrones() {
+    let codigo = document.getElementById('materiaGrupo').value;
+    let inputPadron = document.getElementById('padronIntegrante');
+    let datalistId = 'sugerenciasPadrones_' + codigo;
+    if (document.getElementById(datalistId)) {
+        inputPadron.setAttribute('list', datalistId);
+    }
+}
+
+
 
 // filtro de grupos por horarios
 function filtrarGruposPorHorarios() {

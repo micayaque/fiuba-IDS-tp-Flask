@@ -409,8 +409,12 @@
                         <div class="d-flex justify-content-center">
                             <div class="col mx-5 text-start align-items-start">
                                 <div class="row">
-                                    <label for="materiaGrupo" class="form-label"> Código de la materia</label>
-                                    <input type="text" class="form-control" id="materiaGrupo" name="materiaGrupo" >
+                                    <label for="materiaGrupo" class="form-label"> Materia</label>
+                                    <select class="form-control" id="materiaGrupo" name="materiaGrupo" onchange="cambiarDatalistPadrones()">
+                                        {% for materia in materias_para_select %}
+                                            <option value="{{ materia.materia_codigo }}">{{ materia.nombre }} ({{ materia.materia_codigo }})</option>
+                                        {% endfor %}
+                                    </select>
                                 </div>
                                 <div class="row">
                                     <label for="nombreGrupo" class="form-label">Nombre del grupo</label>
@@ -423,14 +427,25 @@
                             </div>
                             <div class="col mx-5">
                                 <div class="row">
-                                    <label for="padronIntegrante" class="form-label">Padrón de integrante:</label>
+                                    <label for="padronIntegrante" class="form-label">Agregar integrante (padrón):</label>
                                     <div class="input-group">
-                                        <input type="text" id="padronIntegrante" class="form-control">
+                                        {% if materias_para_select|length > 0 %}
+                                            <input type="text" class="form-control" id="padronIntegrante" name="padronNuevoIntegrante" list="sugerenciasPadrones_{{ materias_para_select[0].materia_codigo }}">
+                                        {% else %}
+                                            <input type="text" class="form-control" id="padronIntegrante" name="padronNuevoIntegrante" disabled placeholder="No hay materias disponibles">
+                                        {% endif %}
                                         <button type="button" class="btn btn-lg text-white fw-bold icono-lapiz" id="btnAgregarIntegrante" onclick="agregarIntegrante()">
                                             <img src="{{ url_for('static', filename='img/iconos/agregar-integrante.png') }}" alt="Añadir integrante">
                                         </button>
                                     </div>
                                 </div>
+                                {% for materia in materias_para_select %}
+                                    <datalist id="sugerenciasPadrones_{{ materia.materia_codigo }}">
+                                        {% for companierx in materia.companierxs %}
+                                            <option value="{{ companierx.padron }}">{{ companierx.nombre }}</option>
+                                        {% endfor %}
+                                    </datalist>
+                                {% endfor %}
                                 <div class="mb-3">
                                     <label class="form-label">Integrantes actuales:</label>
                                     <div id="listaIntegrantes" class="d-flex flex-wrap gap-2">

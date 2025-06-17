@@ -112,9 +112,23 @@ def usuario(padron):
     solicitudes_pendientes = response.json().get("pendientes")
     session['notificacion'] = len(solicitudes_pendientes) > 0
 
+
+    materias_para_select = []
+    for materia in materias_cursando:
+        response = requests.get(f"{API_BASE}/materias/{materia['materia_codigo']}/companierxs-sin-grupo")
+        compenierxs = response.json().get("companierxs", [])
+        if session.get('usuario'):
+            compenierxs = [c for c in compenierxs if str(c["padron"]) != str(session["usuario"])]
+        materias_para_select.append({
+            "materia_codigo": materia["materia_codigo"],
+            "nombre": materia["nombre"],
+            "companierxs": compenierxs
+        })
+
+
     return render_template("perfil_de_usuario.html", usuario=usuario, avatares=avatares, materias_cursando=materias_cursando, materias_aprobadas=materias_aprobadas, 
     materias_para_elegir_cursando=materias_para_elegir_cursando, materias_para_elegir_aprobadas=materias_para_elegir_aprobadas, horarios_por_dia_usuario=horarios_por_dia_usuario,
-    grupos=grupos, solicitudes_pendientes=solicitudes_pendientes)
+    grupos=grupos, solicitudes_pendientes=solicitudes_pendientes, materias_para_select=materias_para_select)
 
 
 

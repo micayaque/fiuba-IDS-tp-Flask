@@ -7,13 +7,17 @@ materias_bp = Blueprint("materias", __name__)
 def get_materias_list():
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM materias")
+
+    cursor.execute("""
+        SELECT DISTINCT m.* FROM materias m JOIN materias_usuarios m_u ON m.materia_codigo = m_u.materia_codigo WHERE m_u.estado = 'cursando'
+    """)
 
     materias = cursor.fetchall()
     
     cursor.close()
     conn.close()
     return jsonify(materias)
+
 
 @materias_bp.route("/materias-grupos", methods=["GET"])
 def get_materias_grupos():

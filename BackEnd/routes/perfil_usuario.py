@@ -76,6 +76,7 @@ def materias_aprobadas(padron):
 
     if materias:
         return jsonify(materias), 200
+    
     return "No hay materias aprobadas", 404
 
 
@@ -95,6 +96,7 @@ def get_horarios_usuario(padron):
 
     if horarios:
         return jsonify(horarios), 200
+    
     return "No hay horarios disponibles", 404
 
 
@@ -192,23 +194,6 @@ def solicitudes_pendientes(padron):
     if solicitudes:
         return jsonify({"pendientes": solicitudes})
     return jsonify({"pendientes": []}), 200
-
-
-# Horarios disponibles
-@perfil_usuario_bp.route("/usuario/<int:padron>/horarios-usuario", methods=["GET"])
-def get_horarios_usuario(padron):
-    conn = get_connection()
-    cursor = conn.cursor(dictionary=True)
-
-    cursor.execute(
-        "SELECT dia, turno FROM horarios_usuarios WHERE padron = %s", (padron,)
-    )
-
-    horarios = cursor.fetchall()
-
-    cursor.close()
-    conn.close()
-    return jsonify(horarios), 200
 
 
 ############################## FIN Methods GET ########################################

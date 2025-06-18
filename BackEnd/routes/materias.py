@@ -8,18 +8,18 @@ def get_materias_list():
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
 
-    cursor.execute("""
+    cursor.execute(
+        """
         SELECT DISTINCT m.* FROM materias m JOIN materias_usuarios m_u ON m.materia_codigo = m_u.materia_codigo WHERE m_u.estado = 'cursando'
-    """)
+        """
+    )
 
     materias = cursor.fetchall()
     
     cursor.close()
     conn.close()
 
-    if materias:
-        return jsonify(materias), 200
-    return "No hay materias disponibles", 404
+    return jsonify(materias), 200
 
 
 @materias_bp.route("/materias/<string:materia_codigo>/companierxs-sin-grupo", methods=["GET"])
@@ -66,8 +66,10 @@ def grupos_por_materia(materia_codigo):
 
     cursor.execute(
         """
-        SELECT grupos.*
+        SELECT grupos.*,
+        materias.nombre AS nombre_materia
         FROM grupos
+        INNER JOIN materias ON grupos.materia_codigo = materias.materia_codigo
         WHERE grupos.materia_codigo = %s AND NOT grupos.tp_terminado
         """, (materia_codigo,)
     )
@@ -93,36 +95,6 @@ def grupos_por_materia(materia_codigo):
     if grupos_de_materia:
         return jsonify({ "materia": nombre_materia, "grupos": grupos_de_materia }), 200
     return jsonify({ "materia": nombre_materia, "grupos": [] }), 200
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 @materias_bp.route("/materias/<string:materia_codigo>", methods=["GET"])
 def get_materia(materia_codigo):

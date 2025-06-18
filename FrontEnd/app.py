@@ -508,14 +508,10 @@ def grupos_por_materia(materia_codigo):
         session['notificacion'] = False
         solicitudes_pendientes = []
 
-    if materia_grupos:
-        nombre_materia = materia_grupos[0]["nombre_materia"]
+    if materia_grupos["grupos"]:
+        nombre_materia = materia_grupos["grupos"][0]["nombre_materia"]
     else:
-        response_materia = requests.get(f"{API_BASE}/materias/{materia_codigo}")
-        if response_materia.status_code == 200:
-            nombre_materia = response_materia.json().get("nombre", "Error para mostrar nombre")
-        else:
-            nombre_materia = ""
+        nombre_materia = materia_grupos["materia"]
 
     padron_usuario = session.get('usuario')
 
@@ -526,7 +522,7 @@ def grupos_por_materia(materia_codigo):
         if str(padron_usuario) not in integrantes_padrones:
             grupos_filtrados.append(grupo)
 
-    return render_template("grupos_por_materia.html", materia_codigo = materia_codigo, nombre_materia=materia_grupos["nombre_materia"], grupos=grupos_filtrados, solicitudes_pendientes=solicitudes_pendientes)
+    return render_template("grupos_por_materia.html", materia_codigo = materia_codigo, nombre_materia=nombre_materia, grupos=grupos_filtrados, solicitudes_pendientes=solicitudes_pendientes)
 
 @app.route("/materias/<string:materia_codigo>/companierxs-sin-grupo", methods=["GET"])
 def companierxs_sin_grupo_por_materia(materia_codigo):

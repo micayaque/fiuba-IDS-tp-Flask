@@ -10,7 +10,11 @@
             <div id="contenedor_cantidad_grupos_formados">
 
                 <img id="img_grupos_formados" src="{{ url_for('static', filename='img/iconos/grupos.png') }}" alt="Cantidad de grupos formados">
-                <p>{{ cant_grupos }} grupos formados</p>
+                {% if cant_grupos == None %}
+                    <p>0 grupos formados</p>
+                {% else %}
+                    <p>{{ cant_grupos }} grupos formados</p>
+                {% endif %}
 
             </div>
 

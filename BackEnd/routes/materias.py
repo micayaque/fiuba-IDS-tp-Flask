@@ -10,7 +10,11 @@ def get_materias_list():
 
     cursor.execute(
         """
-        SELECT DISTINCT m.* FROM materias m JOIN materias_usuarios m_u ON m.materia_codigo = m_u.materia_codigo WHERE m_u.estado = 'cursando'
+        SELECT DISTINCT materias.materia_codigo, materias.nombre 
+        FROM materias
+        LEFT JOIN grupos ON materias.materia_codigo = grupos.materia_codigo
+        LEFT JOIN materias_usuarios ON materias.materia_codigo = materias_usuarios.materia_codigo
+        WHERE grupos.grupo_id IS NOT NULL OR materias_usuarios.padron IS NOT NULL
         """
     )
 
@@ -59,11 +63,6 @@ def grupos_por_materia(materia_codigo):
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
     
-    cursor.execute("SELECT nombre FROM materias WHERE materia_codigo = %s", (materia_codigo,))
-
-    materia = cursor.fetchone()
-    nombre_materia = materia["nombre"]
-
     cursor.execute(
         """
         SELECT grupos.*,
@@ -74,6 +73,13 @@ def grupos_por_materia(materia_codigo):
         """, (materia_codigo,)
     )
     grupos_de_materia = cursor.fetchall()
+
+    if grupos_de_materia:
+        nombre_materia = grupos_de_materia[0]["nombre"]
+    else:
+        cursor.execute("SELECT nombre FROM materias WHERE materia_codigo = %s", (materia_codigo,))
+        materia = cursor.fetchone()
+        nombre_materia = materia["nombre"] if materia else ""
 
     for grupo in grupos_de_materia:
         cursor.execute(
@@ -94,37 +100,8 @@ def grupos_por_materia(materia_codigo):
 
     if grupos_de_materia:
         return jsonify({ "materia": nombre_materia, "grupos": grupos_de_materia }), 200
-    return jsonify({ "materia": nombre_materia, "grupos": [] }), 200
-
-@materias_bp.route("/materias/<string:materia_codigo>", methods=["GET"])
-def get_materia(materia_codigo):
-    conn = get_connection()
-    cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM materias WHERE materia_codigo = %s", (materia_codigo,))
-    materia = cursor.fetchone()
-    cursor.close()
-    conn.close()
-    if materia:
-        return jsonify(materia)
     else:
-        return jsonify({"error": "Materia no encontrada"}), 404
-
-@materias_bp.route("/materias-grupos", methods=["GET"])
-def get_materias_grupos():
-    conn = get_connection()
-    cursor = conn.cursor(dictionary=True)
-    cursor.execute(
-        """
-        SELECT DISTINCT materias.materia_codigo, materias.nombre 
-        FROM materias
-        LEFT JOIN grupos ON materias.materia_codigo = grupos.materia_codigo
-        LEFT JOIN materias_usuarios ON materias.materia_codigo = materias_usuarios.materia_codigo
-        WHERE grupos.grupo_id IS NOT NULL OR materias_usuarios.padron IS NOT NULL
-        """)
-    materias = cursor.fetchall()
-    cursor.close()
-    conn.close()
-    return jsonify(materias)
+        return jsonify({ "materia": nombre_materia, "grupos": [] }), 200
 
 @materias_bp.route("/materias", methods=["POST"])
 def agregar_materia():
@@ -143,7 +120,3 @@ def agregar_materia():
     cursor.close()
     conn.close()
     return "Materia agregada", 200
-
-
-
-

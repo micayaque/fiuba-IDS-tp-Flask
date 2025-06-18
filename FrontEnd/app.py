@@ -21,9 +21,12 @@ API_BASE = "http://localhost:5000"
 
 ########################################################################## Error 404 ###################################################################################################
 
+@app.errorhandler(500)
+def error_interno_servidor(error):
+    return render_template('errores.html'), 500
 
 @app.errorhandler(404)
-def error(error):
+def error404(error):
     return render_template("errores.html"), 404
 
 

@@ -76,11 +76,11 @@
           <div class="card-body d-flex flex-column justify-content-between grupo_info">
             <div>
               <h3 class="nombre_del_grupo card-title">{{ grupo.nombre }}</h3>
-              <p class="cantidad_integrantes card-text"> N° integrantes: {{ grupo.cantidad_integrantes }} </p>
+              <p class="cantidad_integrantes card-text"> {{ grupo.nombre_materia }} </p>
             </div>
 
             <button type="button" class="boton_info btn btn-primary" data-bs-toggle="modal"
-              data-bs-target="#modalGrupo{{ grupo.id }}">
+              data-bs-target="#modalGrupo{{ grupo.grupo_id }}">
               INFO
             </button>
           </div>
@@ -89,7 +89,7 @@
 
 
       <!-- Modal -->
-      <div class="modal fade" id="modalGrupo{{ grupo.id }}" tabindex="-1" aria-labelledby="modalGrupoLabel{{ grupo.id }}"
+      <div class="modal fade" id="modalGrupo{{ grupo.grupo_id }}" tabindex="-1" aria-labelledby="modalGrupoLabel{{ grupo.grupo_id }}"
           aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content bg-dark text-white rounded-4 p-4 border-0 position-relative">
@@ -99,11 +99,10 @@
                 data-bs-dismiss="modal" aria-label="Cerrar"></button>
 
               <!-- Título -->
-              <h5 class="nombre_del_grupo modal-title text-center text-lilac mb-4 fs-3" id="modalGrupoLabel{{ grupo.id }}"> {{ grupo.nombre }}</h5>
+              <h5 class="nombre_del_grupo modal-title text-center text-lilac mb-4 fs-3" id="modalGrupoLabel{{ grupo.grupo_id }}"> {{ grupo.nombre }}</h5>
 
               <div class="modal-body d-flex flex-row justify-content-between gap-5 flex-wrap">
 
-                <!-- Integrantes -->
                 <div class="me-5 ms-0 align-text-start">
                   <ul class="list-unstyled">
                     <li class="fw-light">Integrantes <img src="{{ url_for('static', filename='img/iconos/integrantes.png') }}" alt="Integrantes" width="30" height="30">  </li>

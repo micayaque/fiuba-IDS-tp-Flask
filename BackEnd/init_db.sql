@@ -37,9 +37,9 @@ CREATE TABLE horarios_usuarios (
 CREATE TABLE grupos (
     grupo_id INT AUTO_INCREMENT PRIMARY KEY,
     materia_codigo VARCHAR(6) NOT NULL,
-    nombre VARCHAR(50) NOT NULL,
+    nombre VARCHAR(50),
     tp_terminado BOOLEAN DEFAULT FALSE,
-    maximo_integrantes INT NOT NULL,
+    maximo_integrantes INT,
     UNIQUE (materia_codigo, nombre),
     FOREIGN KEY (materia_codigo) REFERENCES materias(materia_codigo) ON DELETE CASCADE
 );

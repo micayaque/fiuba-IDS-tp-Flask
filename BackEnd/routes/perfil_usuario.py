@@ -12,22 +12,29 @@ perfil_usuario_bp = Blueprint("perfil_usuario", __name__)
 def get_perfil_usuario(padron):
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
+
     cursor.execute(
         """
         SELECT * FROM usuarios WHERE padron = %s
         """, (padron,)
     )
+    
     usuario = cursor.fetchone()
+
     cursor.close()
     conn.close()
-    return jsonify(usuario)
+
+    if usuario is None:
+        return "Usuario no encontrado", 404
+
+    return jsonify(usuario), 200
 
 
-# Materias cursando
 @perfil_usuario_bp.route("/usuario/<int:padron>/materias-cursando", methods=["GET"])
 def materias_cursando(padron):
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
+
     cursor.execute(
         """
         SELECT m_u.materia_codigo, m.nombre
@@ -41,14 +48,18 @@ def materias_cursando(padron):
 
     cursor.close()
     conn.close()
-    return jsonify(materias), 200
+
+    if materias:
+        return jsonify(materias), 200
+    else:
+        return "No hay materias cursando", 404
 
 
-# Materias aprobadas
 @perfil_usuario_bp.route("/usuario/<int:padron>/materias-aprobadas", methods=["GET"])
 def materias_aprobadas(padron):
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
+
     cursor.execute(
         """
         SELECT m_u.materia_codigo, m.nombre
@@ -62,7 +73,29 @@ def materias_aprobadas(padron):
 
     cursor.close()
     conn.close()
-    return jsonify(materias), 200
+
+    if materias:
+        return jsonify(materias), 200
+    return "No hay materias aprobadas", 404
+
+
+@perfil_usuario_bp.route("/usuario/<int:padron>/horarios-usuario", methods=["GET"])
+def get_horarios_usuario(padron):
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute(
+        "SELECT dia, turno FROM horarios_usuarios WHERE padron = %s", (padron,)
+    )
+
+    horarios = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+
+    if horarios:
+        return jsonify(horarios), 200
+    return "No hay horarios disponibles", 404
 
 
 @perfil_usuario_bp.route("/usuario/<int:padron>/grupos")
@@ -71,21 +104,45 @@ def grupos_de_usuario(padron):
     cursor = conn.cursor(dictionary=True)
 
     cursor.execute("""
-        SELECT g.grupo_id, g.nombre, g.materia_codigo, m.nombre AS materia, COUNT(g_u.padron) AS integrantes
-        FROM grupos g
-        JOIN grupos_usuarios g_u ON g.grupo_id = g_u.grupo_id
-        JOIN materias m ON g.materia_codigo = m.materia_codigo
-        WHERE g_u.padron = %s
-        GROUP BY g.grupo_id
+    SELECT g.grupo_id, g.nombre, g.materia_codigo, m.nombre AS materia_nombre, g.tp_terminado
+    FROM grupos g
+    JOIN grupos_usuarios g_u ON g.grupo_id = g_u.grupo_id
+    JOIN materias m ON g.materia_codigo = m.materia_codigo
+    WHERE g_u.padron = %s
+    GROUP BY g.grupo_id
     """, (padron,))
 
     grupos = cursor.fetchall()
 
+    for grupo in grupos:
+        cursor.execute(
+            "SELECT u.padron, u.nombre FROM grupos_usuarios gu JOIN usuarios u ON gu.padron = u.padron WHERE gu.grupo_id = %s",
+            (grupo['grupo_id'],)
+        )
+        integrantes = cursor.fetchall()
+        grupo['integrantes'] = integrantes
+        grupo['cantidad_integrantes'] = len(integrantes)
+
+    cursor.execute(
+        "SELECT maximo_integrantes FROM grupos WHERE grupo_id = %s",
+        (grupo['grupo_id'],)
+    )
+    grupo['maximo_integrantes'] = cursor.fetchone()['maximo_integrantes']
+
+    cursor.execute(
+        "SELECT dia, turno FROM horarios_grupos WHERE grupo_id = %s",
+        (grupo['grupo_id'],)
+    )
+    horarios = cursor.fetchall()
+    grupo['horarios'] = [f"{h['dia']}-{h['turno']}" for h in horarios]
+        
+
     cursor.close()
     conn.close()
-    return jsonify(grupos)
 
-
+    if grupos:
+        return jsonify(grupos)
+    return "No hay grupos disponibles", 404
 
 @perfil_usuario_bp.route('/usuario/<int:padron>/solicitudes-pendientes', methods=['GET'])
 def solicitudes_pendientes(padron):
@@ -131,8 +188,10 @@ def solicitudes_pendientes(padron):
         solicitud['horarios_emisor'] = horarios_por_dia_emisor
 
     cursor.close()
-    conn.close()
-    return jsonify({"pendientes": solicitudes})
+    conn.close()    
+    if solicitudes:
+        return jsonify({"pendientes": solicitudes})
+    return jsonify({"pendientes": []}), 200
 
 
 # Horarios disponibles
@@ -207,10 +266,6 @@ def eliminar_materia_cursando(padron):
     cursor.close()
     conn.close()
     return "Materia eliminada", 200
-
-
-
-
 
 @perfil_usuario_bp.route("/usuario/<int:padron>/agregar-materia-aprobada", methods=["POST"])
 def agregar_materia_aprobada(padron):

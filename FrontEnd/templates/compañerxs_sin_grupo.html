@@ -71,6 +71,14 @@
 
 
     <div id="contenedor_compañerxs_sin_grupo" class="container">
+        {% if compañerxs|length == 0 %}
+            <div class="alert alert-warning text-center" role="alert">
+                <div class="d-flex justify-content-center align-items-center mt-3">
+                    <div class="border-0 w-50 alert alert-danger text-white text-center mx-5 px-0">No hay compañeros sin grupo en esta materia.</div>
+                </div>
+                <a href="/materias/{{ materia['materia_codigo'] }}/grupos-por-materia" class="btn btn-primary mt-2"> Ver grupos para unirse </a>
+            </div>
+        {% endif %}
         <div class="row">
             {% for compañerx in compañerxs %}
                 <div class="carta carta-companierx col-12 col-md-6 col-lg-4"

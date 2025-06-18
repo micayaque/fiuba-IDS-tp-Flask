@@ -1,3 +1,11 @@
+###### Secciones: ######
+# Registro/ Inicio Sesión/ Cerrar Sesión
+# Index
+# Perfil Usuario
+# Grupos
+# Materias
+# Solicitud Grupos
+
 from flask import Flask, render_template, session, redirect, url_for, request
 import requests
 from flasgger import Swagger
@@ -8,6 +16,10 @@ swagger = Swagger(app)
 app.secret_key = 'clave-secreta'  # necesaria para usar session
 
 API_BASE = "http://localhost:5000"
+
+
+########################################################## Registro/ Inicio Sesión/ Cerrar Sesión ######################################################################################
+
 
 @app.route("/registrarse", methods=["POST"])
 def registrarse():
@@ -124,8 +136,15 @@ def cerrar_sesion():
     return redirect(url_for("inicio"))
 
 
+########################################################## FIN Regstro/ Inicio Sesión/ Cerrar Sesión ######################################################################################
+
+################################################################################ Index ####################################################################################################
+
+
 @app.route("/", methods=["GET"])
 def inicio():
+    response = requests.get(f"{API_BASE}/cantidad_grupos")
+    cant_grupos = response.json()["mayor_id"]
      
     """
     Página de inicio
@@ -146,7 +165,12 @@ def inicio():
         session['notificacion'] = False
         solicitudes_pendientes = []
 
-    return render_template("index.html", solicitudes_pendientes=solicitudes_pendientes)
+    return render_template("index.html", solicitudes_pendientes=solicitudes_pendientes, cant_grupos=cant_grupos)
+
+
+############################################################################### FIN Index ##################################################################################################
+
+####################################################################### Perfil Usuario ######################################################################################################
 
 
 @app.route("/usuario/<int:padron>", methods=["GET"])
@@ -173,6 +197,7 @@ def usuario(padron):
 
     avatares = ["pepe.jpg", "tiger.jpg", "mulan.jpg", "jon.jpg", "lisa.jpg", "snoopy.jpg", "this_is_fine.jpg", "tom.jpg", "coraje.jpg"]
 
+    
     response = requests.get(f"{API_BASE}/usuario/{padron}")     # datos del usuario: nombre, carrera, "sobre mi", avatar, color del banner del perfil
     if response.status_code == 200:
         datos_usuario = response.json()
@@ -220,6 +245,10 @@ def usuario(padron):
     solicitudes_pendientes = response.json().get("pendientes")
     session['notificacion'] = len(solicitudes_pendientes) > 0
 
+    usuario_session = session.get('usuario')
+
+    usuario_session = session.get('usuario')
+
     materias_para_select = []
     for materia in materias_cursando:
         response = requests.get(f"{API_BASE}/materias/{materia['materia_codigo']}/companierxs-sin-grupo")
@@ -237,7 +266,7 @@ def usuario(padron):
 
     return render_template("perfil_de_usuario.html", usuario=datos_usuario, avatares=avatares, materias_cursando=materias_cursando, materias_aprobadas=materias_aprobadas, 
     materias_para_elegir_cursando=materias_para_elegir_cursando, materias_para_elegir_aprobadas=materias_para_elegir_aprobadas, horarios_por_dia_usuario=horarios_por_dia_usuario,
-    grupos=grupos, solicitudes_pendientes=solicitudes_pendientes, materias_para_select=materias_para_select)
+    grupos=grupos, solicitudes_pendientes=solicitudes_pendientes, padron=str(padron), usuario_session=usuario_session, materias_para_select=materias_para_select)
 
 
 @app.route("/usuario/<int:padron>/editar-perfil", methods=["POST"])
@@ -278,7 +307,7 @@ def editar_perfil_usuario(padron):
 
     response = requests.post(f"{API_BASE}/usuario/{padron}/editar-perfil", json={"campo": campo, "valor": valor})
     if response.status_code == 200:
-        return redirect(url_for("usuario", padron=padron))
+        return redirect(url_for("usuario", padron=padron, ))
     else:
         return "Error al actualizar los datos del perfil", 400
     
@@ -387,6 +416,7 @@ def editar_horarios_usuario(padron):
 
 @app.route("/usuario/<int:padron>/agregar-grupo", methods=["POST"])
 def agregar_grupo(padron):
+
     materia_codigo = request.form.get("materiaGrupo")
     nombre_grupo = request.form.get("nombreGrupo")
     max_integrantes = request.form.get("cantidadMaxIntegrantes")
@@ -420,6 +450,10 @@ def agregar_grupo(padron):
     return redirect(url_for("usuario", padron=padron))
 
 
+####################################################################### FIN Perfil Usuario ###################################################################################################
+
+################################################################################ Grupos ######################################################################################################
+
 @app.route("/grupos", methods=["GET"])
 def mostrar_grupos():
     response = requests.get(f"{API_BASE}/grupos")
@@ -439,6 +473,11 @@ def mostrar_grupos():
     return render_template("grupos.html", grupos=grupos, solicitudes_pendientes=solicitudes_pendientes)
 
 
+############################################################################# FIN Grupos #####################################################################################################
+
+############################################################################## Materias ######################################################################################################
+
+
 @app.route("/materias", methods=["GET"])
 def mostrar_materias():
     response = requests.get(f"{API_BASE}/materias")
@@ -453,10 +492,11 @@ def mostrar_materias():
         solicitudes_pendientes = []
 
     return render_template('materias.html', materias=materias, solicitudes_pendientes=solicitudes_pendientes)
-
+    
 
 @app.route("/materias/<string:materia_codigo>/grupos-por-materia", methods=["GET"])
 def grupos_por_materia(materia_codigo):
+
     response = requests.get(f"{API_BASE}/materias/{materia_codigo}/grupos-por-materia")
     materia_grupos = response.json()
 
@@ -468,6 +508,11 @@ def grupos_por_materia(materia_codigo):
         session['notificacion'] = False
         solicitudes_pendientes = []
 
+    if materia_grupos["grupos"]:
+        nombre_materia = materia_grupos["grupos"][0]["nombre_materia"]
+    else:
+        nombre_materia = materia_grupos["materia"]
+
     padron_usuario = session.get('usuario')
 
     grupos_de_materia = materia_grupos["grupos"]
@@ -477,9 +522,7 @@ def grupos_por_materia(materia_codigo):
         if str(padron_usuario) not in integrantes_padrones:
             grupos_filtrados.append(grupo)
 
-    return render_template("grupos_por_materia.html", materia_codigo = materia_codigo, nombre_materia=materia_grupos["materia"], grupos=grupos_filtrados, 
-                           solicitudes_pendientes=solicitudes_pendientes)
-
+    return render_template("grupos_por_materia.html", materia_codigo = materia_codigo, nombre_materia=nombre_materia, grupos=grupos_filtrados, solicitudes_pendientes=solicitudes_pendientes)
 
 @app.route("/materias/<string:materia_codigo>/companierxs-sin-grupo", methods=["GET"])
 def companierxs_sin_grupo_por_materia(materia_codigo):
@@ -496,8 +539,11 @@ def companierxs_sin_grupo_por_materia(materia_codigo):
     companierxs = [c for c in companierxs if str(c["padron"]) != str(padron_usuario)]
 
     return render_template("compañerxs_sin_grupo.html", materia=materia, compañerxs=companierxs)
+    
 
+########################################################################## FIn Materias ######################################################################################################
 
+####################################################################### Solicitud Grupos #####################################################################################################
 
 @app.route('/solicitar-unirse-grupo/<int:grupo_id>', methods=['POST'])
 def solicitar_unirse_grupo(grupo_id):
@@ -602,6 +648,9 @@ def cambiar_estado_tp(padron, grupo_id):
 
     requests.post(f"{API_BASE}/grupos/{grupo_id}/cambiar-estado-tp", json={"tp_terminado": nuevo_estado})
     return redirect(url_for('usuario', padron=padron))
+
+
+##################################################################### FIN Solicitud Grupos ###################################################################################################
 
 
 if __name__ == '__main__':

@@ -3,7 +3,12 @@ from db import get_connection
 
 perfil_usuario_bp = Blueprint("perfil_usuario", __name__)
 
-@perfil_usuario_bp.route("/usuario/<int:padron>")
+
+################################### methods GET ######################################
+
+
+# Datos del usuario
+@perfil_usuario_bp.route("/usuario/<int:padron>", methods=["GET"])
 def get_perfil_usuario(padron):
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
@@ -38,7 +43,7 @@ def materias_cursando(padron):
         WHERE m_u.padron = %s AND m_u.estado = 'cursando'
         """, (padron,)
     )
-
+    
     materias = cursor.fetchall()
 
     cursor.close()
@@ -71,6 +76,7 @@ def materias_aprobadas(padron):
 
     if materias:
         return jsonify(materias), 200
+    
     return "No hay materias aprobadas", 404
 
 
@@ -90,6 +96,7 @@ def get_horarios_usuario(padron):
 
     if horarios:
         return jsonify(horarios), 200
+    
     return "No hay horarios disponibles", 404
 
 
@@ -139,7 +146,6 @@ def grupos_de_usuario(padron):
         return jsonify(grupos)
     return "No hay grupos disponibles", 404
 
-
 @perfil_usuario_bp.route('/usuario/<int:padron>/solicitudes-pendientes', methods=['GET'])
 def solicitudes_pendientes(padron):
     conn = get_connection()
@@ -184,65 +190,15 @@ def solicitudes_pendientes(padron):
         solicitud['horarios_emisor'] = horarios_por_dia_emisor
 
     cursor.close()
-    conn.close()
-
+    conn.close()    
     if solicitudes:
         return jsonify({"pendientes": solicitudes})
     return jsonify({"pendientes": []}), 200
 
 
+############################## FIN Methods GET ########################################
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+################################ methods POST #########################################
 
 
 @perfil_usuario_bp.route("/usuario/<int:padron>/editar-perfil", methods=["POST"])
@@ -260,7 +216,6 @@ def editar_perfil_usuario(padron):
     cursor.close()
     conn.close()
     return "Perfil actualizado", 200
-
 
 @perfil_usuario_bp.route("/usuario/<int:padron>/agregar-materia-cursando", methods=["POST"])
 def agregar_materia_cursando(padron):
@@ -296,9 +251,6 @@ def eliminar_materia_cursando(padron):
     cursor.close()
     conn.close()
     return "Materia eliminada", 200
-
-
-
 
 @perfil_usuario_bp.route("/usuario/<int:padron>/agregar-materia-aprobada", methods=["POST"])
 def agregar_materia_aprobada(padron):
@@ -360,15 +312,4 @@ def editar_horarios_usuario(padron):
     conn.close()
     return "Horarios actualizados", 200
 
-
-
-
-
-
-
-
-
-
-
-
-
+############################### FIN methods GET ######################################

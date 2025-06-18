@@ -1,7 +1,25 @@
-from flask import Blueprint, jsonify, request, render_template
+from flask import Blueprint, jsonify, request
 from db import get_connection
 
 grupos_bp = Blueprint("grupos", __name__)
+
+@grupos_bp.route("/cantidad_grupos", methods=["GET"])
+def get_cantidad_grupos():
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute(
+        """
+        SELECT MAX(grupo_id) AS mayor_id
+        FROM grupos
+        """
+    ) 
+    cant_grupos = cursor.fetchone()
+    
+    cursor.close()
+    conn.close()
+    return jsonify(cant_grupos)
+
 
 @grupos_bp.route("/grupos", methods=["GET"])
 def get_grupos():
@@ -37,12 +55,49 @@ def get_grupos():
     return jsonify(grupos)
 
 
+@grupos_bp.route("/grupos/<int:grupo_id>", methods=["GET"])
+def get_grupo(grupo_id):
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+    
+    cursor.execute(
+        """
+        SELECT grupos.*, materias.nombre AS nombre_materia
+        FROM grupos
+        JOIN materias ON grupos.materia_codigo = materias.materia_codigo
+        WHERE grupos.grupo_id = %s
+        """,
+        (grupo_id,)
+    )
+    grupo = cursor.fetchone()
+
+    cursor.execute(
+        "SELECT dia, turno FROM horarios_grupos WHERE grupo_id = %s",
+        (grupo['grupo_id'],)
+    )
+    grupo['horarios'] = cursor.fetchall()
+
+    cursor.execute(
+        "SELECT u.padron, u.nombre FROM grupos_usuarios g_u JOIN usuarios u ON g_u.padron = u.padron WHERE g_u.grupo_id = %s",
+        (grupo['grupo_id'],)
+    )
+    grupo['integrantes'] = cursor.fetchall()
+    grupo['cantidad_integrantes'] = len(grupo['integrantes'])
+
+    cursor.close()
+    conn.close()
+    return jsonify(grupo)
+
+
+
 @grupos_bp.route("/agregar-grupo", methods=["POST"])
 def crear_grupo():
     data = request.get_json()
     materia_codigo = data.get("materia_codigo")
     nombre = data.get("nombre")
     maximo_integrantes = data.get("maximo_integrantes")
+    integrantes = data.get("integrantes", [])
+    creador = data.get("padron_creador")
 
     conn = get_connection()
     cursor = conn.cursor()
@@ -53,6 +108,18 @@ def crear_grupo():
     )
 
     grupo_id = cursor.lastrowid
+
+    cursor.execute(
+        "INSERT INTO grupos_usuarios (grupo_id, padron, materia_codigo) VALUES (%s, %s, %s)",
+        (grupo_id, creador, materia_codigo)
+    )
+
+    for padron in integrantes:
+        if str(padron) != str(creador):
+            cursor.execute(
+                "INSERT INTO solicitudes_grupos (grupo_id, padron_emisor, padron_receptor, tipo) VALUES (%s, %s, %s, 'grupo_a_usuario')",
+                (grupo_id, creador, padron)
+            )
 
     conn.commit()
     cursor.close()
@@ -128,3 +195,63 @@ def solicitar_unirse_grupo(grupo_id):
     cursor.close()
     conn.close()
     return '', 201
+
+
+
+@grupos_bp.route("/grupos/<int:grupo_id>/editar", methods=["POST"])
+def editar_grupo(grupo_id):
+    data = request.get_json()
+    nombre = data.get("nombre")
+    maximo_integrantes = data.get("maximo_integrantes")
+    integrantes = data.get("integrantes", [])
+    horarios = data.get("horarios", [])
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "UPDATE grupos SET nombre = %s, maximo_integrantes = %s WHERE grupo_id = %s",
+        (nombre, maximo_integrantes, grupo_id)
+    )
+
+    cursor.execute("DELETE FROM grupos_usuarios WHERE grupo_id = %s", (grupo_id,))
+    cursor.execute("SELECT materia_codigo FROM grupos WHERE grupo_id = %s", (grupo_id,))
+    materia_codigo = cursor.fetchone()[0]
+    for padron in integrantes:
+        if padron:
+            cursor.execute(
+                "INSERT INTO grupos_usuarios (grupo_id, padron, materia_codigo) VALUES (%s, %s, %s)",
+                (grupo_id, padron, materia_codigo)
+            )
+
+    cursor.execute("DELETE FROM horarios_grupos WHERE grupo_id = %s", (grupo_id,))
+    for horario in horarios:
+        cursor.execute(
+            "INSERT INTO horarios_grupos (grupo_id, dia, turno) VALUES (%s, %s, %s)",
+            (grupo_id, horario["dia"], horario["turno"])
+        )
+
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return "Grupo actualizado", 200
+
+
+@grupos_bp.route('/grupos/<int:grupo_id>/cambiar-estado-tp', methods=['POST'])
+def cambiar_estado_tp(grupo_id):
+    data = request.get_json()
+    tp_terminado = data.get('tp_terminado')
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "UPDATE grupos SET tp_terminado = %s WHERE grupo_id = %s",
+        (tp_terminado, grupo_id)
+    )
+
+    conn.commit()
+
+    cursor.close()
+    conn.close()
+    return "Estado del TP actualizado", 200

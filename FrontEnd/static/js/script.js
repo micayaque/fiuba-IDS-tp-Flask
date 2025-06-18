@@ -15,15 +15,15 @@ function cerrarPopupContacto() {
 function filtrarMaterias() {
     console.log("filtrarMaterias ejecutada");
 
-  const input = document.getElementById('buscadorInput').value.toLowerCase();
-  
-  const materias = document.getElementsByClassName('materia-item');
-  for (let i = 0; i < materias.length; i++) {
-    // querySelector busca el elemento con clase 'materia-nombre' dentro del div actual (materias[i] es el div con clase 'materia-item' encontrado antes)
-    const nombreElemento = materias[i].querySelector('.materia-nombre').textContent.toLowerCase();
+    const input = document.getElementById('buscadorInput').value.toLowerCase();
     
-    materias[i].style.display = nombreElemento.startsWith(input) ? '' : 'none';
-  }
+    const materias = document.getElementsByClassName('materia-item');
+    for (let i = 0; i < materias.length; i++) {
+        // querySelector busca el elemento con clase 'materia-nombre' dentro del div actual (materias[i] es el div con clase 'materia-item' encontrado antes)
+        const nombreElemento = materias[i].querySelector('.materia-nombre').textContent.toLowerCase();
+
+        materias[i].style.display = nombreElemento.includes(input) ? '' : 'none';
+    }
 }
 
 // Formulario de Registro
@@ -111,7 +111,7 @@ function guardarSobreMi() {
 }
 
 
-// lista de integrantes a agregar en el grupo en el perfil del usuario
+// agregar grupo en el perfil del usuario
 let integrantes = [];
 
 function actualizarListaIntegrantes() {
@@ -119,7 +119,7 @@ function actualizarListaIntegrantes() {
     lista.innerHTML = '';
     integrantes.forEach((padron, indice) => {
         const div = document.createElement('div');
-        div.className = 'btn text-white d-flex align-items-center border-0';
+        div.className = 'btn btn-outline-light d-flex align-items-center gap-2';
         div.innerHTML = `
             <span>${padron}</span>
             <button type="button" class="btn btn-sm" onclick="eliminarIntegrante(${indice})">
@@ -146,32 +146,99 @@ function agregarIntegrante() {
     }
 }
 
+function cambiarDatalistPadrones() {
+    let codigo = document.getElementById('materiaGrupo').value;
+    let inputPadron = document.getElementById('padronIntegrante');
+    let datalistId = 'sugerenciasPadrones_' + codigo;
+    if (document.getElementById(datalistId)) {
+        inputPadron.setAttribute('list', datalistId);
+    }
+}
 
-// filtro de grupos por horarios
-function filtrarGruposPorHorarios() {
+
+
+
+
+
+function filtrarPorHorarios(selectorCartas, selectorModal) {
     const horariosSeleccionados = [];
-    const dias = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'];
-    const turnos = ['mañana', 'tarde', 'noche'];
-    dias.forEach(dia => {
-        turnos.forEach(turno => {
-            const checkbox = document.querySelector(`#modalFiltroHorariosGrupos input[name="${dia}_${turno}"]`);
+    ['mañana', 'tarde', 'noche'].forEach(turno => {
+        ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'].forEach(dia => {
+            const checkbox = document.querySelector(`${selectorModal} input[name="${dia}_${turno}"]`);
             if (checkbox.checked) {
-                horariosSeleccionados.push(`${dia}_${turno}`);
+                horariosSeleccionados.push({dia: dia, turno: turno});
             }
         });
     });
 
-    document.querySelectorAll('.grupo-carta').forEach(carta => {
-        const horariosGrupo = JSON.parse(carta.getAttribute('data-horarios'));  // convertimos el string del DOM a un objeto JSON
-        const horariosGrupoSet = new Set(horariosGrupo.map(horario => `${horario.dia}_${horario.turno}`));  // convertimos los horarios del grupo como dia_turno
-        const coincideHorario = horariosSeleccionados.every(horario => horariosGrupoSet.has(horario));
-        if (horariosSeleccionados.length === 0 || coincideHorario) {
+    document.querySelectorAll(selectorCartas).forEach(carta => {
+        const horarios = JSON.parse(carta.getAttribute('data-horarios') || "[]");
+        if (horariosSeleccionados.length === 0) {
             carta.style.display = '';
-        } else {
-            carta.style.display = 'none';
+            return;
         }
+        const coincide = horarios.some(h => horariosSeleccionados.some(sel => h.dia === sel.dia && h.turno === sel.turno)
+        );
+        carta.style.display = coincide ? '' : 'none';
     });
 
-    const modal = bootstrap.Modal.getInstance(document.getElementById('modalFiltroHorariosGrupos'));
-    modal.hide();
+    const modalElement = document.querySelector(selectorModal);
+    const modalInstance = bootstrap.Modal.getInstance(modalElement);
+    if (modalInstance) modalInstance.hide();
+}
+
+
+
+
+// editar grupo en el perfil del usuario
+function actualizarIntegrantesEditar() {
+    const lista = document.getElementById('editarListaIntegrantes');
+    lista.innerHTML = '';
+    integrantesEditar.forEach((padron, indice) => {
+        const div = document.createElement('div');
+        div.className = "btn btn-outline-light d-flex align-items-center gap-2";
+        div.innerHTML = `${padron} <button type="button" class="btn btn-sm" onclick="eliminarIntegranteEditar(${indice})"><img src="/static/img/iconos/cerrar.png" alt="Eliminar integrante" width="16" height="16"></button>`;
+        lista.appendChild(div);
+    });
+    document.getElementById('editarPadronesIntegrantesInput').value = integrantesEditar.join(',');
+}
+
+function agregarIntegranteEditar() {
+    const input = document.getElementById('editarPadronIntegrante');
+    const padron = input.value.trim();
+    if (padron && !integrantesEditar.includes(padron)) {
+        integrantesEditar.push(padron);
+        actualizarIntegrantesEditar();
+        input.value = '';
+    }
+}
+
+function eliminarIntegranteEditar(indice) {
+    integrantesEditar.splice(indice, 1);
+    actualizarIntegrantesEditar();
+}
+
+
+function abrirModalEditarGrupo(btn) {
+    const grupoId = btn.getAttribute('data-grupo-id');
+    const nombre = btn.getAttribute('data-nombre');
+    const max = btn.getAttribute('data-maximo-integrantes');
+    const lista_integrantes = JSON.parse(btn.getAttribute('data-integrantes'));
+    const integrantes = lista_integrantes.map(i => i.padron);
+
+    integrantesEditar = integrantes.slice();
+    actualizarIntegrantesEditar();
+
+    document.getElementById('formEditarGrupo').action = `/grupos/${grupoId}/editar`;
+    document.getElementById('editarNombreGrupo').value = nombre;
+    document.getElementById('editarCantidadMaxIntegrantes').value = max;
+
+    const horarios = JSON.parse(btn.getAttribute('data-horarios'));
+    for (const dia of ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo']) {
+        for (const turno of ['mañana', 'tarde', 'noche']) {
+            const cb = document.getElementById(`editarGrupoHorario_${dia}_${turno}`);
+            if (cb) cb.checked = horarios.includes(`${dia}-${turno}`);
+            else cb.checked = false;
+        }
+    }
 }

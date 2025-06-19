@@ -93,7 +93,7 @@ def get_horarios_usuario(padron):
     return "No hay horarios disponibles", 404
 
 
-@perfil_usuario_bp.route("/usuario/<int:padron>/grupos")
+@perfil_usuario_bp.route("/usuario/<int:padron>/grupos", methods=["GET"])
 def grupos_de_usuario(padron):
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
@@ -118,18 +118,18 @@ def grupos_de_usuario(padron):
         grupo['integrantes'] = integrantes
         grupo['cantidad_integrantes'] = len(integrantes)
 
-    cursor.execute(
-        "SELECT maximo_integrantes FROM grupos WHERE grupo_id = %s",
-        (grupo['grupo_id'],)
-    )
-    grupo['maximo_integrantes'] = cursor.fetchone()['maximo_integrantes']
+        cursor.execute(
+            "SELECT maximo_integrantes FROM grupos WHERE grupo_id = %s",
+            (grupo['grupo_id'],)
+        )
+        grupo['maximo_integrantes'] = cursor.fetchone()['maximo_integrantes']
 
-    cursor.execute(
-        "SELECT dia, turno FROM horarios_grupos WHERE grupo_id = %s",
-        (grupo['grupo_id'],)
-    )
-    horarios = cursor.fetchall()
-    grupo['horarios'] = [f"{h['dia']}-{h['turno']}" for h in horarios]
+        cursor.execute(
+            "SELECT dia, turno FROM horarios_grupos WHERE grupo_id = %s",
+            (grupo['grupo_id'],)
+        )
+        horarios = cursor.fetchall()
+        grupo['horarios'] = [f"{h['dia']}-{h['turno']}" for h in horarios]
         
 
     cursor.close()
@@ -137,7 +137,7 @@ def grupos_de_usuario(padron):
 
     if grupos:
         return jsonify(grupos)
-    return "No hay grupos disponibles", 404
+    return jsonify([])
 
 
 @perfil_usuario_bp.route('/usuario/<int:padron>/solicitudes-pendientes', methods=['GET'])

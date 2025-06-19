@@ -110,7 +110,6 @@ def crear_solicitud_usuario_a_usuario():
     padron_receptor = data['padron_receptor']
     materia_codigo = data['materia_codigo']
     
-
     conn = get_connection()
     cursor = conn.cursor()
 
@@ -119,6 +118,11 @@ def crear_solicitud_usuario_a_usuario():
         (materia_codigo,)
     )
     grupo_id = cursor.lastrowid
+
+    cursor.execute(
+        "UPDATE grupos SET nombre = %s WHERE grupo_id = %s",
+        (f"Grupo {grupo_id}", grupo_id)
+    )        
 
     cursor.execute(
         "INSERT INTO grupos_usuarios (grupo_id, padron, materia_codigo) VALUES (%s, %s, %s)",

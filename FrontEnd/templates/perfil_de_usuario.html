@@ -246,7 +246,7 @@
                             <form method="POST" action="/usuario/{{ usuario.padron }}/editar-perfil">
                                 <input type="hidden" name="campo" value="avatar_url">
                                 <input type="hidden" name="valor" value="{{ avatar }}">
-                                <button type="submit" class="btn p-0">
+                                <button type="submit" data-bs-dismiss="modal" class="btn p-0">
                                     <img id="avatar_img" src="{{ url_for('static', filename='img/avatares/' + avatar) }}" alt="Avatar" class="rounded-circle img-fluid">
                                 </button>
                             </form>
@@ -272,7 +272,7 @@
                         <input type="text" name="valor" value="{{ usuario.nombre }}" class="inputEditarCampo w-100"></input>
                     </div>
                     <div class="modal-footer border-0 justify-content-center">
-                        <button type="button" class="btn btn-guardar"">GUARDAR</button>
+                        <button type="submit" data-bs-dismiss="modal" class="btn btn-guardar"">GUARDAR</button>
                     </div>
                 </form>
             </div>
@@ -293,7 +293,7 @@
                         <input type="text" name="valor" value="{{ usuario.carrera }}" class="inputEditarCampo w-100"></input>
                     </div>
                     <div class="modal-footer border-0 justify-content-center">
-                        <button type="button" class="btn btn-guardar">GUARDAR</button>
+                        <button type="submit" data-bs-dismiss="modal" class="btn btn-guardar">GUARDAR</button>
                     </div>
                 </form>
             </div>
@@ -312,7 +312,7 @@
                         <input type="hidden" name="campo" value="sobre_mi">
                         <div class="d-flex justify-content-center gap-2 mt-3">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CANCELAR</button>
-                            <button type="submit" class="btn btn-guardar">GUARDAR</button>
+                            <button type="submit" data-bs-dismiss="modal" class="btn btn-guardar">GUARDAR</button>
                         </div>
                     </div>
                 </form>
@@ -363,7 +363,7 @@
                             <input type="text" class="input-agregar-materia" id="codigoNuevaMateria" name="codigo_nueva_materia" placeholder="Escribí el código de la materia nueva">
                         </div>
                         <div class="text-center">
-                            <button type="submit" class="btn btn-guardar mt-3 text-center">Guardar</button>
+                            <button type="submit" data-bs-dismiss="modal" class="btn btn-guardar mt-3 text-center">Guardar</button>
                         </div>
                     </form>
                 </div>
@@ -414,7 +414,7 @@
                             <input type="text" class="input-agregar-materia" id="codigoNuevaMateria" name="codigo_nueva_materia" placeholder="Escribí el código de la materia nueva">
                         </div>
                         <div class="text-center">
-                            <button type="submit" class="btn btn-guardar mt-3 text-center">Guardar</button>
+                            <button type="submit" data-bs-dismiss="modal" class="btn btn-guardar mt-3 text-center">Guardar</button>
                         </div>
                     </form>
                 </div>
@@ -466,7 +466,7 @@
                             </table>
                         </div>
                         <div class="my-3 text-center">
-                            <button type="submit" class="btn btn-guardar">Guardar horarios</button>
+                            <button type="submit" data-bs-dismiss="modal" class="btn btn-guardar">Guardar horarios</button>
                         </div>
                     </form>
                 </div>
@@ -562,7 +562,7 @@
                             </table>
                         </div>
                         <div class="text-center">
-                            <button type="submit" class="btn btn-lg text-white fw-bold btn-guardar">AGREGAR GRUPO</button>
+                            <button type="submit" data-bs-dismiss="modal" class="btn btn-lg text-white fw-bold btn-guardar">AGREGAR GRUPO</button>
                         </div>
                     </form>
                 </div>
@@ -635,7 +635,7 @@
                             </table>
                         </div>
                         <div class="text-center">
-                            <button type="submit" class="btn btn-lg text-white fw-bold btn-guardar">GUARDAR CAMBIOS</button>
+                            <button type="submit" data-bs-dismiss="modal" class="btn btn-lg text-white fw-bold btn-guardar">GUARDAR CAMBIOS</button>
                         </div>
                     </div>
                 </form>

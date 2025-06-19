@@ -2,11 +2,14 @@ html {
   scroll-behavior: smooth;
 }
 
+html, body {
+    max-width: 100vw;
+    overflow-x: hidden;
+}
+
 body {
     background-color: #1C1C21;
 }
-
-/* Logo y Botones de registro e inicio de sesión */
 
 .alert {
     background-color: #410443;
@@ -14,19 +17,13 @@ body {
 }
 
 #contenedor_logo_header img{
-    display: flex;
     height: 4.5rem;
     width: 4.5rem;
-    margin-top: 1rem;
 }
 
 #contenedor_header h4 {
     font-size: unset;
-}
-
-#contenedor_header {
-    align-items: center;
-    justify-content: space-between;
+    font-family: 'Poppins';
 }
 
 #contenedor_botones_header a {
@@ -35,6 +32,59 @@ body {
     font-family: 'Poppins', sans-serif;
     font-weight: bold
 }
+
+#opciones_menu a:hover {
+    cursor: pointer;
+    font-weight: bold;
+    color: #c8c5f5;
+    font-size: large;
+}
+
+#opciones_menu a {
+    text-decoration: none;
+    color: #AEABD4;
+    font-family: 'Poppins', sans-serif;
+}
+
+footer {
+    background-color: #242424;
+    border-top-left-radius: 100vmax;
+    border-top-right-radius: 100vmax;
+}
+
+#contenedor_footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#contenedor_logo_footer img {
+    height: 3.75rem;
+}
+
+#contenedor_logo_footer h4 {
+    font-family: 'Istok Web', sans-serif;
+    color: #F2F2F2;
+}
+
+#listado_footer a {
+    color: #F2F2F2;
+    font-family: 'Poppins';
+    cursor: pointer;
+}
+
+#contenedor_footer p {
+    color: #626262;
+    font-family: 'Poltawski Nowy';
+}
+
+#img_footer {
+    height: 3.75rem;
+}
+
+
+/* estilos para modales */
 
 #btn_registrarse {
     background-color: #7f18a2;
@@ -55,115 +105,4 @@ body {
 .solicitud-item {
     background-color: #303030;
     color: white;
-}
-
-/* Navbar */
-
-#contenedor_menu {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-nav {
-    margin-top: 1rem;
-}
-
-#opciones_menu {
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-#opciones_menu a:hover {
-    cursor: pointer;
-    font-weight: bold;
-    color: #c8c5f5;
-    font-size: large;
-}
-
-@media (max-width: 768px) {
-  #opciones_menu {
-    gap: 0;
-  }
-}
-
-#opciones_menu a {
-    text-decoration: none;
-    color: #AEABD4;
-    font-family: 'Poppins', sans-serif;
-    font-weight: bold;
-    padding: 2rem;
-}
-
-footer {
-    background-color: #242424;
-    width: 100%;
-    border-top-left-radius: 100vmax;
-    border-top-right-radius: 100vmax;
-}
-
-#contenedor_footer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    /* width: 100%; */
-}
-
-#contenedor_logo_footer {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1rem;
-    padding-top: 1rem;
-}
-
-#contenedor_logo_footer img {
-    height: 3.75rem;
-}
-
-#contenedor_logo_footer h4 {
-    font-family: 'Istok Web', sans-serif;
-    color: #F2F2F2;
-    font-weight: bold;
-}
-
-#listado_footer {
-    justify-content: center;
-    margin-bottom: 1rem;
-    color: #f2f2f2;
-    gap: 2rem;
-}
-
-#listado_footer a {
-    text-decoration: none;
-    color: #F2F2F2;
-    font-family: 'Poppins';
-    font-weight: bold;
-    cursor: pointer;
-}
-
-#contenedor_footer p {
-    text-align: center;
-    color: #626262;
-    font-family: 'Poltawski Nowy';
-    font-weight: bold;
-    width: 100%;
-}
-
-#logo_footer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: row;
-    color: #F2F2F2;
-    font-size: 30px;
-    font-family: 'Istok Web', sans-serif;;
-    gap: 0.5rem;
-}
-
-#img_footer {
-    height: 3.75rem;
 }

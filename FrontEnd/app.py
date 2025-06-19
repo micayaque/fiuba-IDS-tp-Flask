@@ -83,9 +83,9 @@ def registrarse():
         session['usuario'] = padron
         return redirect(url_for("usuario", padron=padron))
     elif response.status_code == 400 and response.text == "El usuario ya existe":
-        return render_template("index.html", error="El usuario ya existe")
+        return redirect(url_for("inicio", error="El usuario ya existe"))
     else:
-        return render_template("index.html", error="Error al registrar el usuario")
+        return redirect(url_for("inicio", error="Error al registrar el usuario"))
 
     
 @app.route("/iniciar-sesion", methods=["POST"])
@@ -129,7 +129,7 @@ def iniciar_sesion():
         session['usuario'] = padron
         return redirect(url_for("usuario", padron=padron))
     else:
-        return render_template("index.html", error="Padron o contraseña incorrectos"), 400
+        return redirect(url_for("inicio", error="Padron o contraseña incorrectos"))
 
 
 @app.route("/cerrar-sesion", methods=["GET"])
@@ -179,12 +179,10 @@ def inicio():
         session['notificacion'] = False
         solicitudes_pendientes = []
 
+    response = requests.get(f"{API_BASE}/cantidad_grupos")
+    cant_grupos = response.json()["mayor_id"]
+
     return render_template("index.html", solicitudes_pendientes=solicitudes_pendientes, cant_grupos=cant_grupos)
-
-
-############################################################################### FIN Index ##################################################################################################
-
-####################################################################### Perfil Usuario ######################################################################################################
 
 
 @app.route("/usuario/<int:padron>", methods=["GET"])

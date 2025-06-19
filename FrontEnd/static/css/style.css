@@ -16,31 +16,31 @@ body {
     font-family: 'Poppins';
 }
 
-#contenedor_logo_header img{
+#contenedor-logo-header img{
     height: 4.5rem;
     width: 4.5rem;
 }
 
-#contenedor_header h4 {
+#contenedor-header h4 {
     font-size: unset;
     font-family: 'Poppins';
 }
 
-#contenedor_botones_header a {
+#contenedor-botones-header a {
     text-decoration: none;
     color: white;
     font-family: 'Poppins', sans-serif;
     font-weight: bold
 }
 
-#opciones_menu a:hover {
+#opciones-menu a:hover {
     cursor: pointer;
     font-weight: bold;
     color: #c8c5f5;
     font-size: large;
 }
 
-#opciones_menu a {
+#opciones-menu a {
     text-decoration: none;
     color: #AEABD4;
     font-family: 'Poppins', sans-serif;
@@ -52,51 +52,51 @@ footer {
     border-top-right-radius: 100vmax;
 }
 
-#contenedor_footer {
+#contenedor-footer {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
 
-#contenedor_logo_footer img {
+#contenedor-logo-footer img {
     height: 3.75rem;
 }
 
-#contenedor_logo_footer h4 {
+#contenedor-logo-footer h4 {
     font-family: 'Istok Web', sans-serif;
     color: #F2F2F2;
 }
 
-#listado_footer a {
+#listado-footer a {
     color: #F2F2F2;
     font-family: 'Poppins';
     cursor: pointer;
 }
 
-#contenedor_footer p {
+#contenedor-footer p {
     color: #626262;
     font-family: 'Poltawski Nowy';
 }
 
-#img_footer {
+#img-footer {
     height: 3.75rem;
 }
 
 
 /* estilos para modales */
 
-#btn_registrarse {
+#btn-registrarse {
     background-color: #7f18a2;
     border-radius: 1rem;
 }
 
-#btn_iniciar_sesion:hover {
+#btn-iniciar-sesion:hover {
     color: white;
     font-weight: bold;
 }
 
-#btn_registrarse:hover {
+#btn-registrarse:hover {
     background-color: #4A7BBE;
     color: white;
     font-weight: bold;

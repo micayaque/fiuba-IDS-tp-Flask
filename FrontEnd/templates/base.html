@@ -37,12 +37,12 @@
         
         <header class="pt-5">
             <div class="container-fluid d-flex flex-column flex-md-row align-items-center justify-content-between gap-3">        
-                <div id="contenedor_logo_header" class="d-flex flex-column align-items-center gap-2 mb-2 mx-5 px-5 justify-content-center text-center">
+                <div id="contenedor-logo-header" class="d-flex flex-column align-items-center gap-2 mb-2 mx-5 px-5 justify-content-center text-center">
                     <a href="/" class="text-decoration-none text-center"><img src="{{ url_for('static', filename='img/iconos/logo.png') }}" alt="Logo" class="img-fluid">
                         <h4 class="text-white mb-0 fw-bold">TP BUDDY</h4>
                     </a>
                 </div>
-                <div id="contenedor_botones_header" class="d-flex flex-wrap gap-2 justify-content-center align-items-center mx-5 px-5">
+                <div id="contenedor-botones-header" class="d-flex flex-wrap gap-2 justify-content-center align-items-center mx-5 px-5">
                     {% if session['usuario'] %}
                         <a  href="/usuario/{{ session['usuario'] }}"><img src="{{ url_for('static', filename='img/iconos/perfil.png') }}" alt="Perfil" width="30" height="30"></a>
                         <a href="/usuario/{{ session['usuario'] }}" class="btn btn-sm">MI PERFIL</a>
@@ -53,8 +53,8 @@
                         </a>
                         <a href="{{ url_for('cerrar_sesion') }}" id="btn_cerrar_sesion" class="btn btn-sm">CERRAR SESIÓN</a>
                     {% else %}
-                        <a href="#" id="btn_registrarse" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#registroModal">REGISTRARSE</a>
-                        <a href="#" id="btn_iniciar_sesion" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#loginModal">INICIAR SESIÓN</a>
+                        <a href="#" id="btn-registrarse" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#registroModal">REGISTRARSE</a>
+                        <a href="#" id="btn-iniciar-sesion" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#loginModal">INICIAR SESIÓN</a>
                     {% endif %}
                 </div>
             </div>
@@ -68,7 +68,7 @@
                         <img src="{{ url_for('static', filename='img/iconos/navbar-button.png') }}" alt="" width="30" height="30">
                     </button>
                     <div class="collapse navbar-collapse justify-content-center" id="navbarMenu">
-                        <ul class="navbar-nav gap-2" id="opciones_menu">
+                        <ul class="navbar-nav gap-2" id="opciones-menu">
                             <li class="nav-item mx-5"><a class="nav-link fw-bold" href="/#como-funciona">Cómo funciona</a></li>
                             <li class="nav-item mx-5"><a class="nav-link fw-bold" href="{{ url_for('mostrar_materias') }}">Materias</a></li>
                             <li class="nav-item mx-5"><a class="nav-link fw-bold" href="{{ url_for('mostrar_grupos') }}">Grupos</a></li>
@@ -96,13 +96,13 @@
 
         <footer class="mt-5 pt-4 pb-2">
             <div class="container">
-                <div class="row d-flex flex-column justify-content-center text-center align-items-center" id="contenedor_footer">
-                    <div id="contenedor_logo_footer" class="col-12 mb-3 mb-md-0 d-flex flex-column align-items-center justify-content-center gap-2">
-                        <img id="img_footer" src="{{ url_for('static', filename='img/iconos/logo-blanco-negro.png') }}" alt="Logo Footer"> 
+                <div class="row d-flex flex-column justify-content-center text-center align-items-center" id="contenedor-footer">
+                    <div id="contenedor-logo-footer" class="col-12 mb-3 mb-md-0 d-flex flex-column align-items-center justify-content-center gap-2">
+                        <img id="img-footer" src="{{ url_for('static', filename='img/iconos/logo-blanco-negro.png') }}" alt="Logo Footer"> 
                         <h4 class="mb-0">TP BUDDY</h4>
                     </div>
                     <div class="col-12 mb-3 mb-md-0">
-                        <ul class="nav my-2 d-flex justify-content-center" id="listado_footer">
+                        <ul class="nav my-2 d-flex justify-content-center" id="listado-footer">
                             <li class="nav-item mx-4"><a class="text-decoration-none" href="/">Inicio</a></li>
                             <li class="nav-item mx-4"><a class="text-decoration-none" href="/#como-funciona">Cómo funciona</a></li>
                             <li class="nav-item mx-4"><a class="text-decoration-none" onclick="mostrarPopupContacto()">Contactanos</a></li>

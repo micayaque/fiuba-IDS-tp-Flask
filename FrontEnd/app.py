@@ -69,9 +69,9 @@ def registrarse():
         session['usuario'] = padron
         return redirect(url_for("usuario", padron=padron))
     elif response.status_code == 400 and response.text == "El usuario ya existe":
-        return render_template("index.html", error="El usuario ya existe")
+        return redirect(url_for("inicio", error="El usuario ya existe"))
     else:
-        return render_template("index.html", error="Error al registrar el usuario")
+        return redirect(url_for("inicio", error="Error al registrar el usuario"))
 
     
 @app.route("/iniciar-sesion", methods=["POST"])
@@ -115,7 +115,7 @@ def iniciar_sesion():
         session['usuario'] = padron
         return redirect(url_for("usuario", padron=padron))
     else:
-        return render_template("index.html", error="Padron o contraseña incorrectos"), 400
+        return redirect(url_for("inicio", error="Padron o contraseña incorrectos"))
 
 
 @app.route("/cerrar-sesion", methods=["GET"])
@@ -165,12 +165,10 @@ def inicio():
         session['notificacion'] = False
         solicitudes_pendientes = []
 
+    response = requests.get(f"{API_BASE}/cantidad_grupos")
+    cant_grupos = response.json()["mayor_id"]
+
     return render_template("index.html", solicitudes_pendientes=solicitudes_pendientes, cant_grupos=cant_grupos)
-
-
-############################################################################### FIN Index ##################################################################################################
-
-####################################################################### Perfil Usuario ######################################################################################################
 
 
 @app.route("/usuario/<int:padron>", methods=["GET"])
@@ -247,8 +245,6 @@ def usuario(padron):
 
     usuario_session = session.get('usuario')
 
-    usuario_session = session.get('usuario')
-
     materias_para_select = []
     for materia in materias_cursando:
         response = requests.get(f"{API_BASE}/materias/{materia['materia_codigo']}/companierxs-sin-grupo")
@@ -266,7 +262,7 @@ def usuario(padron):
 
     return render_template("perfil_de_usuario.html", usuario=datos_usuario, avatares=avatares, materias_cursando=materias_cursando, materias_aprobadas=materias_aprobadas, 
     materias_para_elegir_cursando=materias_para_elegir_cursando, materias_para_elegir_aprobadas=materias_para_elegir_aprobadas, horarios_por_dia_usuario=horarios_por_dia_usuario,
-    grupos=grupos, solicitudes_pendientes=solicitudes_pendientes, padron=str(padron), usuario_session=usuario_session, materias_para_select=materias_para_select)
+    grupos=grupos, solicitudes_pendientes=solicitudes_pendientes, padron=padron, usuario_session=int(usuario_session), materias_para_select=materias_para_select)
 
 
 @app.route("/usuario/<int:padron>/editar-perfil", methods=["POST"])

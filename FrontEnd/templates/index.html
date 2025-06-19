@@ -2,14 +2,12 @@
 
 {% block title %}TP Buddy{% endblock %}
 
-
 {% block content %}
 
-    <div id="contenedor_inicio" class="container">
-
-            <div id="contenedor_cantidad_grupos_formados">
-
-                <img id="img_grupos_formados" src="{{ url_for('static', filename='img/iconos/grupos.png') }}" alt="Cantidad de grupos formados">
+    <div class="container-fluid py-4">
+        <div class="row justify-content-center mt-5">
+            <div id="contenedor-cantidad-grupos-formados" class="justify-content-center fs-4 mb-5 col-12 col-md-8 d-flex align-items-centerjustify-content-center gap-2">
+                <img id="img-grupos-formados" src="{{ url_for('static', filename='img/iconos/grupos.png') }}" alt="Cantidad de grupos formados">
                 {% if cant_grupos == None %}
                     <p>0 grupos formados</p>
                 {% else %}
@@ -17,67 +15,94 @@
                 {% endif %}
 
             </div>
+        </div>
 
-            <p id="txt_titulo">
-                Encontrá compañeros y organizá tus TPs de la mejor manera. 
-                Facilitamos tu búsqueda de grupo para que te enfoques en aprender.
-            </p>
-
-            <p id="txt_subtitulo">
-                Nunca fue tan simple armar tu grupo de TP.
-            </p>
-
-            <div id="contenedor_video">
-                <video id="gif_inicio" src="{{ url_for('static', filename='img/gif_inicio.webm') }}" autoplay muted loop playsinline></video>
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-10">
+                <h1 class="txt-titulo display-5 fw-bold mb-3 text-center fw-bold">
+                    Encontrá compañeros y organizá tus TPs de la mejor manera. 
+                </h1>
+                <h1 class="txt-titulo display-5 fw-bold mb-3 text-center">
+                    Facilitamos tu búsqueda de grupo para que te enfoques en aprender.
+                    <span class="fw-normal">Nunca fue tan simple armar tu grupo de TP.</span>
+                </h1>
             </div>
+        </div>
 
-            <p id="txt_subtitulo">
-                Conectamos estudiantes para que trabajen mejor, juntos!
-            </p>
+        <div class="row justify-content-center mb-4">
+            <div class="col-12 col-md-8">
+                <div id="contenedor-video" class="ratio ratio-16x9 rounded shadow overflow-hidden">
+                    <video id="gif-inicio" class="w-100 h-100" src="{{ url_for('static', filename='img/gif_inicio.webm') }}" autoplay muted loop playsinline></video>
+                </div>
+            </div>
+        </div>
+
+        <div class="row justify-content-center mb-5">
+            <div class="col-12 col-md-10">
+                <p class="lead text-center mb-0 fs-3 fw-bold txt-subtitulo">
+                    Conectamos estudiantes para que trabajen mejor, juntos!
+                </p>
+            </div>
+        </div>
 
         <section id="como-funciona">
-            <div id="contenedor_como_funciona" >
-                <h2> ¿Cómo funciona TPBuddy? </h2>
-                <ol>
-                    <li class="item_como_funciona">
-                        <i class="fa-solid fa-puzzle-piece text-warning"></i></i><strong>Creá tu perfil</strong><br>
-                        Contanos quién sos: qué materias estás cursando, qué horarios tenés disponibles y qué tipo de grupo buscás. Esta información nos ayuda a conectarte con personas compatibles.
+            <div id="contenedor-como-funciona">
+                <h2 class="text-center fw-bold fs-4 mt-5 pt-5"> ¿Cómo funciona TPBuddy? </h2>
+                <ol class="fs-4 list-unstyled">
+                    <li class="mb-3">
+                        <div>
+                            <img src="{{ url_for('static', filename='img/iconos/crea-perfil.png') }}" alt="" width="50" height="50" class="m-3"><strong>Creá tu perfil</strong><br>
+                            Contanos quién sos: qué materias estás cursando, qué horarios tenés disponibles y qué tipo de grupo buscás. Esta información nos ayuda a conectarte con personas compatibles.
+                        </div>
                     </li>
 
-                    <li class="item_como_funciona">
-                        <i class="fa-solid fa-users text-info"></i><strong>Buscá una materia</strong><br>
-                        Explorá el listado de materias disponibles. Al seleccionar una, vas a poder ver los <em>grupos formados</em>, los <em>grupos con cupos disponibles</em> y los <em>compañeros que todavía no tienen grupo</em>.
+                    <li class="mb-3">
+                        <div>
+                            <img src="{{ url_for('static', filename='img/iconos/busca-materia.png') }}" alt="" width="50" height="50" class="m-3"><strong>Buscá una materia</strong><br>
+                            Explorá el listado de materias disponibles. Al seleccionar una, vas a poder ver los <em>grupos formados</em>, los <em>grupos con cupos disponibles</em> y los <em>compañeros que todavía no tienen grupo</em>.
+                        </div>
                     </li>
 
-                    <li class="item_como_funciona">
-                        <i class="fa-solid fa-handshake text-success"></i><strong>Unite o creá un grupo</strong><br>
-                        <ul>
-                            <li><i class="fa-solid fa-star text-warning"></i> ¿Viste un grupo que te interesa? Podés <em>enviar una solicitud para unirte</em>.</li>
-                            <li><i class="fa-solid fa-star text-warning"></i> ¿Querés armar tu propio grupo? ¡Adelante! Otros estudiantes podrán ver tu grupo y postularse para unirse.</li>
-                        </ul>
+                    <li class="mb-3">
+                        <div>
+                            <img src="{{ url_for('static', filename='img/iconos/crea-grupo.png') }}" alt="" width="50" height="50" class="m-3">
+                            <strong>Unite o creá un grupo</strong><br>
+                            <ul>
+                                <li><i class="fa-solid fa-star text-warning"></i> ¿Viste un grupo que te interesa? Podés <em>enviar una solicitud para unirte</em>.</li>
+                                <li><i class="fa-solid fa-star text-warning"></i> ¿Querés armar tu propio grupo? ¡Adelante! Otros estudiantes podrán ver tu grupo y postularse para unirse.</li>
+                            </ul>
+                        </div>
                     </li>
 
-                    <li class="item_como_funciona">
-                        <i class="fa-solid fa-bell text-danger"></i><strong>Gestioná tus solicitudes</strong><br>
-                        Los grupos pueden aceptar o rechazar solicitudes. Todo queda registrado para que sepas siempre el estado de tus postulaciones.
+                    <li class="mb-3">
+                        <div>
+                            <img src="{{ url_for('static', filename='img/iconos/solicitudes.png') }}" alt="" width="50" height="50" class="m-3">
+                            <strong>Gestioná tus solicitudes</strong><br>
+                            Los grupos pueden aceptar o rechazar solicitudes. Todo queda registrado para que sepas siempre el estado de tus postulaciones.
+                        </div>
                     </li>
 
-                    <li class="item_como_funciona">
-                        <i class="fa-solid fa-bullseye text-primary"></i><strong>Listo para trabajar</strong><br>
-                        Una vez formado tu grupo, ya están listos para organizarse y comenzar el TP. ¡Más simple, más ordenado, más eficiente!
+                    <li class="mb-3">
+                        <div>
+                            <img src="{{ url_for('static', filename='img/iconos/listo.png') }}" alt="" width="50" height="50" class="m-3">
+                            <strong>Listo para trabajar</strong><br>
+                            Una vez formado tu grupo, ya están listos para organizarse y comenzar el TP. ¡Más simple, más ordenado, más eficiente!
+                        </div>
                     </li>
 
-                    <li class="item_como_funciona">
-                        <i class="fa-regular fa-star text-warning"></i><strong>Bonus</strong><br>
-                        <ul>
-                            <li><i class="fa-regular fa-star text-warning"></i> Podés actualizar tu perfil en cualquier momento.</li>
-                            <li><i class="fa-solid fa-mobile-screen-button"></i> Próximamente: versión mobile para que gestiones tus grupos desde el celu.</li>
-                        </ul>
+                    <li class="mb-3">
+                        <div>
+                            <img src="{{ url_for('static', filename='img/iconos/bonus.png') }}" alt="" width="50" height="50" class="m-3">
+                            <strong>Bonus</strong><br>
+                            <ul>
+                                <li><i class="fa-regular fa-star text-warning"></i> Podés actualizar tu perfil en cualquier momento.</li>
+                                <li><i class="fa-solid fa-mobile-screen-button"></i> Próximamente: versión mobile para que gestiones tus grupos desde el celu.</li>
+                            </ul>
+                        </div>
                     </li>
 
                 </ol>
             </div>
         </section>
-
 
 {% endblock %}

@@ -10,7 +10,7 @@ def get_cantidad_grupos():
 
     cursor.execute(
         """
-        SELECT MAX(grupo_id) AS mayor_id
+        SELECT COUNT(grupo_id) AS mayor_id
         FROM grupos
         """
     ) 
@@ -18,6 +18,10 @@ def get_cantidad_grupos():
     
     cursor.close()
     conn.close()
+
+    if cant_grupos['mayor_id'] is None:
+        return jsonify({"mayor_id": 0})
+
     return jsonify(cant_grupos)
 
 

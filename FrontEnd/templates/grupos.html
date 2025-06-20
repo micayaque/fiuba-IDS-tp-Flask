@@ -62,7 +62,7 @@
 
 
   <div class="contentido_bottom_buscador_grupos row g-4 justify-content-center">
-    {% if grupos|length == 0 %}
+    {% if data['grupos']|length == 0 %}
       <div class="alert alert-warning text-center" role="alert">
         <div class="d-flex justify-content-center align-items-center mt-3">
           <div class="border-0 w-50 alert alert-danger text-white text-center mx-5 px-0">No hay grupos disponibles.</div>
@@ -70,7 +70,7 @@
         <a href="/" class="btn btn-primary mt-2"> Volver al Inicio </a>
       </div>
     {% endif %}
-    {% for grupo in grupos %}
+    {% for grupo in data['grupos'] %}
       <div class="justify-content-center col-12 col-md-6 col-lg-4 grupo-carta" data-horarios='{{ grupo.horarios | tojson | safe }}'>
         <div class="carta card h-100 shadow">
           <div class="card-body d-flex flex-column justify-content-between grupo_info">

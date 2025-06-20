@@ -39,7 +39,7 @@ CREATE TABLE grupos (
     materia_codigo VARCHAR(6) NOT NULL,
     nombre VARCHAR(50),
     tp_terminado BOOLEAN DEFAULT FALSE,
-    maximo_integrantes INT,
+    maximo_integrantes INT DEFAULT 10,
     UNIQUE (materia_codigo, nombre),
     FOREIGN KEY (materia_codigo) REFERENCES materias(materia_codigo) ON DELETE CASCADE
 );

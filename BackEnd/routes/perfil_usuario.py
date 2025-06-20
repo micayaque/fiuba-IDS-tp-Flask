@@ -4,36 +4,20 @@ from db import get_connection
 perfil_usuario_bp = Blueprint("perfil_usuario", __name__)
 
 
-################################### methods GET ######################################
-
-
-# Datos del usuario
 @perfil_usuario_bp.route("/usuario/<int:padron>", methods=["GET"])
 def get_perfil_usuario(padron):
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
+    data = {}
 
     cursor.execute(
-        """
-        SELECT * FROM usuarios WHERE padron = %s
-        """, (padron,)
+        "SELECT * FROM usuarios WHERE padron = %s", (padron,)
     )
-    
-    usuario = cursor.fetchone()
 
-    cursor.close()
-    conn.close()
+    data['datos_usuario'] = cursor.fetchone()
 
-    if usuario is None:
-        return "Usuario no encontrado", 404
-
-    return jsonify(usuario), 200
-
-
-@perfil_usuario_bp.route("/usuario/<int:padron>/materias-cursando", methods=["GET"])
-def materias_cursando(padron):
-    conn = get_connection()
-    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM materias")
+    materias = cursor.fetchall()
 
     cursor.execute(
         """
@@ -43,22 +27,9 @@ def materias_cursando(padron):
         WHERE m_u.padron = %s AND m_u.estado = 'cursando'
         """, (padron,)
     )
-    
-    materias = cursor.fetchall()
-
-    cursor.close()
-    conn.close()
-
-    if materias:
-        return jsonify(materias), 200
-    else:
-        return "No hay materias cursando", 404
-
-
-@perfil_usuario_bp.route("/usuario/<int:padron>/materias-aprobadas", methods=["GET"])
-def materias_aprobadas(padron):
-    conn = get_connection()
-    cursor = conn.cursor(dictionary=True)
+    data['materias_cursando'] = cursor.fetchall()
+    codigos_cursando = {m["materia_codigo"] for m in data['materias_cursando']}
+    data['materias_para_elegir_cursando'] = [m for m in materias if m['materia_codigo'] not in codigos_cursando]
 
     cursor.execute(
         """
@@ -68,42 +39,17 @@ def materias_aprobadas(padron):
         WHERE m_u.padron = %s AND m_u.estado = 'aprobada'
         """, (padron,)
     )
+    materias_aprobadas = cursor.fetchall()
+    data['materias_aprobadas'] = materias_aprobadas
+    codigos_aprobadas = {m["materia_codigo"] for m in materias_aprobadas}
+    data['materias_para_elegir_aprobadas'] = [m for m in materias if m["materia_codigo"] not in codigos_aprobadas]
 
-    materias = cursor.fetchall()
-
-    cursor.close()
-    conn.close()
-
-    if materias:
-        return jsonify(materias), 200
-    
-    return "No hay materias aprobadas", 404
-
-
-@perfil_usuario_bp.route("/usuario/<int:padron>/horarios-usuario", methods=["GET"])
-def get_horarios_usuario(padron):
-    conn = get_connection()
-    cursor = conn.cursor(dictionary=True)
-
-    cursor.execute(
-        "SELECT dia, turno FROM horarios_usuarios WHERE padron = %s", (padron,)
-    )
-
+    cursor.execute("SELECT dia, turno FROM horarios_usuarios WHERE padron = %s", (padron,))
     horarios = cursor.fetchall()
-
-    cursor.close()
-    conn.close()
-
-    if horarios:
-        return jsonify(horarios), 200
-    
-    return "No hay horarios disponibles", 404
-
-
-@perfil_usuario_bp.route("/usuario/<int:padron>/grupos", methods=["GET"])
-def grupos_de_usuario(padron):
-    conn = get_connection()
-    cursor = conn.cursor(dictionary=True)
+    horarios_por_dia_usuario = {}
+    for horario in horarios:
+        horarios_por_dia_usuario.setdefault(horario["dia"], []).append(horario["turno"])     # agrupa a los turnos por día para mostrarlos más fácil en el html
+    data['horarios_por_dia_usuario'] = horarios_por_dia_usuario
 
     cursor.execute("""
     SELECT g.grupo_id, g.nombre, g.materia_codigo, m.nombre AS materia_nombre, g.tp_terminado
@@ -113,17 +59,15 @@ def grupos_de_usuario(padron):
     WHERE g_u.padron = %s
     GROUP BY g.grupo_id
     """, (padron,))
+    data['grupos'] = cursor.fetchall()
 
-    grupos = cursor.fetchall()
-
-    for grupo in grupos:
+    for grupo in data['grupos']:
         cursor.execute(
             "SELECT u.padron, u.nombre FROM grupos_usuarios gu JOIN usuarios u ON gu.padron = u.padron WHERE gu.grupo_id = %s",
             (grupo['grupo_id'],)
         )
-        integrantes = cursor.fetchall()
-        grupo['integrantes'] = integrantes
-        grupo['cantidad_integrantes'] = len(integrantes)
+        grupo['integrantes'] = cursor.fetchall()
+        grupo['cantidad_integrantes'] = len(grupo['integrantes'])
 
         cursor.execute(
             "SELECT maximo_integrantes FROM grupos WHERE grupo_id = %s",
@@ -137,71 +81,38 @@ def grupos_de_usuario(padron):
         )
         horarios = cursor.fetchall()
         grupo['horarios'] = [f"{h['dia']}-{h['turno']}" for h in horarios]
-        
+
+    materias_para_select = []
+    for materia in data['materias_cursando']:
+        cursor.execute("""
+        SELECT u.padron, u.nombre, u.carrera
+        FROM usuarios u
+        JOIN materias_usuarios mu ON u.padron = mu.padron
+        WHERE mu.materia_codigo = %s
+        AND mu.estado = 'cursando'
+        AND u.padron NOT IN (
+            SELECT g_u.padron
+            FROM grupos_usuarios g_u
+            JOIN grupos g ON g_u.grupo_id = g.grupo_id
+            WHERE g.materia_codigo = %s
+        )
+        """, (materia['materia_codigo'], materia['materia_codigo']))
+        companierxs = cursor.fetchall()
+        companierxs = [c for c in companierxs if str(c["padron"]) != str(padron)]
+        materias_para_select.append({
+            "materia_codigo": materia["materia_codigo"],
+            "nombre": materia["nombre"],
+            "companierxs": companierxs
+        })
+    data['materias_para_select'] = materias_para_select
 
     cursor.close()
     conn.close()
 
-    if grupos:
-        return jsonify(grupos)
-    return jsonify([])
-
-@perfil_usuario_bp.route('/usuario/<int:padron>/solicitudes-pendientes', methods=['GET'])
-def solicitudes_pendientes(padron):
-    conn = get_connection()
-    cursor = conn.cursor(dictionary=True)
-
-    cursor.execute("""
-        SELECT s_g.*, g.nombre AS grupo_nombre, g.materia_codigo, m.nombre AS materia_nombre,
-               u.nombre AS nombre_emisor
-        FROM solicitudes_grupos s_g
-        JOIN grupos g ON s_g.grupo_id = g.grupo_id
-        JOIN materias m ON g.materia_codigo = m.materia_codigo
-        JOIN usuarios u ON s_g.padron_emisor = u.padron
-        WHERE s_g.padron_receptor = %s AND s_g.estado = 'pendiente'
-    """, (padron,))
-    solicitudes = cursor.fetchall()
-
-    for solicitud in solicitudes:
-        cursor.execute(
-            "SELECT dia, turno FROM horarios_grupos WHERE grupo_id = %s",
-            (solicitud['grupo_id'],)
-        )
-        horarios = cursor.fetchall()
-        horarios_por_dia_grupo = {}
-        for horario in horarios:
-            horarios_por_dia_grupo.setdefault(horario["dia"], []).append(horario["turno"])
-        solicitud['horarios_grupo'] = horarios_por_dia_grupo
-
-        cursor.execute(
-            "SELECT u.padron, u.nombre FROM grupos_usuarios g_u JOIN usuarios u ON g_u.padron = u.padron WHERE g_u.grupo_id = %s",
-            (solicitud['grupo_id'],)
-        )
-        solicitud['integrantes'] = cursor.fetchall()
-
-        cursor.execute(
-            "SELECT dia, turno FROM horarios_usuarios WHERE padron = %s",
-            (solicitud['padron_emisor'],)
-        )
-        horarios_emisor = cursor.fetchall()
-        horarios_por_dia_emisor = {}
-        for horario in horarios_emisor:
-            horarios_por_dia_emisor.setdefault(horario["dia"], []).append(horario["turno"])
-        solicitud['horarios_emisor'] = horarios_por_dia_emisor
-
-    cursor.close()
-    conn.close()    
-    if solicitudes:
-        return jsonify({"pendientes": solicitudes})
-    return jsonify({"pendientes": []}), 200
+    return jsonify(data), 200
 
 
-############################## FIN Methods GET ########################################
-
-################################ methods POST #########################################
-
-
-@perfil_usuario_bp.route("/usuario/<int:padron>/editar-perfil", methods=["POST"])
+@perfil_usuario_bp.route("/usuario/<int:padron>/editar-dato-perfil", methods=["POST"])
 def editar_perfil_usuario(padron):
     data = request.get_json()
     campo = data.get("campo")
@@ -217,83 +128,11 @@ def editar_perfil_usuario(padron):
     conn.close()
     return "Perfil actualizado", 200
 
-@perfil_usuario_bp.route("/usuario/<int:padron>/agregar-materia-cursando", methods=["POST"])
-def agregar_materia_cursando(padron):
-    data = request.get_json()
-    materia_codigo = data.get("materia_codigo")
-
-    conn = get_connection()
-    cursor = conn.cursor()
-
-    cursor.execute(
-        "INSERT INTO materias_usuarios (padron, materia_codigo, estado) VALUES (%s, %s, 'cursando')",
-        (padron, materia_codigo)
-    )
-    conn.commit()
-
-    cursor.close()
-    conn.close()
-    return "Materia agregada", 201
-
-@perfil_usuario_bp.route("/usuario/<int:padron>/eliminar-materia-cursando", methods=["POST"])
-def eliminar_materia_cursando(padron):
-    data = request.get_json()
-    materia_codigo = data.get("materia_codigo")
-
-    conn = get_connection()
-    cursor = conn.cursor()
-    cursor.execute(
-        "DELETE FROM materias_usuarios WHERE padron = %s AND materia_codigo = %s AND estado = 'cursando'",
-        (padron, materia_codigo)
-    )
-
-    conn.commit()
-    cursor.close()
-    conn.close()
-    return "Materia eliminada", 200
-
-@perfil_usuario_bp.route("/usuario/<int:padron>/agregar-materia-aprobada", methods=["POST"])
-def agregar_materia_aprobada(padron):
-    data = request.get_json()
-    materia_codigo = data.get("materia_codigo")
-
-    conn = get_connection()
-    cursor = conn.cursor()
-
-    cursor.execute(
-        "INSERT INTO materias_usuarios (padron, materia_codigo, estado) VALUES (%s, %s, 'aprobada')",
-        (padron, materia_codigo)
-    )
-    conn.commit()
-
-    cursor.close()
-    conn.close()
-    return "Materia agregada", 201
-
-@perfil_usuario_bp.route("/usuario/<int:padron>/eliminar-materia-aprobada", methods=["POST"])
-def eliminar_materia_aprobada(padron):
-    data = request.get_json()
-    materia_codigo = data.get("materia_codigo")
-
-    conn = get_connection()
-    cursor = conn.cursor()
-    cursor.execute(
-        "DELETE FROM materias_usuarios WHERE padron = %s AND materia_codigo = %s AND estado = 'aprobada'",
-        (padron, materia_codigo)
-    )
-
-    conn.commit()
-    cursor.close()
-    conn.close()
-    return "Materia eliminada", 200
-
-
-
 
 @perfil_usuario_bp.route("/usuario/<int:padron>/editar-horarios-usuario", methods=["POST"])
 def editar_horarios_usuario(padron):
     data = request.get_json()
-    horarios = data.get("horarios", [])  # lista de diccionarios: {"dia": ..., "turno": ...}
+    horarios = data.get("horarios", [])  # lista de diccionarios: {"dia": [<turnos>], ...}
 
     conn = get_connection()
     cursor = conn.cursor()
@@ -301,10 +140,7 @@ def editar_horarios_usuario(padron):
     cursor.execute("DELETE FROM horarios_usuarios WHERE padron = %s", (padron,))
     
     for horario in horarios:
-        cursor.execute(
-            "INSERT INTO horarios_usuarios (padron, dia, turno) VALUES (%s, %s, %s)",
-            (padron, horario["dia"], horario["turno"])
-        )
+        cursor.execute("INSERT INTO horarios_usuarios (padron, dia, turno) VALUES (%s, %s, %s)",(padron, horario["dia"], horario["turno"]))
 
     conn.commit()
 
@@ -312,4 +148,20 @@ def editar_horarios_usuario(padron):
     conn.close()
     return "Horarios actualizados", 200
 
-############################### FIN methods GET ######################################
+
+@perfil_usuario_bp.route('/usuario/cambiar-estado-tp/<int:grupo_id>', methods=['POST'])
+def cambiar_estado_tp(grupo_id):
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute("SELECT tp_terminado FROM grupos WHERE grupo_id = %s", (grupo_id,))
+    tp_terminado = cursor.fetchone()
+    nuevo_estado = not tp_terminado['tp_terminado']
+
+    cursor.execute("UPDATE grupos SET tp_terminado = %s WHERE grupo_id = %s", (nuevo_estado, grupo_id))
+
+    conn.commit()
+
+    cursor.close()
+    conn.close()
+    return "Estado del TP actualizado", 200

@@ -347,7 +347,7 @@
                     </ul>
                     <form method="POST" action="/usuario/{{ data['padron'] }}/agregar-materias-cursando">
                         <div class="text-start mb-2"><label class="form-label">Seleccioná tus materias:</label></div>
-                        <div class="mb-3 d-flex gap-2 align-items-center text-center">
+                        <div class=" barra_desplazamiento_materias mb-3 d-flex gap-2 align-items-center text-center">
                             {% for materia in data['materias_para_elegir_cursando'] %}
                             <div class="d-flex align-items-center gap-3">
                                 <label class="check-input-materia form-label">
@@ -398,7 +398,7 @@
                     </ul>
                     <form method="POST" action="/usuario/{{ data['padron'] }}/agregar-materias-aprobadas">
                         <div class="text-start mb-2"><label class="form-label">Seleccioná tus materias:</label></div>
-                        <div class="mb-3 d-flex gap-2 align-items-center text-center">
+                        <div class=" barra_desplazamiento_materias mb-3 d-flex gap-2 align-items-center text-center">
                             {% for materia in data['materias_para_elegir_aprobadas'] %}
                             <div class="d-flex align-items-center gap-3">
                                 <label class="check-input-materia form-label">

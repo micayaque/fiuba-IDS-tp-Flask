@@ -1,11 +1,10 @@
-from flask import Blueprint, request, redirect, flash, url_for, session  
+from flask import Blueprint, request, redirect, url_for, session  
 from db import get_connection
 
-registrar_iniciar_sesion_bp = Blueprint("registrar_iniciar_sesion", __name__)
+registrar_iniciar_sesion_bp = Blueprint('registrar_iniciar_sesion', __name__)
 
 @registrar_iniciar_sesion_bp.route('/registrarse', methods=['POST'])
 def registrarse():
-
     data = request.get_json()
     padron = data['padron']
     password = data['password']
@@ -20,10 +19,7 @@ def registrarse():
         conn.close()
         return "El usuario ya existe", 400
 
-    cursor.execute(
-        "INSERT INTO usuarios (padron, contrasena, nombre) VALUES (%s, %s, %s)",
-        (padron, password, nombre)
-    )
+    cursor.execute("INSERT INTO usuarios (padron, contrasena, nombre) VALUES (%s, %s, %s)", (padron, password, nombre))
 
     conn.commit()
 
@@ -41,10 +37,7 @@ def iniciar_sesion():
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
 
-    cursor.execute(
-        "SELECT * FROM usuarios WHERE padron = %s AND contrasena = %s", (padron, password)
-    )
-    
+    cursor.execute("SELECT * FROM usuarios WHERE padron = %s AND contrasena = %s", (padron, password))
     usuario = cursor.fetchone()
 
     cursor.close()
@@ -55,7 +48,4 @@ def iniciar_sesion():
     else:
         return "Padron o contraseña incorrectos", 400
 
-@registrar_iniciar_sesion_bp.route('/cerrar-sesion')
-def cerrar_sesion():
-    session.clear()
-    return redirect(url_for('inicio'))
+

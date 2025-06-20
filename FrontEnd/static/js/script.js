@@ -229,7 +229,7 @@ function abrirModalEditarGrupo(btn) {
     integrantesEditar = integrantes.slice();
     actualizarIntegrantesEditar();
 
-    document.getElementById('formEditarGrupo').action = `/grupos/${grupoId}/editar`;
+    document.getElementById('formEditarGrupo').action = `/usuario/${grupoId}/editar-grupo`;
     document.getElementById('editarNombreGrupo').value = nombre;
     document.getElementById('editarCantidadMaxIntegrantes').value = max;
 

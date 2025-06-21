@@ -9,7 +9,7 @@
         <!--Archivo de estilos CSS-->
         <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/contacto_modal.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/contacto-modal.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/registro_inicio_modal.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/buscador_grupos.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/materias.css') }}">
@@ -46,8 +46,8 @@
                     {% if session['usuario'] %}
                         <a  href="/usuario/{{ session['usuario'] }}"><img src="{{ url_for('static', filename='img/iconos/perfil.png') }}" alt="Perfil" width="30" height="30"></a>
                         <a href="/usuario/{{ session['usuario'] }}" class="btn btn-sm">MI PERFIL</a>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#modalSolicitudesPendientes">
                             {% if session['notificacion'] %}
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#modalSolicitudesPendientes">
                                 <img src="{{ url_for('static', filename='img/iconos/notificacion.png') }}" alt="Notificaciones" width="30" height="30">
                             {% endif %}
                         </a>
@@ -72,7 +72,7 @@
                             <li class="nav-item mx-5"><a class="nav-link fw-bold" href="/#como-funciona">Cómo funciona</a></li>
                             <li class="nav-item mx-5"><a class="nav-link fw-bold" href="{{ url_for('mostrar_materias') }}">Materias</a></li>
                             <li class="nav-item mx-5"><a class="nav-link fw-bold" href="{{ url_for('mostrar_grupos') }}">Grupos</a></li>
-                            <li class="nav-item mx-5" onclick="mostrarPopupContacto()" ><a class="nav-link fw-bold">Contactanos</a></li>
+                            <li class="nav-item mx-5" data-bs-toggle="modal" data-bs-target="#modalContacto"><a class="nav-link fw-bold">Contacto</a></li>
                         </ul>
                     </div>
                 </div>
@@ -118,11 +118,12 @@
 
 
         <!-- Modales -->
+
         <div class="modal fade" id="registroModal" tabindex="-1" aria-labelledby="registroModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg-custom">
             <div class="modal-content modal-dark p-4">
                 <div class="modal-body">
-                <h5 class="custom-title fw-bold mb-4">¡Bienvenid@!</h5>
+                <h5 class="custom-title fw-bold mb-4">Creá tu cuenta</h5>
         
                 <form method="POST" action="{{ url_for('registrarse') }}">
                     <!-- Número de padrón -->
@@ -160,7 +161,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content modal-dark p-4">
             <div class="modal-body">
-                <h5 class="custom-title fw-bold mb-4">¡Bienvenid@!</h5>
+                <h5 class="custom-title fw-bold mb-4">Entrá a tu perfil</h5>
 
                 <form method="POST" action="{{ url_for('iniciar_sesion') }}">
                 <!-- Número de padrón -->
@@ -188,31 +189,39 @@
         </div>
         </div>
 
-        <!-- Contacto -->
-        <div onclick="cerrarPopupContacto()" id="fondo_popup_contacto"></div>
 
-        <div id="contenedor_contacto_popup">
-            <h3>Contacto</h3>
-            <div id="contenedor_lista_correos">
-                <div class="mail">cvperezb@fi.uba.ar</div>
-                <div class="mail">myaque@fi.uba.ar</div>
-                <div class="mail">aoshiro@fi.uba.ar</div>
-                <div class="mail">lcoroq@fi.uba.ar</div>
-                <div class="mail">sbardina@fi.uba.ar</div>
-                <div class="mail">samartin@fi.uba.ar</div>
-            </div>
-            <form action="">
-                <label for="email">Ingrese su correo: </label><br>
-                <input type="email" name="email" id="email" autocomplete="email"><br>
-
-                <label for="mensaje">Mensaje: </label>
-                <textarea type="text" name="mensaje" id="mensaje"></textarea>
-
-                <div id="contenedor_botones_enviar_cerrar">
-                    <button type="submit" id="btn_enviar">Enviar</button>
-                    <button type="button" id="btn_cerrar" onclick="cerrarPopupContacto()">Cerrar</button>
+        <div class="modal fade" id="modalContacto">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content p-4">
+                    <div class="modal-header border-0">
+                        <h3 class="modal-title w-100 text-center fw-bold">Envianos tu mensaje</h3>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="contenedor_lista_correos" class="mb-4 d-flex flex-wrap flex-sm-row flex-column gap-2 align-items-center w-100 justify-content-center">
+                            <div class="mail text-center p-2 fw-lighter rounded-2">cvperezb@fi.uba.ar</div>
+                            <div class="mail text-center p-2 fw-lighter rounded-2">myaque@fi.uba.ar</div>
+                            <div class="mail text-center p-2 fw-lighter rounded-2">aoshiro@fi.uba.ar</div>
+                            <div class="mail text-center p-2 fw-lighter rounded-2">lcoroq@fi.uba.ar</div>
+                            <div class="mail text-center p-2 fw-lighter rounded-2">sbardina@fi.uba.ar</div>
+                            <div class="mail text-center p-2 fw-lighter rounded-2">samartin@fi.uba.ar</div>
+                        </div>
+                        <form>
+                            <div class="mb-3">
+                                <label for="email" class="form-label mb-2">Ingrese su correo:</label>
+                                <input type="email" class="w-100 rounded-4 align-content-center p-2" name="email" id="email" autocomplete="email" placeholder="tu@email.com">
+                            </div>
+                            <div class="mb-3">
+                                <label for="mensaje" class="form-label mb-2">Mensaje:</label>
+                                <textarea class="w-100 rounded-4 align-content-center ps-4" name="mensaje" id="mensaje" placeholder="Escribí tu mensaje..."></textarea>
+                            </div>
+                            <div class="d-grid w-100">
+                                <button type="submit" class="btn btn-dark btn-submit">Enviar</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-            </form>
+            </div>
         </div>
 
 

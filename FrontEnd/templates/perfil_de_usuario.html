@@ -490,7 +490,7 @@
                             <div class="col mx-5 text-start align-items-start">
                                 <div class="row">
                                     <label for="materiaGrupo" class="form-label"> Materia</label>
-                                    <select class="form-control" id="materiaGrupo" name="materiaGrupo" onchange="cambiarDatalistPadrones()">
+                                    <select class="form-control" id="materiaGrupo" name="materiaGrupo" onchange="cambiarDatalistPadronesParaElegir()">
                                         {% for materia in data['materias_para_select'] %}
                                             <option value="{{ materia.materia_codigo }}">{{ materia.nombre }} ({{ materia.materia_codigo }})</option>
                                         {% endfor %}
@@ -527,7 +527,7 @@
                                     </datalist>
                                 {% endfor %}
                                 <div class="mb-3">
-                                    <label class="form-label">Integrantes actuales:</label>
+                                    <label class="form-label">Integrantes es:</label>
                                     <div id="listaIntegrantes" class="d-flex flex-wrap gap-2">
 
                                     </div>

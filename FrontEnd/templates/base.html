@@ -9,7 +9,7 @@
         <!--Archivo de estilos CSS-->
         <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/contacto_modal.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/contacto-modal.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/registro_inicio_modal.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/buscador_grupos.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/materias.css') }}">
@@ -46,8 +46,8 @@
                     {% if session['usuario'] %}
                         <a  href="/usuario/{{ session['usuario'] }}"><img src="{{ url_for('static', filename='img/iconos/perfil.png') }}" alt="Perfil" width="30" height="30"></a>
                         <a href="/usuario/{{ session['usuario'] }}" class="btn btn-sm">MI PERFIL</a>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#modalSolicitudesPendientes">
                             {% if session['notificacion'] %}
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#modalSolicitudesPendientes">
                                 <img src="{{ url_for('static', filename='img/iconos/notificacion.png') }}" alt="Notificaciones" width="30" height="30">
                             {% endif %}
                         </a>

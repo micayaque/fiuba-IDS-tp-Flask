@@ -202,3 +202,30 @@ input:focus {
 .contenedor-eliminar-integrante i { 
     color: #6C0000;
 }
+
+.barra_desplazamiento_materias {
+    overflow-x: auto;
+    white-space: nowrap; /* Esto fuerza el contenido a estar en una sola línea */
+    width: 100%;
+    max-width: 100%;
+}
+
+.barra_desplazamiento_materias > * {
+    display: inline-block;
+    vertical-align: top;
+    /* Opcional: agrega un margen entre los elementos */
+    
+}
+
+.barra_desplazamiento_materias::-webkit-scrollbar {
+    border-radius: 1rem;
+}
+
+.barra_desplazamiento_materias::-webkit-scrollbar-thumb {
+    background: #5a5959;
+    border-radius: 1rem;
+}
+
+.barra_desplazamiento_materias::-webkit-scrollbar-thumb:hover {
+    background: #444444;
+}

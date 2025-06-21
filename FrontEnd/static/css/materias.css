@@ -54,3 +54,9 @@
   background-color: black;
   transform: scale(1.07);
 }
+
+#buscadorInput::placeholder {
+  color: white;
+  font-size: small;
+  padding-left: 1rem;
+}

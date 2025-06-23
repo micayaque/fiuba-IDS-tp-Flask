@@ -75,7 +75,7 @@
         <div class="d-flex justify-content-center align-items-center mt-3">
           <div class="border-0 w-50 alert alert-danger text-white text-center mx-5 px-0">No hay grupos en esta materia.</div>
         </div>
-        <a href="/materias/{{ data['materia'].materia_codigo }}/companierxs-sin-grupo" class="btn btn-primary mt-2"> Ver compañer@s sin grupo </a>
+        <a href="/materias/{{ data['materia'].materia_codigo }}/sin-grupo" class="btn btn-primary mt-2"> Ver compañer@s sin grupo </a>
       </div>
     {% endif %}
     {% for grupo in data['grupos'] %}

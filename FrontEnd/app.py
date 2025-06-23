@@ -23,7 +23,9 @@ def inicio():
         session['notificacion'] = False
         data['solicitudes_pendientes'] = []
 
-    return render_template("index.html", data=data)
+    error = request.args.get("error")
+
+    return render_template("index.html", data=data, error=error)
 
 @app.route("/registrarse", methods=["POST"])
 def registrarse():
@@ -66,7 +68,6 @@ def cerrar_sesion():
 def mostrar_grupos():
     response = requests.get(f"{API_BASE}/grupos")
     data = response.json()
-    data = response.json()
 
     if session.get('usuario'):
         response = requests.get(f"{API_BASE}/usuario/{session['usuario']}/solicitudes-pendientes")
@@ -77,11 +78,11 @@ def mostrar_grupos():
         data['solicitudes_pendientes'] = []
 
     padron_usuario = session.get('usuario')
-    grupos_filtrados = data['grupos']
-    for grupo in grupos_filtrados:
-        for integrante in grupo['integrantes']:
-            if str(padron_usuario) == str(integrante['padron']):
-                grupos_filtrados.remove(grupo)
+    grupos_filtrados = []
+    for grupo in data['grupos']:
+        padrones = [str(integrante['padron']) for integrante in grupo['integrantes']]
+        if str(padron_usuario) not in padrones:
+            grupos_filtrados.append(grupo)
     data['grupos'] = grupos_filtrados
 
     return render_template("grupos.html", data=data)
@@ -125,6 +126,7 @@ def grupos_por_materia(materia_codigo):
         integrantes_padrones = [str(i['padron']) for i in grupo['integrantes']]
         if str(padron_usuario) not in integrantes_padrones:
             grupos_filtrados.append(grupo)
+    data['grupos'] = grupos_filtrados
 
     return render_template("grupos_por_materia.html", data=data)
 
@@ -307,6 +309,8 @@ def solicitar_unirse_grupo(grupo_id):
         response = requests.post(f"{API_BASE}/grupos/{grupo_id}/solicitar-unirse-grupo", json={"padron_emisor": padron, "tipo": "usuario_a_grupo"})
         if response.status_code == 201:
             return redirect(request.referrer or url_for('usuario', padron=padron))
+        elif response.status_code == 400:
+            return redirect(url_for('inicio', error = "Ya se envió una solicitud a este grupo"))
         else:
             return "Error al enviar la solicitud", 400
     else:
@@ -317,10 +321,15 @@ def solicitar_unirse_grupo(grupo_id):
 def enviar_solicitud_companierx(materia_codigo, padron_emisor, padron_receptor):
     if not session.get('usuario'):
         return redirect(url_for('inicio'))
+    
+    response = requests.post(f"{API_BASE}/enviar-solicitud-companierx/{materia_codigo}/{padron_emisor}/{padron_receptor}")
 
-    requests.post(f"{API_BASE}/enviar-solicitud-companierx/{materia_codigo}/{padron_emisor}/{padron_receptor}")
-
-    return redirect(request.referrer or url_for('usuario', padron=padron_emisor))
+    if response.status_code == 201:
+        return redirect(request.referrer or url_for('usuario', padron=padron_emisor))
+    elif response.status_code == 400:
+        return redirect(url_for('inicio', error = "Ya se envió una solicitud a este usuario"))
+    else:
+        return "Error al enviar la solicitud", 400
 
 
 if __name__ == '__main__':

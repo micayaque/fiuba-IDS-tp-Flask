@@ -17,6 +17,13 @@ main {
     flex: 1 0 auto;
 }
 
+#alert button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: transparent;
+}
+
 .alert {
     background-color: #410443;
     font-family: 'Poppins';

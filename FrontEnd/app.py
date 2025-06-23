@@ -322,7 +322,8 @@ def solicitar_unirse_grupo(grupo_id):
         if response.status_code == 201:
             return redirect(request.referrer or url_for('usuario', padron=padron))
         elif response.status_code == 400:
-            return redirect(url_for('inicio', error = "Ya se envió una solicitud a este grupo"))
+            error = response.json().get("error")
+            return redirect(url_for('usuario', padron=padron, error=error))
         else:
             return "Error al enviar la solicitud", 400
     else:

@@ -236,6 +236,8 @@ def agregar_grupo(padron):
     max_integrantes = request.form.get("cantidadMaxIntegrantes")
     if not max_integrantes:
         max_integrantes = 10
+    elif len(integrantes) > int(max_integrantes):
+        return redirect(url_for("usuario", padron=padron, error="La cantidad de integrantes supera el máximo permitido"))
 
     if session.get('usuario') and session['usuario'] not in integrantes:
         integrantes.append(session['usuario'])

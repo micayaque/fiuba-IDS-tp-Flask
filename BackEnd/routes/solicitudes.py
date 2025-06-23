@@ -114,81 +114,62 @@ def solicitar_unirse_grupo(grupo_id):
 
     for integrante in integrantes:
         padron_receptor = integrante['padron']
+        # Verificar si ya existe una solicitud pendiente o aceptada
         cursor.execute(
-            "INSERT INTO solicitudes_grupos (grupo_id, padron_emisor, padron_receptor, tipo) VALUES (%s, %s, %s, 'usuario_a_grupo')", (grupo_id, padron_emisor, padron_receptor))
-
-    conn.commit()
-
-    cursor.close()
-    conn.close()
-    return '', 201
+            """
+            SELECT 1 FROM solicitudes_grupos
+            WHERE grupo_id = %s AND padron_emisor = %s AND padron_receptor = %s
+              AND estado IN ('pendiente', 'aceptada') AND tipo = 'usuario_a_grupo'
+            """,
+            (grupo_id, padron_emisor, padron_receptor)
+        )
+        if cursor.fetchone() is None:
+            cursor.execute(
+                "INSERT INTO solicitudes_grupos (grupo_id, padron_emisor, padron_receptor, tipo) VALUES (%s, %s, %s, 'usuario_a_grupo')",
+                (grupo_id, padron_emisor, padron_receptor)
+            )
+            conn.commit()
+            cursor.close()
+            conn.close()
+            return '', 201
+        else:
+            conn.commit()
+            cursor.close()
+            conn.close()
+            return jsonify({"error": "Ya se envió una solicitud"}), 400 
 
 
 @solicitudes_bp.route('/enviar-solicitud-companierx/<string:materia_codigo>/<int:padron_emisor>/<int:padron_receptor>', methods=['POST'])
 def enviar_solicitud_companierx(materia_codigo, padron_emisor, padron_receptor):
     conn = get_connection()
-    cursor = conn.cursor()
+    cursor = conn.cursor(dictionary=True)
 
+    cursor.execute("SELECT grupo_id FROM grupos_usuarios WHERE padron = %s AND materia_codigo = %s", (padron_emisor, materia_codigo))
+    row = cursor.fetchone()
     cursor.execute("SELECT grupo_id FROM grupos_usuarios WHERE padron = %s AND materia_codigo = %s", (padron_emisor, materia_codigo))
     row = cursor.fetchone()
     if row is not None:
         grupo_id = row['grupo_id']
-        cursor.execute("INSERT INTO solicitudes_companierxs (grupo_id, padron_emisor, padron_receptor, estado, tipo) VALUES (%s, %s, %s, 'pendiente', 'grupo_a_usuario')", (grupo_id, padron_emisor, padron_receptor))
+    
+        cursor.execute(
+            """
+            SELECT 1 FROM solicitudes_grupos
+            WHERE grupo_id = %s AND padron_emisor = %s AND padron_receptor = %s
+              AND estado IN ('pendiente', 'aceptada') AND tipo = 'grupo_a_usuario'
+            """,
+            (grupo_id, padron_emisor, padron_receptor)
+        )
+        if cursor.fetchone() is not None:
+            cursor.close()
+            conn.close()
+            return jsonify({"error": "Ya se envió una solicitud"}), 400
+        cursor.execute("INSERT INTO solicitudes_grupos (grupo_id, padron_emisor, padron_receptor, estado, tipo) VALUES (%s, %s, %s, 'pendiente', 'grupo_a_usuario')", (grupo_id, padron_emisor, padron_receptor))
     else:
         cursor.execute("INSERT INTO grupos (materia_codigo) VALUES (%s)", (materia_codigo,))
         grupo_id = cursor.lastrowid
         cursor.execute("INSERT INTO grupos_usuarios (grupo_id, padron, materia_codigo) VALUES (%s, %s, %s)", (grupo_id, padron_emisor, materia_codigo))
         cursor.execute("UPDATE grupos SET nombre = %s WHERE grupo_id = %s", (f"Grupo {grupo_id}", grupo_id))
         cursor.execute("INSERT INTO solicitudes_grupos (grupo_id, padron_emisor, padron_receptor, estado, tipo) VALUES (%s, %s, %s, 'pendiente', 'usuario_a_usuario')", (grupo_id, padron_emisor, padron_receptor))
-
-    conn.commit()
-
-    cursor.close()
-    conn.close()
-    return '', 201
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    data = request.get_json()
-    padron_emisor = data['padron_emisor']
-    padron_receptor = data['padron_receptor']
-    materia_codigo = data['materia_codigo']
-    
-    conn = get_connection()
-    cursor = conn.cursor()
-
-    cursor.execute(
-        "INSERT INTO grupos (materia_codigo) VALUES (%s)",
-        (materia_codigo,)
-    )
-    grupo_id = cursor.lastrowid
-
-    cursor.execute(
-        "UPDATE grupos SET nombre = %s WHERE grupo_id = %s",
-        (f"Grupo {grupo_id}", grupo_id)
-    )        
-
-    cursor.execute(
-        "INSERT INTO grupos_usuarios (grupo_id, padron, materia_codigo) VALUES (%s, %s, %s)",
-        (grupo_id, padron_emisor, materia_codigo)
-    )
-
-    cursor.execute("""
-        INSERT INTO solicitudes_grupos (grupo_id, padron_emisor, padron_receptor, tipo, estado)
-        VALUES (%s, %s, %s, 'usuario_a_usuario', 'pendiente')
-    """, (grupo_id, padron_emisor, padron_receptor))
 
     conn.commit()
 

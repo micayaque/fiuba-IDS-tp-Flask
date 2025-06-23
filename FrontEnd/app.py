@@ -157,7 +157,6 @@ def usuario(padron):
     return render_template("perfil_de_usuario.html", data=data, error=request.args.get("error"))
 
 
-
 @app.route("/usuario/<int:padron>/editar-dato-perfil", methods=["POST"])
 def editar_perfil_usuario(padron):
     campo = request.form.get("campo")
@@ -249,8 +248,12 @@ def agregar_grupo(padron):
             if request.form.get(f"grupo_horario_{dia}_{turno}"):
                 horarios.append({"dia": dia, "turno": turno})
 
-    requests.post(f"{API_BASE}/agregar-grupo", json={ "materia_codigo": materia_codigo, "nombre": nombre_grupo, "maximo_integrantes": max_integrantes,
+    response = requests.post(f"{API_BASE}/agregar-grupo", json={ "materia_codigo": materia_codigo, "nombre": nombre_grupo, "maximo_integrantes": max_integrantes,
         "integrantes": integrantes, "padron_creador": padron, "horarios": horarios})
+    
+    if response.status_code == 400:
+        error = response.json().get("error")
+        return redirect(url_for("usuario", padron=padron, error=error))
 
     return redirect(url_for("usuario", padron=padron))
 
@@ -278,11 +281,11 @@ def editar_grupo(grupo_id):
         "padron_editor": padron_editor
     })
 
-    if response.status_code == 200:
-        return redirect(url_for('usuario', padron=session['usuario']))
-    else:
+    if response.status_code == 400:
         error = response.json().get("error")
-        return redirect(url_for('usuario', padron=session['usuario'], error=error))
+        return redirect(url_for("usuario", padron=padron_editor, error=error))
+
+    return redirect(url_for('usuario', padron=padron_editor))
 
 
 @app.route('/usuario/cambiar-estado-tp/<int:grupo_id>', methods=['POST'])
@@ -333,10 +336,10 @@ def enviar_solicitud_companierx(materia_codigo, padron_emisor, padron_receptor):
 
     if response.status_code == 201:
         return redirect(request.referrer or url_for('usuario', padron=padron_emisor))
-    elif response.status_code == 400:
-        return redirect(url_for('companierxs_sin_grupo_por_materia', materia_codigo=materia_codigo, error="Ya se envió una solicitud a este usuario"))
     else:
-        return "Error al enviar la solicitud", 400
+        error = response.json().get("error")
+        return redirect(url_for('companierxs_sin_grupo_por_materia', materia_codigo=materia_codigo, error=error))
+
 
 
 if __name__ == '__main__':

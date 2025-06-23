@@ -115,23 +115,27 @@ def agregar_grupo():
     cursor = conn.cursor()
 
     cursor.execute("INSERT INTO grupos (materia_codigo, nombre, maximo_integrantes) VALUES (%s, %s, %s)", (materia_codigo, nombre, maximo_integrantes))
-
     grupo_id = cursor.lastrowid
-
     cursor.execute("INSERT INTO grupos_usuarios (grupo_id, padron, materia_codigo) VALUES (%s, %s, %s)", (grupo_id, creador, materia_codigo))
 
     for horario in horarios:
         cursor.execute("INSERT INTO horarios_grupos (grupo_id, dia, turno) VALUES (%s, %s, %s)", (grupo_id, horario["dia"], horario["turno"]))
 
+    integrantes = [padron for padron in integrantes if str(padron) != str(creador)]
     for padron in integrantes:
-        if str(padron) != str(creador):
+        cursor.execute("SELECT * FROM grupos_usuarios WHERE padron = %s AND materia_codigo = %s", (padron, materia_codigo))
+        invitado = cursor.fetchone()
+        if invitado:
+            conn.commit()
+            cursor.close()
+            conn.close()
+            return jsonify({"error": f"El usuario {padron} ya tiene grupo"}), 400
+        else:
             cursor.execute("INSERT INTO solicitudes_grupos (grupo_id, padron_emisor, padron_receptor, tipo) VALUES (%s, %s, %s, 'grupo_a_usuario')", (grupo_id, creador, padron))
 
     conn.commit()
-
     cursor.close()
     conn.close()
-
     return jsonify({"grupo_id": grupo_id}), 201
 
 
@@ -155,6 +159,13 @@ def editar_grupo(grupo_id):
     cursor.execute("INSERT INTO grupos_usuarios (grupo_id, padron, materia_codigo) VALUES (%s, %s, %s)", (grupo_id, padron_editor, materia_codigo))
     integrantes = [padron for padron in integrantes if str(padron) != str(padron_editor)]
     for padron in integrantes:
+        cursor.execute("SELECT * FROM grupos_usuarios WHERE padron = %s AND materia_codigo = %s", (padron, materia_codigo))
+        invitado = cursor.fetchone()
+        if invitado:
+            cursor.close()
+            conn.close()
+            return jsonify({"error": f"El usuario {padron} ya tiene grupo"}), 400
+
         cursor.execute("SELECT * FROM solicitudes_grupos WHERE grupo_id = %s AND padron_receptor = %s", (grupo_id, padron))
         solicitud = cursor.fetchone()
         if not solicitud or solicitud['estado'] == 'rechazada':

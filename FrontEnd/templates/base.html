@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="p-0 m-0 w-100">
 
     <head>
         <meta charset="UTF-8">
         <!--Bootstrap-->
         <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-
-        <!--Archivo de estilos CSS-->
+        <!--Archivos de estilos CSS-->
         <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/contacto-modal.css') }}">
@@ -17,23 +16,20 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='css/compañerxs_sin_grupo.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/perfil_usuario.css') }}">
 
-        <!--Fuentes de texto, las agregamos online porque es muy dificil que se caiga GoogleFonts, ¿aún así tenemos que hacerlo descargarlas?-->
+        <!--Fuentes de texto, las agregamos online porque es muy dificil que se caiga GoogleFonts, ¿aún así tenemos que descargarlas?-->
         <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Istok+Web&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Gentium+Book+Plus:ital,wght@0,400;0,700;1,400;1,700&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Gentium+Book+Plus:ital,wght@0,400;0,700;1,400;1,700&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Poetsen+One&display=swap" rel="stylesheet">
-        <!--Fin fuentes de texto-->
 
         <link rel="icon" href="{{ url_for('static', filename='/img/iconos/logo.png', _external=True) }}">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
         <title>{% block title %}{% endblock %}</title>
     </head>
 
-
-    <body>
+    <body class="p-0 m-0 w-100">
         
         <header class="pt-5">
             <div class="container-fluid d-flex flex-column flex-md-row align-items-center justify-content-between gap-3">        

@@ -6,45 +6,42 @@
 
 <div id="perfil" class="position-relative d-flex flex-column">
 
-    <!-- Banner del perfil -->
-
-    <div id="banner_perfil" class="mb-5 position-relative" style="background-color: {{ (data['datos_usuario'].banner_color) }};" onclick="document.getElementById('color_selector_banner').click()">
-        <form id="formColorBanner" method="POST" action="/usuario/{{ data['padron'] }}/editar-dato-perfil" style="display:none;">
+    <div id="banner-perfil" class="mt-5 mb-5 position-relative w-100" style="background-color: {{ (data['datos_usuario'].banner_color) }};" onclick="document.getElementById('color-selector-banner').click()">
+        <form id="formColorBanner" method="POST" action="/usuario/{{ data['padron'] }}/editar-dato-perfil">
             <input type="hidden" name="campo" value="banner_color">
-            <input type="color" id="color_selector_banner" name="valor" value="{{ data['datos_usuario']['banner_color'] }}" onchange="document.getElementById('formColorBanner').submit();">
+            <input type="color" id="color-selector-banner" name="valor" value="{{ data['datos_usuario']['banner_color'] }}" onchange="document.getElementById('formColorBanner').submit();">
         </form>
-        <div id="foto_de_perfil" class="position-absolute">
-                <button id="boton_editar_foto_de_perfil" class="p-0 border-0 btn" data-bs-toggle="modal" data-bs-target="#modalEditarFotoPerfil" onclick="event.stopPropagation()">
-                    <img class="foto_perfil_img" src="{{ url_for('static', filename='img/avatares/' + data['datos_usuario'].avatar_url) }}" alt="Foto de perfil">
+        <div id="foto-de-perfil" class="position-absolute">
+                <button class="p-0 border-0 btn" data-bs-toggle="modal" data-bs-target="#modalEditarFotoPerfil" onclick="event.stopPropagation()">
+                    <img class="foto-perfil-img w-100" src="{{ url_for('static', filename='img/avatares/' + data['datos_usuario'].avatar_url) }}" alt="Foto de perfil">
                 </button>
         </div>
     </div>
 
-    <!-- Datos del usuario -->
-    <div id="datos_usuario" class="mt-4">
+    <div id="datos-usuario" class="mt-4 px-3">
         <div class="d-flex">
-            <h4 id="nombre_usuario" class="titulo_datos_usuario">{{ data['datos_usuario'].nombre }}</h4>
-                <button type="button" class="btn p-0 icono-lapiz border-0" data-bs-toggle="modal" data-bs-target="#modalEditarNombre">
+            <h4 class="titulo-datos-usuario my-4">{{ data['datos_usuario'].nombre }}</h4>
+                <button type="button" class="btn p-0 icono-lapiz border-0 ms-3" data-bs-toggle="modal" data-bs-target="#modalEditarNombre">
                     <img src="{{ url_for('static', filename='img/iconos/lapiz.png') }}" alt="Editar" width="16">
                 </button>
         </div>
-        <div class="d-flex my-2">
-            <h5 id="carrera_usuario" class="titulo_datos_usuario">{{ data['datos_usuario'].carrera }}</h5>
+        <div class="d-flex my-2 align-items-center">
+            <h5 class="titulo-datos-usuario">{{ data['datos_usuario'].carrera }}</h5>
                 <button class="btn icono-lapiz border-0" data-bs-toggle="modal" data-bs-target="#modalEditarCarrera">
                     <img src="{{ url_for('static', filename='img/iconos/lapiz.png') }}" alt="Editar" width="16">
                 </button>
         </div>
-        <div class="d-flex flex-wrap align-items-center gap-2  my-2 mb-3">
-            <h6 class="titulo_datos_usuario"> Sobre mí</h6>
-                <textarea id="sobre_mi_usuario" class="w-100 p-4 border-0" placeholder="Escribí algo sobre vos..." readonly data-bs-toggle="modal" data-bs-target="#modalSobreMi">{{ data['datos_usuario'].sobre_mi }}</textarea>
+        <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+            <h6 class="titulo-datos-usuario"> Sobre mí</h6>
+            <div id="sobre-mi-usuario" class="w-100 p-2 border-0 rounded-4 h-auto" data-bs-toggle="modal" data-bs-target="#modalSobreMi">
+                {{ data['datos_usuario'].sobre_mi }}
+            </div>
         </div>
     </div>
 
-    <!-- Materias y horarios -->
-    <div class="container my-3">
+    <div class="container my-3">    <!-- Materias y horarios -->
         <div class="row g-5 justify-content-center">
-            <!-- Materias Cursando -->
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">     <!-- Materias Cursando -->
                 <div class="card h-100 materia-background border-0">
                     <div class="card-body">
                         <h5 class="card-title d-flex justify-content-between align-items-center">
@@ -67,7 +64,7 @@
                     <div class="card-body">
                         <h5 class="card-title d-flex justify-content-between align-items-center">
                             Materias aprobadas
-                                <button id="boton_editar_materias" class="btn icono-lapiz border-0" data-bs-toggle="modal" data-bs-target="#modalEditarMateriasAprobadas">
+                                <button class="btn icono-lapiz border-0" data-bs-toggle="modal" data-bs-target="#modalEditarMateriasAprobadas">
                                     <img src="{{ url_for('static', filename='img/iconos/lapiz.png') }}" alt="Editar materias" width="16">
                                 </button>
                         </h5>
@@ -106,140 +103,110 @@
         </div>
     </div>
 
-    <!-- Grupos -->
-    <div class="container mb-5">
+    <div class="container mb-5">    <!-- Grupos -->
         <h4 class="text-center mb-4" id="titulo-grupos"><u>Grupos</u>
-                <button id="btn-agregar-grupo" class="btn border-0" data-bs-toggle="modal" data-bs-target="#modalAgregarGrupo">
-                    <img src="{{ url_for('static', filename='img/iconos/agregar.png') }}" alt="Agregar grupo">
+                <button id="btn-agregar-grupo" class="btn border-0" data-bs-toggle="modal" data-bs-target="#modalAgregarGrupo"><img src="{{ url_for('static', filename='img/iconos/agregar.png') }}" alt="Agregar grupo">
                 </button>
         </h4>
-        <div class="row g-4 justify-content-center">
+        <div class="row gap-2 justify-content-center">
             {% for grupo in data['grupos'] %}
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                <div class="p-3 grupo-card-background h-100 d-flex flex-column justify-content-between">
-                    <div class="info-grupo-background">
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <span id="nombre-grupo" class="fw-bold">{{ grupo.nombre }}</span>
-                            <!-- para identificar a cada grupo con su botón de editar -->
-                            <button class="btn border-0 icono-lapiz"
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                    <div class="p-4 card grupo-card-background h-100 border-0 d-flex flex-column justify-content-between">
+                        <div class="card-body info-grupo-background p-3 d-flex flex-column justify-content-between position-relative">
+                            <button class="btn border-0 icono-lapiz position-absolute m-2 p-0"
                                 data-bs-toggle="modal"
                                 data-bs-target="#modalEditarGrupo"
                                 data-grupo-id="{{ grupo.grupo_id }}"    
                                 data-nombre="{{ grupo.nombre }}"
                                 data-maximo-integrantes="{{ grupo.maximo_integrantes }}"
                                 data-integrantes='{{ grupo.integrantes | tojson }}'
-                                data-horarios='{{ grupo.horarios | default([]) | tojson }}'
+                                data-horarios='{{ grupo.horarios | tojson }}'
                                 onclick="abrirModalEditarGrupo(this)">
                                 <img src="{{ url_for('static', filename='img/iconos/lapiz.png') }}" alt="editar grupo">
                             </button>
+                            <div class="mb-2 pe-4"><span id="nombre-grupo" class="fw-bold nombre-grupo-text-break d-block pe-2">{{ grupo.nombre }}</span>
+                            </div>
+                            <span class="text-white">{{ grupo.materia_nombre }}</span><br>
+                            <span>{{ grupo.cantidad_integrantes }} integrantes</span>
                         </div>
-                        <span class="text-white">{{ grupo.materia_nombre }}</span><br>
-                        <span>{{ grupo.cantidad_integrantes }} integrantes</span>
-                    </div>
-                    <div class="mt-2 d-block justify-content-center">
-                        <button type="button" class="btn_info btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#modalGrupo{{ grupo.grupo_id }}">
-                            INFO
-                        </button>
-                        <form method="POST" action="/usuario/cambiar-estado-tp/{{ grupo.grupo_id }}">
-                            {% if grupo.tp_terminado %}
-                                <button type="submit" class="btn-estado-tp btn btn-success btn-sm w-100 my-1">ENTREGADO</button>
-                            {% else %}
-                                <button type="submit" class="btn-estado-tp btn btn-secondary btn-sm w-100 my-1">EN CURSO</button>
-                            {% endif %}
-                        </form>
+                        <div class="mt-2 d-block justify-content-center">
+                            <button type="button" class="btn-info-grupo btn-info-grupo w-100" data-bs-toggle="modal" data-bs-target="#modalGrupo{{ grupo.grupo_id }}">
+                                INFO
+                            </button>
+                            <form method="POST" action="/usuario/cambiar-estado-tp/{{ grupo.grupo_id }}">
+                                {% if grupo.tp_terminado %}
+                                    <button type="submit" class="btn-estado-entregado btn btn-sm w-100 my-1">ENTREGADO</button>
+                                {% else %}
+                                    <button type="submit" class="btn-estado-en-curso btn btn-sm w-100 my-1">EN CURSO</button>
+                                {% endif %}
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
-
-
-
-                  <!-- Modal -->
-            <div class="modal fade" id="modalGrupo{{ grupo.grupo_id }}" tabindex="-1" aria-labelledby="modalGrupoLabel{{ grupo.grupo_id }}" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content bg-dark text-white rounded-4 p-4 border-0 position-relative">
-
-                    <!-- Botón de cierre (X) -->
-                    <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3"
-                        data-bs-dismiss="modal" aria-label="Cerrar"></button>
-
-                    <!-- Título -->
-                    <h5 class="nombre_del_grupo modal-title text-center text-lilac mb-4 fs-3" id="modalGrupoLabel{{ grupo.grupo_id }}"> {{ grupo.nombre }}</h5>
-
-                    <div class="modal-body d-flex flex-row justify-content-between gap-5 flex-wrap">
-
-                        <!-- Integrantes -->
-                        <div class="me-5 ms-0 align-text-start">
-                        <ul class="list-unstyled">
-                            <li class="fw-light">Integrantes <img src="{{ url_for('static', filename='img/iconos/integrantes.png') }}" alt="Integrantes" width="30" height="30">  </li>
-                        {% for integrante in grupo.integrantes %}
-                            <li class="fw-bold my-1">{{ integrante.nombre }}</li>
-                        {% endfor %}
-
-                        </ul>
+                <div class="modal fade" id="modalGrupo{{ grupo.grupo_id }}" tabindex="-1" aria-labelledby="modalGrupoLabel{{ grupo.grupo_id }}" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content bg-dark text-white rounded-4 p-4 border-0 position-relative">
+                            <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3"
+                            data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                            <h5 class="nombre_del_grupo modal-title text-center text-lilac mb-4 fs-3" id="modalGrupoLabel{{ grupo.grupo_id }}"> {{ grupo.nombre }}</h5>
+                            <div class="modal-body d-flex flex-row justify-content-between gap-5 flex-wrap">
+                                <div class="me-5 ms-0 align-text-start">
+                                    <ul class="list-unstyled">
+                                        <li class="fw-light">Integrantes <img src="{{ url_for('static', filename='img/iconos/integrantes.png') }}" alt="Integrantes" width="30" height="30">  </li>
+                                        {% for integrante in grupo.integrantes %}
+                                            <li class="fw-bold my-1">{{ integrante.nombre }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                <div class="flex-fill">
+                                    <p class="fw-bold mb-2">Horarios disponibles para trabajar junt@s:</p>
+                                    <table class="table table-sm text-center">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>Lu</th>
+                                                <th>Ma</th>
+                                                <th>Mié</th>
+                                                <th>Ju</th>
+                                                <th>Vi</th>
+                                                <th>Sá</th>
+                                                <th>Do</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for turno in ['mañana', 'tarde', 'noche'] %}
+                                                <tr>
+                                                    <th>{{ turno|capitalize }}</th>
+                                                    {% for dia in ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'] %}
+                                                        <td>
+                                                            {% if (dia ~ '-' ~ turno) in grupo.horarios %}
+                                                                <img src="{{ url_for('static', filename='img/iconos/checked.png') }}" alt="Disponible" width="30" height="30">
+                                                            {% else %}
+                                                                <img src="{{ url_for('static', filename='img/iconos/x.png') }}" alt="No disponible" width="15" height="15">
+                                                            {% endif %}
+                                                        </td>
+                                                    {% endfor %}
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
-
-                        <!-- Horarios -->
-                        <div class="flex-fill">
-                        <p class="fw-bold mb-2">Horarios disponibles para trabajar junt@s:</p>
-                        <table class="table table-sm text-center">
-                            <thead>
-                            <tr>
-                                <th></th>
-                                <th>Lu</th>
-                                <th>Ma</th>
-                                <th>Mié</th>
-                                <th>Ju</th>
-                                <th>Vi</th>
-                                <th>Sá</th>
-                                <th>Do</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for turno in ['mañana', 'tarde', 'noche'] %}
-                                <tr>
-                                <th>{{ turno|capitalize }}</th>
-                                {% for dia in ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'] %}
-                                    <td>
-                                    {% if (dia ~ '-' ~ turno) in grupo.horarios %}
-                                        <img src="{{ url_for('static', filename='img/iconos/checked.png') }}" alt="Disponible" width="30" height="30">
-                                    {% else %}
-                                        <img src="{{ url_for('static', filename='img/iconos/x.png') }}" alt="No disponible" width="15" height="15">
-                                    {% endif %}
-                                    </td>
-                                {% endfor %}
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                        </div>
-                    </div>
                     </div>
                 </div>
-            </div>
-
-
-
-
-
             {% endfor %}
         </div>
     </div>
 
 
-
-
-
-    <!-- Modales -->
-
-    <!-- Modal para editar la foto de perfil-->
     <div class="modal" id="modalEditarFotoPerfil">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header border-0">
-                    <h5 class="modal-title">Elegí tu avatar</h5>
+                    <h5 class="modal-title fw-bold">Elegí tu avatar</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
-
                 <div class="modal-body">
                     <div class="row g-3 justify-content-center">
                         {% for avatar in data['avatares'] %}
@@ -248,7 +215,7 @@
                                 <input type="hidden" name="campo" value="avatar_url">
                                 <input type="hidden" name="valor" value="{{ avatar }}">
                                 <button type="submit" data-bs-dismiss="modal" class="btn p-0">
-                                    <img id="avatar_img" src="{{ url_for('static', filename='img/avatares/' + avatar) }}" alt="Avatar" class="rounded-circle img-fluid">
+                                    <img id="avatar-img" src="{{ url_for('static', filename='img/avatares/' + avatar) }}" alt="Avatar" class="rounded-circle img-fluid">
                                 </button>
                             </form>
                         </div>
@@ -259,18 +226,17 @@
         </div>
     </div>
 
-    <!-- Modal para editar nombre-->
     <div class="modal" id="modalEditarNombre">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header border-0">
-                    <h5 class="modal-title" id="modalEditarCampoTitulo">Editar</h5>
+                    <h5 class="modal-title fw-bold">Editar nombre</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <form method="POST" action="/usuario/{{ data['padron'] }}/editar-dato-perfil">
                     <div class="modal-body d-flex flex-column align-items-center w-100">
                         <input type="hidden" name="campo" value="nombre" class="inputEditarCampo w-100"></input>
-                        <input type="text" name="valor" value="{{ data['datos_usuario'].nombre }}" class="inputEditarCampo w-100"></input>
+                        <input type="text" name="valor" value="{{ data['datos_usuario'].nombre }}" class="w-100"></input>
                     </div>
                     <div class="modal-footer border-0 justify-content-center">
                         <button type="submit" data-bs-dismiss="modal" class="btn btn-guardar">GUARDAR</button>
@@ -280,18 +246,17 @@
         </div>
     </div>
 
-    <!-- Modal para editar carrera-->
     <div class="modal" id="modalEditarCarrera">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header border-0">
-                    <h5 class="modal-title" id="modalEditarCampoTitulo">Editar</h5>
+                    <h5 class="modal-title fw-bold">Editar carrera</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <form method="POST" action="/usuario/{{ data['padron'] }}/editar-dato-perfil">
                     <div class="modal-body d-flex flex-column align-items-center w-100">
                         <input type="hidden" name="campo" value="carrera" class="inputEditarCampo w-100"></input>
-                        <input type="text" name="valor" value="{{ data['datos_usuario'].carrera }}" class="inputEditarCampo w-100"></input>
+                        <input type="text" name="valor" value="{{ data['datos_usuario'].carrera }}" class="w-100"></input>
                     </div>
                     <div class="modal-footer border-0 justify-content-center">
                         <button type="submit" data-bs-dismiss="modal" class="btn btn-guardar">GUARDAR</button>
@@ -301,15 +266,13 @@
         </div>
     </div>
 
-
-    <!-- Modal para editar el cuadro de texto "Sobre mí" -->
     <div class="modal" id="modalSobreMi">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header border-0"><h5>Editar bio</h5></div>
                 <form method="POST" action="/usuario/{{ data['padron'] }}/editar-dato-perfil">
                     <div class="modal-body">
-                        <textarea id="textareaEditarSobreMi" name="valor" class="w-100">{{ data['datos_usuario'].sobre_mi }}</textarea>
+                        <textarea id="text-area-editar-sobre-mi" name="valor" class="w-100">{{ data['datos_usuario'].sobre_mi }}</textarea>
                         <input type="hidden" name="campo" value="sobre_mi">
                         <div class="d-flex justify-content-center gap-2 mt-3">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CANCELAR</button>
@@ -320,26 +283,23 @@
             </div>
         </div>
     </div>
-    
 
-    <!-- Modal para editar materias cursando -->
     <div class="modal" id="modalEditarMateriasCursando">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content p-3">
                 <div class="modal-header border-0">
-                    <h5 class="modal-title">Editar Materias Cursando</h5>
+                    <h5 class="modal-title fw-bold">Editar Materias Cursando</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <!-- Lista de materias cursando con botón de eliminar -->
-                    <ul class="list-group my-3">
+                    <ul class="list-group mb-2">
                         {% for materia in data['materias_cursando'] %}
                         <li class="list-group-item d-flex justify-content-between materia-background align-items-center fw-normal">
                             {{ materia.nombre }}
                             <form method="POST" action="/usuario/{{ data['padron'] }}/eliminar-materia-cursando">
                                 <input type="hidden" name="materia_codigo" value="{{ materia.materia_codigo }}">
-                                <button type="submit" class="btn btn-sm btn-danger" title="Eliminar">
-                                    <i class="fa-solid fa-xmark"></i>
+                                <button type="submit" class="btn btn-sm" title="Eliminar">
+                                    <img src="{{ url_for('static', filename='img/iconos/eliminar.png') }}" alt="Eliminar" width="26" height="26">
                                 </button>
                             </form>
                         </li>
@@ -347,7 +307,7 @@
                     </ul>
                     <form method="POST" action="/usuario/{{ data['padron'] }}/agregar-materias-cursando">
                         <div class="text-start mb-2"><label class="form-label">Seleccioná tus materias:</label></div>
-                        <div class=" barra_desplazamiento_materias mb-3 d-flex gap-2 align-items-center text-center">
+                        <div class="barra-desplazamiento-materias w-100 mb-3 d-flex gap-2 align-items-center text-center">
                             {% for materia in data['materias_para_elegir_cursando'] %}
                             <div class="d-flex align-items-center gap-3">
                                 <label class="check-input-materia form-label">
@@ -359,7 +319,7 @@
                         </div>
                         <div class="d-flex row my-2 gap-2 text-start px-2">
                             <label for="nombreNuevaMateria" class="form-label mt-3">Agregar nueva materia:</label>
-                            <input type="text" class="input-agregar-materia" id="nombreNuevaMateria" name="nueva_materia" placeholder="Escribí una materia nueva">
+                            <input type="text" class="input-agregar-materia" id="nombreNuevaMateria" name="nueva_materia" placeholder="Escribí el nombre de la materia nueva">
                             <label for="codigoNuevaMateria" class="form-label mt-3">Código de la materia:</label>
                             <input type="text" class="input-agregar-materia" id="codigoNuevaMateria" name="codigo_nueva_materia" placeholder="Escribí el código de la materia nueva">
                         </div>
@@ -373,16 +333,14 @@
     </div>
 
 
-    <!-- Modal para editar materias aprobadas -->
     <div class="modal" id="modalEditarMateriasAprobadas">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content p-3">
                 <div class="modal-header border-0">
-                    <h5 class="modal-title">Editar Materias Aprobadas</h5>
+                    <h5 class="modal-title fw-bold">Editar Materias Aprobadas</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <!-- Lista de materias aprobadas con botón de eliminar -->
                     <ul class="list-group my-3">
                         {% for materia in data['materias_aprobadas'] %}
                         <li class="list-group-item d-flex justify-content-between materia-background align-items-center fw-normal">
@@ -398,7 +356,7 @@
                     </ul>
                     <form method="POST" action="/usuario/{{ data['padron'] }}/agregar-materias-aprobadas">
                         <div class="text-start mb-2"><label class="form-label">Seleccioná tus materias:</label></div>
-                        <div class=" barra_desplazamiento_materias mb-3 d-flex gap-2 align-items-center text-center">
+                        <div class="barra-desplazamiento-materias w-100 mb-3 d-flex gap-2 align-items-center text-center">
                             {% for materia in data['materias_para_elegir_aprobadas'] %}
                             <div class="d-flex align-items-center gap-3">
                                 <label class="check-input-materia form-label">
@@ -424,7 +382,6 @@
     </div>
 
 
-    <!-- Modal para editar horarios disponibles del usuario -->
     <div class="modal" id="modalEditarHorariosUsuario">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content p-4">
@@ -438,7 +395,7 @@
                             <table class="table p-3 tabla-horarios text-center align-middle">
                                 <thead>
                                     <tr>
-                                        <th><i class="fa-regular fa-clock"></i></th>
+                                        <th></th>
                                         <th>Lu</th>
                                         <th>Ma</th>
                                         <th>Mié</th>
@@ -476,12 +433,11 @@
     </div>
 
 
-    <!-- Modal para agregar grupo -->
     <div class="modal" id="modalAgregarGrupo">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header border-0">
-                    <h5 class="modal-title w-100 text-center">Agregar nuevo grupo</h5>
+                    <h5 class="modal-title w-100 text-center fw-bold">Agregar nuevo grupo</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
                 <div class="modal-body d-flex flex-column">
@@ -527,13 +483,12 @@
                                     </datalist>
                                 {% endfor %}
                                 <div class="mb-3">
-                                    <label class="form-label">Integrantes es:</label>
+                                    <label class="form-label">Integrantes:</label>
                                     <div id="listaIntegrantes" class="d-flex flex-wrap gap-2">
 
                                     </div>
                                 </div>
-                                <!-- campo oculto para enviar los padrones al backend -->
-                                <input type="hidden" name="padrones_integrantes" id="padronesIntegrantesInput">
+                                <input type="hidden" name="padrones_integrantes" id="padronesIntegrantesInput">     <!-- campo oculto para enviar los padrones al backend -->
                             </div>
                         </div>  
                         <label class="form-label mt-3">Horarios disponibles del grupo:</label>
@@ -571,14 +526,12 @@
         </div>
     </div>
 
-    
 
-    <!-- Modal para editar grupo -->
     <div class="modal" id="modalEditarGrupo">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header border-0">
-                    <h5 class="modal-title w-100 text-center">Editar grupo</h5>
+                    <h5 class="modal-title w-100 text-center fw-bold">Editar grupo</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <form id="formEditarGrupo" method="POST">
@@ -596,7 +549,6 @@
                         <div class="mb-3">
                             <label class="form-label">Integrantes actuales:</label>
                             <div id="editarListaIntegrantes" class="d-flex flex-wrap gap-2">
-                                <!-- el código de js agrega/elimina los integrantes del modal -->
                             </div>
                         </div>
                         <div class="mb-3">
@@ -614,8 +566,14 @@
                             <table class="table p-3 tabla-horarios text-center align-middle">
                                 <thead>
                                     <tr>
-                                        <th><i class="fa-regular fa-clock"></i></th>
-                                        <th>Lu</th><th>Ma</th><th>Mié</th><th>Ju</th><th>Vi</th><th>Sá</th><th>Do</th>
+                                        <th></th>
+                                        <th>Lu</th>
+                                        <th>Ma</th>
+                                        <th>Mié</th>
+                                        <th>Ju</th>
+                                        <th>Vi</th>
+                                        <th>Sá</th>
+                                        <th>Do</th>
                                     </tr>
                                 </thead>
                                 <tbody>

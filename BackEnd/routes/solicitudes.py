@@ -112,6 +112,13 @@ def solicitar_unirse_grupo(grupo_id):
     cursor.execute("SELECT materia_codigo FROM grupos WHERE grupo_id = %s", (grupo_id,))
     grupo_materia = cursor.fetchone()
 
+    cursor.execute("SELECT * FROM grupos_usuarios WHERE padron = %s AND materia_codigo = %s", (padron_emisor, grupo_materia['materia_codigo']))
+    grupo_usuario = cursor.fetchone()
+    if grupo_usuario:
+        cursor.close()
+        conn.close()
+        return jsonify({"error": "Ya estás en un grupo. Salí del grupo primero para poder enviar solicitud a otro."}), 400
+
     cursor.execute("SELECT * FROM materias_usuarios WHERE padron = %s AND estado = 'cursando'", (padron_emisor,))
     materias = cursor.fetchall()
     if grupo_materia['materia_codigo'] not in [m['materia_codigo'] for m in materias]:

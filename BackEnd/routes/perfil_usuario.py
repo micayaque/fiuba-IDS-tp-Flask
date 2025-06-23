@@ -83,19 +83,15 @@ def get_perfil_usuario(padron):
         grupo['horarios'] = [f"{h['dia']}-{h['turno']}" for h in horarios]
 
     materias_para_select = []
-    for materia in data['materias_cursando']:
+    cursor.execute("""
+            SELECT m.materia_codigo, m.nombre FROM materias m JOIN materias_usuarios m_u ON m.materia_codigo = m_u.materia_codigo
+            WHERE m_u.padron = %s AND m_u.estado = 'cursando' AND m.materia_codigo NOT IN (SELECT materia_codigo FROM grupos_usuarios WHERE padron = %s)
+        """, (padron, padron))
+    materias = cursor.fetchall()
+    for materia in materias:
         cursor.execute("""
-        SELECT u.padron, u.nombre, u.carrera
-        FROM usuarios u
-        JOIN materias_usuarios mu ON u.padron = mu.padron
-        WHERE mu.materia_codigo = %s
-        AND mu.estado = 'cursando'
-        AND u.padron NOT IN (
-            SELECT g_u.padron
-            FROM grupos_usuarios g_u
-            JOIN grupos g ON g_u.grupo_id = g.grupo_id
-            WHERE g.materia_codigo = %s
-        )
+            SELECT u.padron, u.nombre FROM usuarios u JOIN materias_usuarios m_u ON u.padron = m_u.padron
+            WHERE m_u.materia_codigo = %s AND m_u.estado = 'cursando' AND u.padron NOT IN (SELECT padron FROM grupos_usuarios WHERE materia_codigo = %s)
         """, (materia['materia_codigo'], materia['materia_codigo']))
         companierxs = cursor.fetchall()
         companierxs = [c for c in companierxs if str(c["padron"]) != str(padron)]

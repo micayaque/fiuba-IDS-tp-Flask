@@ -142,25 +142,33 @@ def editar_grupo(grupo_id):
     maximo_integrantes = data.get("maximo_integrantes")
     integrantes = data.get("integrantes", [])
     horarios = data.get("horarios", [])
+    padron_editor = data.get("padron_editor")
 
     conn = get_connection()
-    cursor = conn.cursor()
+    cursor = conn.cursor(dictionary=True)
 
     cursor.execute("UPDATE grupos SET nombre = %s, maximo_integrantes = %s WHERE grupo_id = %s", (nombre, maximo_integrantes, grupo_id))
     cursor.execute("DELETE FROM grupos_usuarios WHERE grupo_id = %s", (grupo_id,))
     cursor.execute("SELECT materia_codigo FROM grupos WHERE grupo_id = %s", (grupo_id,))
 
-    materia_codigo = cursor.fetchone()[0]
+    materia_codigo = cursor.fetchone()['materia_codigo']
+    cursor.execute("INSERT INTO grupos_usuarios (grupo_id, padron, materia_codigo) VALUES (%s, %s, %s)", (grupo_id, padron_editor, materia_codigo))
+    integrantes = [padron for padron in integrantes if str(padron) != str(padron_editor)]
     for padron in integrantes:
-        if padron:
+        cursor.execute("SELECT * FROM solicitudes_grupos WHERE grupo_id = %s AND padron_receptor = %s", (grupo_id, padron))
+        solicitud = cursor.fetchone()
+        if not solicitud or solicitud['estado'] == 'rechazada':
+            cursor.execute("INSERT INTO solicitudes_grupos (grupo_id, padron_emisor, padron_receptor, tipo) VALUES (%s, %s, %s, 'grupo_a_usuario')", (grupo_id, padron_editor, padron))
+        elif solicitud['estado'] == 'pendiente':
+            return jsonify({"error": "Ya enviaste una solicitud antes a uno de los usuarios ingresados"}), 400 
+        elif solicitud['estado'] == 'aceptada':
             cursor.execute("INSERT INTO grupos_usuarios (grupo_id, padron, materia_codigo) VALUES (%s, %s, %s)", (grupo_id, padron, materia_codigo))
 
     cursor.execute("DELETE FROM horarios_grupos WHERE grupo_id = %s", (grupo_id,))
-
     for horario in horarios:
         cursor.execute(
             "INSERT INTO horarios_grupos (grupo_id, dia, turno) VALUES (%s, %s, %s)", (grupo_id, horario["dia"], horario["turno"]))
-
+        
     conn.commit()
 
     cursor.close()

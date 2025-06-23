@@ -140,7 +140,7 @@ def companierxs_sin_grupo_por_materia(materia_codigo):
 
     data['companierxs'] = [c for c in data["companierxs"] if str(c["padron"]) != str(padron_usuario)]
 
-    return render_template("compañerxs_sin_grupo.html", data=data)
+    return render_template("compañerxs_sin_grupo.html", data=data, error=request.args.get("error"))
 
 
 @app.route("/usuario/<int:padron>", methods=["GET"])
@@ -154,7 +154,7 @@ def usuario(padron):
 
     data['padron'] = padron
  
-    return render_template("perfil_de_usuario.html", data=data)
+    return render_template("perfil_de_usuario.html", data=data, error=request.args.get("error"))
 
 
 
@@ -220,7 +220,7 @@ def editar_horarios_usuario(padron):
 
     for dia in dias:
         for turno in turnos:
-            if request.form.get(f"{dia}_{turno}"):      # si el checkbox está marcado
+            if request.form.get(f"{dia}_{turno}"):
                 horarios.append({"dia": dia, "turno": turno})
 
     requests.post(f"{API_BASE}/usuario/{padron}/editar-horarios-usuario", json={"horarios": horarios})
@@ -232,9 +232,11 @@ def editar_horarios_usuario(padron):
 def agregar_grupo(padron):
     materia_codigo = request.form.get("materiaGrupo")
     nombre_grupo = request.form.get("nombreGrupo")
-    max_integrantes = request.form.get("cantidadMaxIntegrantes")
     padrones_str = request.form.get("padrones_integrantes", "")
     integrantes = [p for p in padrones_str.split(",") if p]
+    max_integrantes = request.form.get("cantidadMaxIntegrantes")
+    if not max_integrantes:
+        max_integrantes = 10
 
     if session.get('usuario') and session['usuario'] not in integrantes:
         integrantes.append(session['usuario'])
@@ -256,8 +258,11 @@ def agregar_grupo(padron):
 @app.route("/usuario/<int:grupo_id>/editar-grupo", methods=["POST"])
 def editar_grupo(grupo_id):
     nombre = request.form.get("nombreGrupo")
-    maximo_integrantes = request.form.get("editarCantidadMaxIntegrantes")
     integrantes = request.form.get("padrones_integrantes", "").split(",")
+    maximo_integrantes = request.form.get("editarCantidadMaxIntegrantes")
+    if not maximo_integrantes:
+        maximo_integrantes = 10
+    padron_editor = session.get('usuario')
 
     horarios = []
     for dia in ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo']:
@@ -269,13 +274,15 @@ def editar_grupo(grupo_id):
         "nombre": nombre,
         "maximo_integrantes": maximo_integrantes,
         "integrantes": integrantes,
-        "horarios": horarios
+        "horarios": horarios,
+        "padron_editor": padron_editor
     })
 
     if response.status_code == 200:
         return redirect(url_for('usuario', padron=session['usuario']))
     else:
-        return "Error al editar grupo", 400
+        error = response.json().get("error")
+        return redirect(url_for('usuario', padron=session['usuario'], error=error))
 
 
 @app.route('/usuario/cambiar-estado-tp/<int:grupo_id>', methods=['POST'])
@@ -327,7 +334,7 @@ def enviar_solicitud_companierx(materia_codigo, padron_emisor, padron_receptor):
     if response.status_code == 201:
         return redirect(request.referrer or url_for('usuario', padron=padron_emisor))
     elif response.status_code == 400:
-        return redirect(url_for('inicio', error = "Ya se envió una solicitud a este usuario"))
+        return redirect(url_for('companierxs_sin_grupo_por_materia', materia_codigo=materia_codigo, error="Ya se envió una solicitud a este usuario"))
     else:
         return "Error al enviar la solicitud", 400
 

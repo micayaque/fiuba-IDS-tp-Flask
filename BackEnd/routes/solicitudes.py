@@ -109,6 +109,16 @@ def solicitar_unirse_grupo(grupo_id):
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
 
+    cursor.execute("SELECT COUNT(*) as cantidad_integrantes FROM grupos_usuarios WHERE grupo_id = %s", (grupo_id,))
+    cantidad_integrantes = cursor.fetchone()['cantidad_integrantes']
+    cursor.execute("SELECT maximo_integrantes FROM grupos WHERE grupo_id = %s", (grupo_id,))
+    maximo = cursor.fetchone()['maximo_integrantes']
+    if cantidad_integrantes == maximo:
+        cursor.close()
+        conn.close()
+        return jsonify({"error": "El grupo ya está lleno"}), 400
+
+
     cursor.execute("SELECT materia_codigo FROM grupos WHERE grupo_id = %s", (grupo_id,))
     grupo_materia = cursor.fetchone()
 
@@ -152,6 +162,16 @@ def solicitar_unirse_grupo(grupo_id):
 def enviar_solicitud_companierx(materia_codigo, padron_emisor, padron_receptor):
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
+
+    cursor.execute("SELECT COUNT(*) as cantidad_integrantes FROM grupos_usuarios WHERE grupo_id = %s", (grupo_id,))
+    cantidad_integrantes = cursor.fetchone()['cantidad_integrantes']
+    cursor.execute("SELECT maximo_integrantes FROM grupos WHERE grupo_id = %s", (grupo_id,))
+    maximo = cursor.fetchone()['maximo_integrantes']
+    if cantidad_integrantes == maximo:
+        cursor.close()
+        conn.close()
+        return jsonify({"error": "El grupo ya está lleno"}), 400
+
 
     cursor.execute("SELECT * FROM materias_usuarios WHERE padron = %s AND estado = 'cursando'", (padron_emisor,))
     materias = cursor.fetchall()

@@ -159,12 +159,16 @@
               </div>
               <!-- Botón solicitar -->
               <div class="modal-footer border-0 justify-content-end">
+                {% if grupo.cantidad_integrantes < grupo.maximo_integrantes %}
                 <form method="POST" action="/solicitar-unirse-grupo/{{ grupo.grupo_id }}">
                   <button type="submit" class="boton_solicitar_unirse btn" style="background-color: #A020F0; color: white;">
-                    SOLICITAR UNIRSE
-                    <img src="{{ url_for('static', filename='img/iconos/send.png') }}" alt="Enviar solicitud" width="30" height="30">
-                  </button>
-                </form>
+                      SOLICITAR UNIRSE
+                      <img src="{{ url_for('static', filename='img/iconos/send.png') }}" alt="Enviar solicitud" width="30" height="30">
+                    </button>
+                  </form>
+                {% else %}
+                    <div class="alert alert-info text-white border-0" role="alert">Grupo completo</div>
+                {% endif %}
               </div>
             </div>
           </div>

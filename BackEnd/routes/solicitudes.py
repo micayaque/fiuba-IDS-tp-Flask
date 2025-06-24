@@ -163,15 +163,18 @@ def enviar_solicitud_companierx(materia_codigo, padron_emisor, padron_receptor):
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
 
-    cursor.execute("SELECT COUNT(*) as cantidad_integrantes FROM grupos_usuarios WHERE grupo_id = %s", (grupo_id,))
-    cantidad_integrantes = cursor.fetchone()['cantidad_integrantes']
-    cursor.execute("SELECT maximo_integrantes FROM grupos WHERE grupo_id = %s", (grupo_id,))
-    maximo = cursor.fetchone()['maximo_integrantes']
-    if cantidad_integrantes == maximo:
-        cursor.close()
-        conn.close()
-        return jsonify({"error": "El grupo ya está lleno"}), 400
-
+    cursor.execute("SELECT grupo_id FROM grupos_usuarios WHERE padron = %s AND materia_codigo = %s", (padron_emisor, materia_codigo))
+    grupo = cursor.fetchone()
+    if grupo:
+        cursor.execute("SELECT COUNT(*) as cantidad_integrantes FROM grupos_usuarios WHERE grupo_id = %s", (grupo['grupo_id'],))
+        cantidad_integrantes = cursor.fetchone()['cantidad_integrantes']
+        cursor.execute("SELECT maximo_integrantes FROM grupos WHERE grupo_id = %s", (grupo['grupo_id'],))
+        maximo = cursor.fetchone()['maximo_integrantes']
+        if cantidad_integrantes == maximo:
+            cursor.close()
+            conn.close()
+            return jsonify({"error": "El grupo ya está lleno"}), 400
+    
 
     cursor.execute("SELECT * FROM materias_usuarios WHERE padron = %s AND estado = 'cursando'", (padron_emisor,))
     materias = cursor.fetchall()
@@ -188,8 +191,6 @@ def enviar_solicitud_companierx(materia_codigo, padron_emisor, padron_receptor):
         return jsonify({"error": "Ya enviaste una solicitud a este usuario"}), 400
 
 
-    cursor.execute("SELECT grupo_id FROM grupos_usuarios WHERE padron = %s AND materia_codigo = %s", (padron_emisor, materia_codigo))
-    grupo = cursor.fetchone()
     if grupo is not None:
         grupo_id = grupo['grupo_id']
         cursor.execute("INSERT INTO solicitudes_grupos (grupo_id, padron_emisor, padron_receptor, estado, tipo) VALUES (%s, %s, %s, 'pendiente', 'grupo_a_usuario')", (grupo_id, padron_emisor, padron_receptor))
@@ -203,4 +204,4 @@ def enviar_solicitud_companierx(materia_codigo, padron_emisor, padron_receptor):
     conn.commit()
     cursor.close()
     conn.close()
-    return 'Solicitud enviada', 201
+    return jsonify({"message": "Solicitud enviada"}), 201

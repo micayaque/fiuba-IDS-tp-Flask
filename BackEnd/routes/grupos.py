@@ -112,9 +112,9 @@ def agregar_grupo():
     horarios = data.get("horarios", [])
 
     conn = get_connection()
-    cursor = conn.cursor()
+    cursor = conn.cursor(dictionary=True)
 
-    if maximo_integrantes < len(integrantes):
+    if int(maximo_integrantes) < len(integrantes):
         return jsonify({"error": "La cantidad de integrantes ingresados supera la cantidad máxima permitida"}), 400
 
     cursor.execute("INSERT INTO grupos (materia_codigo, nombre, maximo_integrantes) VALUES (%s, %s, %s)", (materia_codigo, nombre, maximo_integrantes))
@@ -161,7 +161,7 @@ def editar_grupo(grupo_id):
     horarios = data.get("horarios", [])
     padron_editor = data.get("padron_editor")    
 
-    if maximo_integrantes < len(integrantes):
+    if int(maximo_integrantes) < len(integrantes):
         return jsonify({"error": "La cantidad de integrantes ingresados supera la cantidad máxima permitida"}), 400
     
 

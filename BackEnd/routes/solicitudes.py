@@ -3,7 +3,7 @@ from db import get_connection
 
 solicitudes_bp = Blueprint("solicitudes", __name__)
 
-@solicitudes_bp.route('/usuario/<int:padron>/solicitudes-pendientes', methods=['GET'])
+@solicitudes_bp.route('/usuarios/<int:padron>/solicitudes-pendientes', methods=['GET'])
 def solicitudes_pendientes(padron):
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
@@ -49,11 +49,11 @@ def solicitudes_pendientes(padron):
     cursor.close()
     conn.close()    
     if solicitudes:
-        return jsonify({"pendientes": solicitudes})
-    return jsonify({"pendientes": []}), 200
+        return jsonify({"solicitudes_pendientes": solicitudes})
+    return jsonify({"solicitudes_pendientes": []}), 200
 
 
-@solicitudes_bp.route('/solicitudes/<int:solicitud_id>/actualizar', methods=['POST'])
+@solicitudes_bp.route('/solicitudes/<int:solicitud_id>/actualizar', methods=['PATCH'])
 def actualizar_solicitud(solicitud_id):
     data = request.get_json()
     nuevo_estado = data.get('estado')
@@ -98,7 +98,7 @@ def actualizar_solicitud(solicitud_id):
 
     cursor.close()
     conn.close()
-    return '', 200
+    return jsonify({"message": "Solicitud actualizada"}), 200
 
 
 @solicitudes_bp.route('/grupos/<int:grupo_id>/solicitar-unirse-grupo', methods=['POST'])
@@ -155,7 +155,7 @@ def solicitar_unirse_grupo(grupo_id):
 
     cursor.close()
     conn.close()
-    return '', 201
+    return jsonify({"message": "Solicitud enviada"}), 201
 
 
 @solicitudes_bp.route('/enviar-solicitud-companierx/<string:materia_codigo>/<int:padron_emisor>/<int:padron_receptor>', methods=['POST'])

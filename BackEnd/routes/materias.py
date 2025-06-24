@@ -4,7 +4,7 @@ from db import get_connection
 materias_bp = Blueprint("materias", __name__)
 
 @materias_bp.route("/materias", methods=["GET"])
-def get_materias_list():
+def materias():
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
 

@@ -3,9 +3,39 @@ from db import get_connection
 
 perfil_usuario_bp = Blueprint("perfil_usuario", __name__)
 
+@perfil_usuario_bp.route('/usuarios', methods=['POST'])
+def registrarse():
+    data = request.get_json()
+    padron = data['padron']
+    password = data['password']
+    nombre = data['nombre']
 
-@perfil_usuario_bp.route("/usuario/<int:padron>", methods=["GET"])
-def get_perfil_usuario(padron):
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute("SELECT * FROM usuarios WHERE padron = %s", (padron,))
+    usuario = cursor.fetchone()
+    if usuario:
+        cursor.close()
+        conn.close()
+        return jsonify({"error": "El usuario ya existe"}), 400
+
+    cursor.execute("INSERT INTO usuarios (padron, contrasena, nombre) VALUES (%s, %s, %s)", (padron, password, nombre))
+
+    if cursor.rowcount == 0:
+        cursor.close()
+        conn.close()
+        return jsonify({"error": "Error al registrar el usuario"}), 400
+
+    conn.commit()
+
+    cursor.close()
+    conn.close()
+    return jsonify({"message": "Usuario registrado correctamente"}), 200
+
+
+@perfil_usuario_bp.route("/usuarios/<int:padron>", methods=["GET"])
+def perfil_usuario(padron):
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
     data = {}
@@ -105,10 +135,10 @@ def get_perfil_usuario(padron):
     cursor.close()
     conn.close()
 
-    return jsonify(data), 200
+    return jsonify(data), 200 
 
 
-@perfil_usuario_bp.route("/usuario/<int:padron>/editar-dato-perfil", methods=["POST"])
+@perfil_usuario_bp.route("/usuarios/<int:padron>", methods=["PATCH"])
 def editar_perfil_usuario(padron):
     data = request.get_json()
     campo = data.get("campo")
@@ -118,17 +148,21 @@ def editar_perfil_usuario(padron):
     cursor = conn.cursor()
 
     cursor.execute(f"UPDATE usuarios SET {campo} = %s WHERE padron = %s", (valor, padron))
-    conn.commit()
+    if cursor.rowcount == 0:
+        cursor.close()
+        conn.close()
+        return jsonify({"error": "Error al actualizar el perfil"}), 400
 
+    conn.commit()
     cursor.close()
     conn.close()
-    return "Perfil actualizado", 200
+    return jsonify({"message": "Perfil actualizado"}), 200
 
 
-@perfil_usuario_bp.route("/usuario/<int:padron>/editar-horarios-usuario", methods=["POST"])
+@perfil_usuario_bp.route("/usuarios/<int:padron>/horarios", methods=["PATCH"])
 def editar_horarios_usuario(padron):
     data = request.get_json()
-    horarios = data.get("horarios", [])  # lista de diccionarios: {"dia": [<turnos>], ...}
+    horarios = data.get("horarios", [])  # lista de diccionarios: {"dia": [<turno>], ...}
 
     conn = get_connection()
     cursor = conn.cursor()
@@ -142,22 +176,5 @@ def editar_horarios_usuario(padron):
 
     cursor.close()
     conn.close()
-    return "Horarios actualizados", 200
+    return jsonify({"message": "Horarios actualizados"}), 200
 
-
-@perfil_usuario_bp.route('/usuario/cambiar-estado-tp/<int:grupo_id>', methods=['POST'])
-def cambiar_estado_tp(grupo_id):
-    conn = get_connection()
-    cursor = conn.cursor(dictionary=True)
-
-    cursor.execute("SELECT tp_terminado FROM grupos WHERE grupo_id = %s", (grupo_id,))
-    tp_terminado = cursor.fetchone()
-    nuevo_estado = not tp_terminado['tp_terminado']
-
-    cursor.execute("UPDATE grupos SET tp_terminado = %s WHERE grupo_id = %s", (nuevo_estado, grupo_id))
-
-    conn.commit()
-
-    cursor.close()
-    conn.close()
-    return "Estado del TP actualizado", 200

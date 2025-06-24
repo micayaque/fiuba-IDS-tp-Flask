@@ -47,7 +47,9 @@
                                 <img src="{{ url_for('static', filename='img/iconos/notificacion.png') }}" alt="Notificaciones" width="30" height="30">
                             {% endif %}
                         </a>
-                        <a href="{{ url_for('cerrar_sesion') }}" id="btn_cerrar_sesion" class="btn btn-sm">CERRAR SESIÓN</a>
+                        <form action="{{ url_for('cerrar_sesion') }}" method="post"">
+                            <button type="submit" class="btn btn-sm" id="btn_cerrar_sesion">CERRAR SESIÓN</button>
+                        </form>
                     {% else %}
                         <a href="#" id="btn-registrarse" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#registroModal">REGISTRARSE</a>
                         <a href="#" id="btn-iniciar-sesion" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#loginModal">INICIAR SESIÓN</a>
@@ -66,8 +68,8 @@
                     <div class="collapse navbar-collapse justify-content-center" id="navbarMenu">
                         <ul class="navbar-nav gap-2" id="opciones-menu">
                             <li class="nav-item mx-5"><a class="nav-link fw-bold" href="/#como-funciona">Cómo funciona</a></li>
-                            <li class="nav-item mx-5"><a class="nav-link fw-bold" href="{{ url_for('mostrar_materias') }}">Materias</a></li>
-                            <li class="nav-item mx-5"><a class="nav-link fw-bold" href="{{ url_for('mostrar_grupos') }}">Grupos</a></li>
+                            <li class="nav-item mx-5"><a class="nav-link fw-bold" href="{{ url_for('materias') }}">Materias</a></li>
+                            <li class="nav-item mx-5"><a class="nav-link fw-bold" href="{{ url_for('grupos') }}">Grupos</a></li>
                             <li class="nav-item mx-5" data-bs-toggle="modal" data-bs-target="#modalContacto"><a class="nav-link fw-bold">Contacto</a></li>
                         </ul>
                     </div>

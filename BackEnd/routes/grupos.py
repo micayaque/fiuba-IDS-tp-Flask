@@ -31,13 +31,13 @@ def get_grupos():
     return jsonify(data)
 
 
-@grupos_bp.route("/materias/<string:materia_codigo>/grupos", methods=["GET"])
-def grupos_por_materia(materia_codigo):
+@grupos_bp.route("/materias/<string:codigo>/grupos", methods=["GET"])
+def grupos_por_materia(codigo):
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
     data = {}
 
-    cursor.execute("SELECT * FROM materias WHERE materia_codigo = %s", (materia_codigo,))
+    cursor.execute("SELECT * FROM materias WHERE materia_codigo = %s", (codigo,))
     materia = cursor.fetchone()
     data['materia'] = materia
 
@@ -47,7 +47,7 @@ def grupos_por_materia(materia_codigo):
         FROM grupos
         INNER JOIN materias ON grupos.materia_codigo = materias.materia_codigo
         WHERE grupos.materia_codigo = %s AND NOT grupos.tp_terminado
-        """, (materia_codigo,)
+        """, (codigo,)
     )
     data['grupos'] = cursor.fetchall()
 
@@ -71,13 +71,13 @@ def grupos_por_materia(materia_codigo):
     return jsonify(data), 200
 
 
-@grupos_bp.route("/materias/<string:materia_codigo>/sin-grupo", methods=["GET"])
-def companierxs_sin_grupo(materia_codigo):
+@grupos_bp.route("/materias/<string:codigo>/sin-grupo", methods=["GET"])
+def companierxs_sin_grupo(codigo):
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
     data = {}
 
-    cursor.execute("SELECT * FROM materias WHERE materia_codigo = %s", (materia_codigo,))
+    cursor.execute("SELECT * FROM materias WHERE materia_codigo = %s", (codigo,))
     data['materia'] = cursor.fetchone()
 
     cursor.execute("""
@@ -92,7 +92,7 @@ def companierxs_sin_grupo(materia_codigo):
         JOIN grupos g ON g_u.grupo_id = g.grupo_id
         WHERE g.materia_codigo = %s
     )
-    """, (materia_codigo, materia_codigo))
+    """, (codigo, codigo))
     data['companierxs'] = cursor.fetchall()
 
     cursor.close()
@@ -152,7 +152,7 @@ def agregar_grupo():
     return jsonify({"grupo_id": grupo_id}), 201
 
 
-@grupos_bp.route("/usuario/<int:grupo_id>/editar-grupo", methods=["POST"])
+@grupos_bp.route("/usuario/<int:grupo_id>/editar-grupo", methods=["PATCH"])
 def editar_grupo(grupo_id):
     data = request.get_json()
     nombre = data.get("nombre")
@@ -222,4 +222,22 @@ def editar_grupo(grupo_id):
     conn.commit()
     cursor.close()
     conn.close()
-    return "Grupo actualizado", 200
+    return jsonify({"message": "Grupo actualizado"}), 200
+
+
+@grupos_bp.route('/usuario/estado-tp/<int:grupo_id>', methods=['PATCH'])
+def cambiar_estado_tp(grupo_id):
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute("SELECT tp_terminado FROM grupos WHERE grupo_id = %s", (grupo_id,))
+    tp_terminado = cursor.fetchone()
+    nuevo_estado = not tp_terminado['tp_terminado']
+
+    cursor.execute("UPDATE grupos SET tp_terminado = %s WHERE grupo_id = %s", (nuevo_estado, grupo_id))
+
+    conn.commit()
+
+    cursor.close()
+    conn.close()
+    return jsonify({"message": "Estado del TP actualizado"}), 200

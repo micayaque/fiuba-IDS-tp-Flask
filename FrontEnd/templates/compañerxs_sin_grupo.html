@@ -9,7 +9,7 @@
     <div class="contentido_top_buscador_grupos d-flex flex-column justify-content-center align-items-center gap-3 mb-4">
         <h2 class="titulo_nombre_materia">{{ data['materia'].nombre }}</h2>
 
-        <a class="btn boton_compañeros" href="/materias/{{ data['materia'].materia_codigo }}/grupos">VER GRUPOS FORMADOS</a>
+        <a class="btn boton_compañeros" href="{{ url_for('grupos_por_materia', materia_codigo=data['materia'].materia_codigo) }}">VER GRUPOS FORMADOS</a>
 
     </div>
 
@@ -92,7 +92,7 @@
                                 data-bs-target="#modalCompanierx{{ compañerx.padron }}">
                                 INFO
                             </button>
-                            <form method="POST" action="/enviar-solicitud-companierx/{{data['materia'].materia_codigo}}/{{session['usuario']}}/{{compañerx.padron}}">
+                            <form method="POST" action="{{ url_for('enviar_solicitud_companierx', materia_codigo=data['materia'].materia_codigo, padron_emisor=session['usuario'], padron_receptor=compañerx.padron) }}">
                                 <input type="hidden" name="materia_codigo" value="{{ data['materia'].materia_codigo }}">
                                 <button type="submit" class="boton_solicitar_unirse btn rounded-5 w-100" style="background-color: #A020F0; color: white;">
                                     ENVIAR SOLICITUD

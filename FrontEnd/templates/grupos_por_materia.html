@@ -8,7 +8,7 @@
   <div class="contentido_top_buscador_grupos d-flex flex-column justify-content-center align-items-center gap-3 mb-4">
     <h2 class="nombre_materia text-center">{{ data['materia'].nombre }}</h2>
 
-    <a href="/materias/{{ data['materia'].materia_codigo }}/sin-grupo" class="btn boton_compañeros"> VER COMPAÑER@S SIN GRUPO </a>
+    <a href="{{ url_for('companierxs_sin_grupo_por_materia', materia_codigo=data['materia'].materia_codigo) }}" class="btn boton_compañeros"> VER COMPAÑER@S SIN GRUPO </a>
 
   </div>
 
@@ -160,7 +160,7 @@
               <!-- Botón solicitar -->
               <div class="modal-footer border-0 justify-content-end">
                 {% if grupo.cantidad_integrantes < grupo.maximo_integrantes %}
-                <form method="POST" action="/solicitar-unirse-grupo/{{ grupo.grupo_id }}">
+                <form method="POST" action="{{ url_for('solicitar_unirse_grupo', grupo_id=grupo.grupo_id) }}">
                   <button type="submit" class="boton_solicitar_unirse btn" style="background-color: #A020F0; color: white;">
                       SOLICITAR UNIRSE
                       <img src="{{ url_for('static', filename='img/iconos/send.png') }}" alt="Enviar solicitud" width="30" height="30">

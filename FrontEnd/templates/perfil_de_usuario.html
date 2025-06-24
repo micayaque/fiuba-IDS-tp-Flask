@@ -7,7 +7,7 @@
 <div id="perfil" class="position-relative d-flex flex-column">
 
     <div id="banner-perfil" class="mt-5 mb-5 position-relative w-100" style="background-color: {{ (data['datos_usuario'].banner_color) }};" onclick="document.getElementById('color-selector-banner').click()">
-        <form id="formColorBanner" method="POST" action="/usuario/{{ data['padron'] }}/editar-dato-perfil">
+        <form id="formColorBanner" method="POST" action="{{ url_for('editar_perfil_usuario', padron=data['padron']) }}">
             <input type="hidden" name="campo" value="banner_color">
             <input type="color" id="color-selector-banner" name="valor" value="{{ data['datos_usuario']['banner_color'] }}" onchange="document.getElementById('formColorBanner').submit();">
         </form>
@@ -133,7 +133,7 @@
                             <button type="button" class="btn-info-grupo btn-info-grupo w-100" data-bs-toggle="modal" data-bs-target="#modalGrupo{{ grupo.grupo_id }}">
                                 INFO
                             </button>
-                            <form method="POST" action="/usuario/cambiar-estado-tp/{{ grupo.grupo_id }}">
+                            <form method="POST" action="{{ url_for('cambiar_estado_tp', grupo_id=grupo.grupo_id) }}">
                                 {% if grupo.tp_terminado %}
                                     <button type="submit" class="btn-estado-entregado btn btn-sm w-100 my-1">ENTREGADO</button>
                                 {% else %}
@@ -211,7 +211,7 @@
                     <div class="row g-3 justify-content-center">
                         {% for avatar in data['avatares'] %}
                         <div class="col-4 col-sm-4 col-md-3 col-lg-2 text-center">
-                            <form method="POST" action="/usuario/{{ data['padron'] }}/editar-dato-perfil">
+                            <form method="POST" action="{{ url_for('editar_perfil_usuario', padron=data['padron']) }}">
                                 <input type="hidden" name="campo" value="avatar_url">
                                 <input type="hidden" name="valor" value="{{ avatar }}">
                                 <button type="submit" data-bs-dismiss="modal" class="btn p-0">
@@ -233,7 +233,7 @@
                     <h5 class="modal-title fw-bold">Editar nombre</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
-                <form method="POST" action="/usuario/{{ data['padron'] }}/editar-dato-perfil">
+                <form method="POST" action="{{ url_for('editar_perfil_usuario', padron=data['padron']) }}">
                     <div class="modal-body d-flex flex-column align-items-center w-100">
                         <input type="hidden" name="campo" value="nombre" class="inputEditarCampo w-100"></input>
                         <input type="text" name="valor" value="{{ data['datos_usuario'].nombre }}" class="w-100"></input>
@@ -253,7 +253,7 @@
                     <h5 class="modal-title fw-bold">Editar carrera</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
-                <form method="POST" action="/usuario/{{ data['padron'] }}/editar-dato-perfil">
+                <form method="POST" action="{{ url_for('editar_perfil_usuario', padron=data['padron']) }}">
                     <div class="modal-body d-flex flex-column align-items-center w-100">
                         <input type="hidden" name="campo" value="carrera" class="inputEditarCampo w-100"></input>
                         <input type="text" name="valor" value="{{ data['datos_usuario'].carrera }}" class="w-100"></input>
@@ -270,7 +270,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header border-0"><h5>Editar bio</h5></div>
-                <form method="POST" action="/usuario/{{ data['padron'] }}/editar-dato-perfil">
+                <form method="POST" action="{{ url_for('editar_perfil_usuario', padron=data['padron']) }}">
                     <div class="modal-body">
                         <textarea id="text-area-editar-sobre-mi" name="valor" class="w-100">{{ data['datos_usuario'].sobre_mi }}</textarea>
                         <input type="hidden" name="campo" value="sobre_mi">
@@ -296,7 +296,7 @@
                         {% for materia in data['materias_cursando'] %}
                         <li class="list-group-item d-flex justify-content-between materia-background align-items-center fw-normal">
                             {{ materia.nombre }}
-                            <form method="POST" action="/usuario/{{ data['padron'] }}/eliminar-materia-cursando">
+                            <form method="POST" action="{{ url_for('eliminar_materia_cursando', padron=data['padron']) }}">
                                 <input type="hidden" name="materia_codigo" value="{{ materia.materia_codigo }}">
                                 <button type="submit" class="btn btn-sm" title="Eliminar">
                                     <img src="{{ url_for('static', filename='img/iconos/eliminar.png') }}" alt="Eliminar" width="26" height="26">
@@ -305,7 +305,7 @@
                         </li>
                         {% endfor %}
                     </ul>
-                    <form method="POST" action="/usuario/{{ data['padron'] }}/agregar-materias-cursando">
+                    <form method="POST" action="{{ url_for('agregar_materias_cursando', padron=data['padron']) }}">
                         <div class="text-start mb-2"><label class="form-label">Seleccioná tus materias:</label></div>
                         <div class="barra-desplazamiento-materias w-100 mb-3 d-flex gap-2 align-items-center text-center">
                             {% for materia in data['materias_para_elegir_cursando'] %}
@@ -345,16 +345,16 @@
                         {% for materia in data['materias_aprobadas'] %}
                         <li class="list-group-item d-flex justify-content-between materia-background align-items-center fw-normal">
                             {{ materia.nombre }}
-                            <form method="POST" action="/usuario/{{ data['padron'] }}/eliminar-materia-aprobada">
+                            <form method="POST" action="{{ url_for('eliminar_materia_aprobada', padron=data['padron']) }}">
                                 <input type="hidden" name="materia_codigo" value="{{ materia.materia_codigo }}">
-                                <button type="submit" class="btn btn-sm btn-danger" title="Eliminar">
-                                    <i class="fa-solid fa-xmark"></i>
+                                <button type="submit" class="btn btn-sm" title="Eliminar">
+                                    <img src="{{ url_for('static', filename='img/iconos/eliminar.png') }}" alt="Eliminar" width="26" height="26">
                                 </button>
                             </form>
                         </li>
                         {% endfor %}
                     </ul>
-                    <form method="POST" action="/usuario/{{ data['padron'] }}/agregar-materias-aprobadas">
+                    <form method="POST" action="{{ url_for('agregar_materias_aprobadas', padron=data['padron']) }}">
                         <div class="text-start mb-2"><label class="form-label">Seleccioná tus materias:</label></div>
                         <div class="barra-desplazamiento-materias w-100 mb-3 d-flex gap-2 align-items-center text-center">
                             {% for materia in data['materias_para_elegir_aprobadas'] %}
@@ -390,7 +390,7 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="/usuario/{{ data['padron'] }}/editar-horarios-usuario">
+                    <form method="POST" action="{{ url_for('editar_horarios_usuario', padron=data['padron']) }}">
                         <div class="table-responsive">
                             <table class="table p-3 tabla-horarios text-center align-middle">
                                 <thead>
@@ -441,7 +441,7 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
                 <div class="modal-body d-flex flex-column">
-                    <form method="POST" action="/usuario/{{ data['padron'] }}/agregar-grupo">
+                    <form method="POST" action="{{ url_for('agregar_grupo', padron=data['padron']) }}">
                         <div class="d-flex justify-content-center">
                             <div class="col mx-5 text-start align-items-start">
                                 <div class="row">

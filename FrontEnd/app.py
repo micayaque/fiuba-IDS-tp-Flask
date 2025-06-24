@@ -154,7 +154,7 @@ def materias():
     data = {}
     data['materias'] = response.json()
 
-    data['solicitudes_pendientes'] = solicitudes_pendientes(session['usuario'])
+    data['solicitudes_pendientes'] = solicitudes_pendientes(session.get('usuario'))
     session['notificacion'] = len(data['solicitudes_pendientes']) > 0
 
     return render_template('materias.html', data=data)
@@ -178,7 +178,7 @@ def grupos_por_materia(codigo):
             grupos_filtrados.append(grupo)
     data['grupos'] = grupos_filtrados
 
-    data['solicitudes_pendientes'] = solicitudes_pendientes(session['usuario'])
+    data['solicitudes_pendientes'] = solicitudes_pendientes(session.get('usuario'))
     session['notificacion'] = len(data['solicitudes_pendientes']) > 0
 
     return render_template("grupos_por_materia.html", data=data)
@@ -341,13 +341,8 @@ def enviar_solicitud_companierx(materia_codigo, padron_emisor, padron_receptor):
 def inicio():
     response = requests.get(f"{API_BASE}/")
     data = response.json() 
-    if session.get('usuario'):
-        response = requests.get(f"{API_BASE}/usuarios/{session['usuario']}/solicitudes-pendientes")
-        data['solicitudes_pendientes'] = response.json().get("solicitudes_pendientes")
-        session['notificacion'] = len(data['solicitudes_pendientes']) > 0
-    else:
-        session['notificacion'] = False
-        data['solicitudes_pendientes'] = []
+    data['solicitudes_pendientes'] = solicitudes_pendientes(session.get('usuario'))
+    session['notificacion'] = len(data['solicitudes_pendientes']) > 0
 
     error = request.args.get("error")
 

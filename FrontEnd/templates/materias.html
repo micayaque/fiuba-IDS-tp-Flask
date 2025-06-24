@@ -21,8 +21,7 @@
     {% endif %}
     {% for materia in data.materias %}
       <div class="materia-item justify-content-center p-1 card rounded-5 m-3 text-center">
-        <!-- <a href="{{ url_for('grupos_por_materia', materia_codigo=materia.codigo_materia) }}" class="materia-nombre d-block text-decoration-none fw-bold">{{ materia.nombre }}</a> ¿error en la ruta: //grupos? --> 
-        <a href="/materias/{{ materia.materia_codigo }}/grupos" class="materia-nombre d-block text-decoration-none fw-bold">{{ materia.nombre }}</a>
+        <a href="{{ url_for('grupos_por_materia', materia_codigo=materia.materia_codigo) }}" class="materia-nombre d-block text-decoration-none fw-bold">{{ materia.nombre }}</a>
       </div>
     {% endfor %}
   </div>

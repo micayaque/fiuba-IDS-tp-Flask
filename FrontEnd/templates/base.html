@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="p-0 m-0 w-100">
 
     <head>
         <meta charset="UTF-8">
         <!--Bootstrap-->
         <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-
-        <!--Archivo de estilos CSS-->
+        <!--Archivos de estilos CSS-->
         <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/contacto-modal.css') }}">
@@ -17,35 +16,32 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='css/compañerxs_sin_grupo.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/perfil_usuario.css') }}">
 
-        <!--Fuentes de texto, las agregamos online porque es muy dificil que se caiga GoogleFonts, ¿aún así tenemos que hacerlo descargarlas?-->
+        <!--Fuentes de texto, las agregamos online porque es muy dificil que se caiga GoogleFonts, ¿aún así tenemos que descargarlas?-->
         <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Istok+Web&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Gentium+Book+Plus:ital,wght@0,400;0,700;1,400;1,700&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Gentium+Book+Plus:ital,wght@0,400;0,700;1,400;1,700&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Poetsen+One&display=swap" rel="stylesheet">
-        <!--Fin fuentes de texto-->
 
         <link rel="icon" href="{{ url_for('static', filename='/img/iconos/logo.png', _external=True) }}">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
         <title>{% block title %}{% endblock %}</title>
     </head>
 
-
-    <body>
+    <body class="p-0 m-0 w-100">
         
         <header class="pt-5">
             <div class="container-fluid d-flex flex-column flex-md-row align-items-center justify-content-between gap-3">        
                 <div id="contenedor-logo-header" class="d-flex flex-column align-items-center gap-2 mb-2 mx-5 px-5 justify-content-center text-center">
-                    <a href="/" class="text-decoration-none text-center"><img src="{{ url_for('static', filename='img/iconos/logo.png') }}" alt="Logo" class="img-fluid">
+                    <a href="{{ url_for('inicio') }}" class="text-decoration-none text-center"><img src="{{ url_for('static', filename='img/iconos/logo.png') }}" alt="Logo" class="img-fluid">
                         <h4 class="text-white mb-0 fw-bold">TP BUDDY</h4>
                     </a>
                 </div>
                 <div id="contenedor-botones-header" class="d-flex flex-wrap gap-2 justify-content-center align-items-center mx-5 px-5">
                     {% if session['usuario'] %}
-                        <a  href="/usuario/{{ session['usuario'] }}"><img src="{{ url_for('static', filename='img/iconos/perfil.png') }}" alt="Perfil" width="30" height="30"></a>
-                        <a href="/usuario/{{ session['usuario'] }}" class="btn btn-sm">MI PERFIL</a>
+                        <a  href="{{ url_for('usuario', padron=session['usuario']) }}"><img src="{{ url_for('static', filename='img/iconos/perfil.png') }}" alt="Perfil" width="30" height="30"></a>
+                        <a href="{{ url_for('usuario', padron=session['usuario']) }}" class="btn btn-sm">MI PERFIL</a>
                             {% if session['notificacion'] %}
                                 <a href="#" data-bs-toggle="modal" data-bs-target="#modalSolicitudesPendientes">
                                 <img src="{{ url_for('static', filename='img/iconos/notificacion.png') }}" alt="Notificaciones" width="30" height="30">
@@ -80,11 +76,15 @@
         </div>
 
         {% if error %}
-            <div class="d-flex justify-content-center align-items-center mt-3">
-                <div class="border-0 w-50 alert alert-danger text-white text-center mx-5 px-0">{{ error }}</div>
+            <div class="alert alert-danger show text-center mx-auto mt-3 w-50 text-white gap-2" id="alert" role="alert">
+                <div class="mt-3">
+                    {{ error }}
+                </div>
+                <button type="button" data-bs-dismiss="alert">
+                    <img src="{{ url_for('static', filename='img/iconos/cerrar.png') }}" alt="Cerrar alert" width="20" height="20">
+                </button>
             </div>
         {% endif %}
-
 
         <main class="container-fluid px-0">
             <div class="row justify-content-center">
@@ -103,9 +103,9 @@
                     </div>
                     <div class="col-12 mb-3 mb-md-0">
                         <ul class="nav my-2 d-flex justify-content-center" id="listado-footer">
-                            <li class="nav-item mx-4"><a class="text-decoration-none" href="/">Inicio</a></li>
+                            <li class="nav-item mx-4"><a class="text-decoration-none" href="{{ url_for('inicio') }}">Inicio</a></li>
                             <li class="nav-item mx-4"><a class="text-decoration-none" href="/#como-funciona">Cómo funciona</a></li>
-                            <li class="nav-item mx-4"><a class="text-decoration-none" onclick="mostrarPopupContacto()">Contactanos</a></li>
+                            <li class="nav-item mx-4"><a class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#modalContacto">Contactanos</a></li>
                         </ul>
                     </div>
                     <div class="col-12 d-flex flex-column align-items-center">
@@ -158,35 +158,35 @@
 
 
         <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content modal-dark p-4">
-            <div class="modal-body">
-                <h5 class="custom-title fw-bold mb-4">Entrá a tu perfil</h5>
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content modal-dark p-4">
+                    <div class="modal-body">
+                        <h5 class="custom-title fw-bold mb-4">Entrá a tu perfil</h5>
 
-                <form method="POST" action="{{ url_for('iniciar_sesion') }}">
-                <!-- Número de padrón -->
-                <div class="mb-3 w-100">
-                    <label for="login-padron" class="text-white">Número de padrón</label>
-                    <input type="text" class="form-control form-dark" name="padron" id="login-padron" placeholder="Escribí acá tu número de padrón">
-                    <input type="hidden" name="next" value="{{ request.path }}">
-                </div>
+                        <form method="POST" action="{{ url_for('iniciar_sesion') }}">
+                        <!-- Número de padrón -->
+                        <div class="mb-3 w-100">
+                            <label for="login-padron" class="text-white">Número de padrón</label>
+                            <input type="text" class="form-control form-dark" name="padron" id="login-padron" placeholder="Escribí acá tu número de padrón">
+                            <input type="hidden" name="next" value="{{ request.path }}">
+                        </div>
 
-                <!-- Contraseña -->
-                <div class="mb-3 position-relative w-100">
-                    <label for="login-password" class="text-white">Contraseña</label>
-                    <input type="password" class="form-control input-dark ps-5 pe-5" id="login-password" name="password" placeholder="Contraseña">
-                    <i class="fas fa-lock icon-left"></i>
-                    <i class="far fa-eye icon-right" id="toggleLoginPassword" onclick="toggleLoginPasswordVisibility()"></i>
-                </div>
+                        <!-- Contraseña -->
+                        <div class="mb-3 position-relative w-100">
+                            <label for="login-password" class="text-white">Contraseña</label>
+                            <input type="password" class="form-control input-dark ps-5 pe-5" id="login-password" name="password" placeholder="Contraseña">
+                            <i class="fas fa-lock icon-left"></i>
+                            <i class="far fa-eye icon-right" id="toggleLoginPassword" onclick="toggleLoginPasswordVisibility()"></i>
+                        </div>
 
-                <!-- Botón -->
-                <div class="d-grid w-100">
-                    <button type="submit" class="btn btn-dark btn-submit">Iniciar sesión</button>
+                        <!-- Botón -->
+                        <div class="d-grid w-100">
+                            <button type="submit" class="btn btn-dark btn-submit">Iniciar sesión</button>
+                        </div>
+                        </form>
+                    </div>
                 </div>
-                </form>
             </div>
-            </div>
-        </div>
         </div>
 
 
@@ -288,10 +288,10 @@
                             {% endif %}
                         </div>
                         <div class="col-12 col-md-4 text-center">
-                            <form method="POST" action="/solicitud/{{ solicitud.solicitud_id }}/aceptar" class="d-inline">
+                            <form method="POST" action="{{ url_for('aceptar_solicitud', solicitud_id=solicitud.solicitud_id) }}" class="d-inline">
                             <button type="submit" class="btn btn-success btn-sm mb-1">Aceptar</button>
                             </form>
-                            <form method="POST" action="/solicitud/{{ solicitud.solicitud_id }}/rechazar" class="d-inline">
+                            <form method="POST" action="{{ url_for('rechazar_solicitud', solicitud_id=solicitud.solicitud_id) }}" class="d-inline">
                             <button type="submit" class="btn btn-danger btn-sm mb-1">Rechazar</button>
                             </form>
                         </div>

@@ -1,13 +1,9 @@
 function filtrarMaterias() {
-    console.log("filtrarMaterias ejecutada");
-
-    const input = document.getElementById('buscadorInput').value.toLowerCase();
-    
+    const input = document.getElementById('buscadorInput').value.toLowerCase();    
     const materias = document.getElementsByClassName('materia-item');
-    for (let i = 0; i < materias.length; i++) {
-        // querySelector busca el elemento con clase 'materia-nombre' dentro del div actual (materias[i] es el div con clase 'materia-item' encontrado antes)
-        const nombreElemento = materias[i].querySelector('.materia-nombre').textContent.toLowerCase();
 
+    for (let i = 0; i < materias.length; i++) {
+        const nombreElemento = materias[i].querySelector('.materia-nombre').textContent.toLowerCase();
         materias[i].style.display = nombreElemento.includes(input) ? '' : 'none';
     }
 }
@@ -72,15 +68,30 @@ function toggleLoginPasswordVisibility() {
   }
 
 
+function cambiarDatalistPadronesParaElegir() {
+    let materia_codigo = document.getElementById('materiaGrupo').value;
+    let inputPadron = document.getElementById('padronIntegrante');
+    let datalistId = 'sugerenciasPadrones_' + materia_codigo;
+    if (document.getElementById(datalistId)) inputPadron.setAttribute('list', datalistId);
+}
 
-// agregar/editar grupos
 
-let integrantes = [];
+let integrantesAgregar = [];
+
+function agregarIntegrante() {
+    const input = document.getElementById('padronIntegrante');
+    const padron = input.value.trim();
+    if (padron && !integrantesAgregar.includes(padron)) {
+        integrantesAgregar.push(padron);
+        actualizarListaIntegrantesAgregar();
+        input.value = '';
+    }
+}
 
 function actualizarListaIntegrantesAgregar() {
     const lista = document.getElementById('listaIntegrantes');
     lista.innerHTML = '';
-    integrantes.forEach((padron, indice) => {
+    integrantesAgregar.forEach((padron, indice) => {
         const div = document.createElement('div');
         div.className = 'btn btn-outline-light d-flex align-items-center gap-2';
         div.innerHTML = `
@@ -91,48 +102,16 @@ function actualizarListaIntegrantesAgregar() {
         `;
         lista.appendChild(div);
     });
-    document.getElementById('padronesIntegrantesInput').value = integrantes.join(',');
+    document.getElementById('padronesIntegrantesInput').value = integrantesAgregar.join(',');
 }
 
 function eliminarIntegrante(indice) {
-    integrantes.splice(indice, 1);
+    integrantesAgregar.splice(indice, 1);
     actualizarListaIntegrantesAgregar();
 }
 
-function agregarIntegrante() {
-    const input = document.getElementById('padronIntegrante');
-    const padron = input.value.trim();
-    if (padron && !integrantes.includes(padron)) {
-        integrantes.push(padron);
-        actualizarListaIntegrantesAgregar();
-        input.value = '';
-    }
-}
 
-function cambiarDatalistPadronesParaElegir() {
-    let codigo = document.getElementById('materiaGrupo').value;
-    let inputPadron = document.getElementById('padronIntegrante');
-    let datalistId = 'sugerenciasPadrones_' + codigo;
-    if (document.getElementById(datalistId)) {
-        inputPadron.setAttribute('list', datalistId);
-    }
-}
-
-
-
-
-// editar grupo en el perfil del usuario
-function actualizarIntegrantesEditar() {
-    const lista = document.getElementById('editarListaIntegrantes');
-    lista.innerHTML = '';
-    integrantesEditar.forEach((padron, indice) => {
-        const div = document.createElement('div');
-        div.className = "btn btn-outline-light d-flex align-items-center gap-2";
-        div.innerHTML = `${padron} <button type="button" class="btn btn-sm" onclick="eliminarIntegranteEditar(${indice})"><img src="/static/img/iconos/cerrar.png" alt="Eliminar integrante" width="16" height="16"></button>`;
-        lista.appendChild(div);
-    });
-    document.getElementById('editarPadronesIntegrantesInput').value = integrantesEditar.join(',');
-}
+let integrantesEditar = [];
 
 function agregarIntegranteEditar() {
     const input = document.getElementById('editarPadronIntegrante');
@@ -150,19 +129,32 @@ function eliminarIntegranteEditar(indice) {
 }
 
 
+function actualizarIntegrantesEditar() {
+    const lista = document.getElementById('editarListaIntegrantes');
+    lista.innerHTML = '';
+    integrantesEditar.forEach((padron, indice) => {
+        const div = document.createElement('div');
+        div.className = "btn btn-outline-light d-flex align-items-center gap-2";
+        div.innerHTML = `${padron} <button type="button" class="btn btn-sm" onclick="eliminarIntegranteEditar(${indice})"><img src="/static/img/iconos/cerrar.png" alt="Eliminar integrante" width="16" height="16"></button>`;
+        lista.appendChild(div);
+    });
+    document.getElementById('editarPadronesIntegrantesInput').value = integrantesEditar.join(',');
+}
+
+
 function abrirModalEditarGrupo(btn) {
     const grupoId = btn.getAttribute('data-grupo-id');
     const nombre = btn.getAttribute('data-nombre');
-    const max = btn.getAttribute('data-maximo-integrantes');
-    const lista_integrantes = JSON.parse(btn.getAttribute('data-integrantes'));
-    const integrantes = lista_integrantes.map(i => i.padron);
+    const maxIntegrantes = btn.getAttribute('data-maximo-integrantes');
+    const listaIntegrantes = JSON.parse(btn.getAttribute('data-integrantes'));
+    const integrantes = listaIntegrantes.map(i => i.padron);
 
-    integrantesEditar = integrantes.slice();
+    integrantesEditar = [...integrantes];
     actualizarIntegrantesEditar();
 
     document.getElementById('formEditarGrupo').action = `/usuario/${grupoId}/editar-grupo`;
     document.getElementById('editarNombreGrupo').value = nombre;
-    document.getElementById('editarCantidadMaxIntegrantes').value = max;
+    document.getElementById('editarCantidadMaxIntegrantes').value = maxIntegrantes;
 
     const horarios = JSON.parse(btn.getAttribute('data-horarios'));
     for (const dia of ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo']) {

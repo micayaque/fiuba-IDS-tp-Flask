@@ -8,12 +8,7 @@
         <div class="row justify-content-center mt-5">
             <div id="contenedor-cantidad-grupos-formados" class="justify-content-center fs-4 mb-5 col-12 col-md-8 d-flex align-items-centerjustify-content-center gap-2">
                 <img id="img-grupos-formados" src="{{ url_for('static', filename='img/iconos/grupos.png') }}" alt="Cantidad de grupos formados">
-                {% if cant_grupos == None %}
-                    <p>0 grupos formados</p>
-                {% else %}
-                    <p>{{ data['cant_grupos'] }} grupos formados</p>
-                {% endif %}
-
+                <p>{{ data['max_grupo_id'] }} grupos formados</p>
             </div>
         </div>
 

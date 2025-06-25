@@ -28,9 +28,7 @@
 }
 
 #contenedor_compañerxs_sin_grupo {
-
   max-width: 900px;
-  height: 400px;
 }
 
 #contenedor_compañerxs_sin_grupo > div:first-child {
@@ -39,8 +37,8 @@
 }
 
 #compañerx_sin_grupo {
+  min-width: 250px;
   background-color: #303030;
-  border: none;
   margin-bottom: 1rem;
 }
 

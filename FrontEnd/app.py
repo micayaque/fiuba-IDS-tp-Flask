@@ -142,7 +142,12 @@ def usuarios_sin_grupo_por_materia(codigo):
 
     data['companierxs'] = [c for c in data["companierxs"] if str(c["padron"]) != str(padron_usuario)]
 
-    return render_template("compañerxs_sin_grupo.html", data=data, error=request.args.get("error"))
+    if not data['companierxs']:
+        error = "No hay compañerxs buscando grupo en este momento. Busca un grupo formado y pide para unirte."
+    else:
+        error = ""
+
+    return render_template("compañerxs_sin_grupo.html", data=data, error=error)
 
 
         
@@ -181,7 +186,12 @@ def grupos_por_materia(codigo):
     data['solicitudes_pendientes'] = solicitudes_pendientes(session.get('usuario'))
     session['notificacion'] = len(data['solicitudes_pendientes']) > 0
 
-    return render_template("grupos_por_materia.html", data=data)
+    if not data['grupos']:
+        error = "Aún no hay grupos formados para esta materia. Podes ver a los compañeros sin grupo para formar uno."
+    else:
+        error = ""
+
+    return render_template("grupos_por_materia.html", data=data, error=error)
 
 
 @app.route("/grupos", methods=["GET"])
@@ -200,7 +210,12 @@ def grupos():
             grupos_filtrados.append(grupo)
     data['grupos'] = grupos_filtrados
 
-    return render_template("grupos.html", data=data)
+    if not data['grupos']:
+        error = "No hay grupos disponibles. Crea el tuyo o invita a gente que no tenga en la sección materias."
+    else:
+        error = ""
+    
+    return render_template("grupos.html", data=data, error=error)
 
 
 @app.route("/usuario/<int:padron>/agregar-grupo", methods=["POST"])

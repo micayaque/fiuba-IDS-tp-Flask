@@ -9,6 +9,14 @@ app.secret_key = 'clave-secreta'  # necesaria para usar session
 
 API_BASE = "http://localhost:5000"
 
+@app.errorhandler(500)
+def error_interno_servidor(error):
+    return render_template('errores.html'), 500
+
+@app.errorhandler(404)
+def error404(error):
+    return render_template("errores.html"), 404
+
 
 @app.route("/sesiones", methods=["POST"])
 def iniciar_sesion():

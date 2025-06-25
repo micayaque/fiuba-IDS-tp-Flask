@@ -9,7 +9,7 @@ def index():
     cursor = conn.cursor(dictionary=True)
     data = {}
     
-    cursor.execute("SELECT MAX(grupo_id) AS max_grupo_id FROM grupos")
+    cursor.execute("SELECT COUNT(grupo_id) AS max_grupo_id FROM grupos")
     res = cursor.fetchone()
 
     if res['max_grupo_id'] is None:

@@ -23,6 +23,9 @@ def iniciar_sesion():
     padron = request.form['padron']
     password = request.form['password']
 
+    if not padron.isdigit():
+        return redirect(url_for('inicio', error="El padrón solo puede ser un número"))
+
     response = requests.post(f"{API_BASE}/sesiones", json={ "padron": padron, "password": password })
 
     if response.status_code == 200:
@@ -46,6 +49,10 @@ def registrarse():
     padron = request.form['padron']
     password = request.form['password']
     nombre = request.form['nombre']
+
+    if not padron.isdigit():
+        return redirect(url_for('inicio', error="El padrón solo puede ser un número"))
+
     response = requests.post(f"{API_BASE}/usuarios", json={ "padron": padron, "password": password, "nombre": nombre, })
     res = response.json()
 
@@ -53,9 +60,9 @@ def registrarse():
         session['usuario'] = padron
         return usuario(padron)
     elif res.get("error") == "El usuario ya existe":
-        return inicio(error="El usuario ya existe")
+        return redirect(url_for('inicio', error="El usuario ya existe"))
     else:
-        return inicio(error="Error al registrar el usuario")
+        return redirect(url_for('inicio', error="Error al registrar el usuario"))
 
 
 @app.route("/usuarios/<int:padron>", methods=["GET"])

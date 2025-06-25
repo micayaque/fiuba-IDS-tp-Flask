@@ -1,7 +1,6 @@
 from flask import Flask
 from flask_cors import CORS
 
-from routes.main import main_bp
 from routes.materias import materias_bp
 from routes.grupos import grupos_bp
 from routes.usuarios import usuarios_bp
@@ -14,7 +13,6 @@ app = Flask(__name__)
 CORS(app)
 swagger = Swagger(app)
 
-app.register_blueprint(main_bp)
 app.register_blueprint(sesiones_bp)
 app.register_blueprint(materias_bp)
 app.register_blueprint(grupos_bp)

@@ -67,11 +67,13 @@ CREATE TABLE horarios_grupos (
 CREATE TABLE solicitudes_grupos (
     solicitud_id INT AUTO_INCREMENT PRIMARY KEY,
     grupo_id INT NOT NULL,
-    padron_emisor INT DEFAULT NULL,         -- si la solicitud es de usuario_a_grupo, usuario_a_usuario
-    padron_receptor INT DEFAULT NULL,       -- si la solicitud es de grupo_a_usuario, usuario_a_usuario
+    padron_emisor INT,
+    padron_receptor INT,
     estado ENUM('pendiente', 'aceptada', 'rechazada') DEFAULT 'pendiente',
     tipo ENUM('usuario_a_grupo', 'grupo_a_usuario', 'usuario_a_usuario') NOT NULL,
     FOREIGN KEY (grupo_id) REFERENCES grupos(grupo_id) ON DELETE CASCADE,
     FOREIGN KEY (padron_emisor) REFERENCES usuarios(padron) ON DELETE CASCADE,
     FOREIGN KEY (padron_receptor) REFERENCES usuarios(padron) ON DELETE CASCADE
 );
+
+

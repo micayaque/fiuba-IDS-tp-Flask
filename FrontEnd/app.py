@@ -345,7 +345,7 @@ def enviar_solicitud_companierx(materia_codigo, padron_emisor, padron_receptor):
 
 @app.route("/", methods=["GET"])
 def inicio():
-    response = requests.get(f"{API_BASE}/")
+    response = requests.get(f"{API_BASE}/cantidad-grupos")
     data = response.json() 
     data['solicitudes_pendientes'] = solicitudes_pendientes(session.get('usuario'))
     session['notificacion'] = len(data['solicitudes_pendientes']) > 0

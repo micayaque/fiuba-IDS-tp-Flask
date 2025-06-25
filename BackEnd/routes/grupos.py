@@ -3,6 +3,24 @@ from db import get_connection
 
 grupos_bp = Blueprint("grupos", __name__)
 
+@grupos_bp.route("/cantidad-grupos", methods=["GET"])
+def cantidad_grupos():
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+    data = {}
+    
+    cursor.execute("SELECT MAX(grupo_id) AS max_grupo_id FROM grupos")
+    res = cursor.fetchone()
+
+    if res['max_grupo_id'] is None:
+        data['max_grupo_id'] = 0
+    else:
+        data['max_grupo_id'] = res['max_grupo_id']
+
+    cursor.close()
+    conn.close()
+
+    return jsonify(data)
 
 @grupos_bp.route("/grupos", methods=["GET"])
 def get_grupos():

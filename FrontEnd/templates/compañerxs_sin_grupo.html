@@ -92,13 +92,15 @@
                                 data-bs-target="#modalCompanierx{{ compañerx.padron }}">
                                 INFO
                             </button>
-                            <form method="POST" action="{{ url_for('enviar_solicitud_companierx', materia_codigo=data['materia'].materia_codigo, padron_emisor=session['usuario'], padron_receptor=compañerx.padron) }}">
-                                <input type="hidden" name="materia_codigo" value="{{ data['materia'].materia_codigo }}">
-                                <button type="submit" class="boton_solicitar_unirse btn rounded-5 w-100" style="background-color: #A020F0; color: white;">
-                                    ENVIAR SOLICITUD
-                                    <img src="{{ url_for('static', filename='img/iconos/send.png') }}" alt="Enviar solicitud" width="30" height="30">
-                                </button>
-                            </form>
+                            {% if session['usuario'] %}
+                                <form method="POST" action="{{ url_for('enviar_solicitud_companierx', materia_codigo=data['materia'].materia_codigo, padron_emisor=session['usuario'], padron_receptor=compañerx.padron) }}">
+                                    <input type="hidden" name="materia_codigo" value="{{ data['materia'].materia_codigo }}">
+                                    <button type="submit" class="boton_solicitar_unirse btn rounded-5 w-100" style="background-color: #A020F0; color: white;">
+                                        ENVIAR SOLICITUD
+                                        <img src="{{ url_for('static', filename='img/iconos/send.png') }}" alt="Enviar solicitud" width="30" height="30">
+                                    </button>
+                                </form>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

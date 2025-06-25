@@ -60,14 +60,16 @@ def agregar_materias_cursando(padron):
         materias_seleccionadas.append(codigo_nueva_materia)
 
     for codigo_materia in materias_seleccionadas:
+        cursor.execute("SELECT * FROM materias_usuarios WHERE padron = %s AND materia_codigo = %s AND estado = 'aprobada'", (padron, codigo_materia))
+        if cursor.fetchone():
+            cursor.execute("DELETE FROM materias_usuarios WHERE padron = %s AND materia_codigo = %s AND estado = 'aprobada'", (padron, codigo_materia))
         cursor.execute("INSERT INTO materias_usuarios (padron, materia_codigo, estado) VALUES (%s, %s, 'cursando')", (padron, codigo_materia))
 
     conn.commit()
 
     cursor.close()
     conn.close()
-
-    return "Materias cursando actualizadas", 200
+    return jsonify({"message": "Materias cursando actualizadas"}), 200
 
 
 @materias_bp.route("/usuario/<int:padron>/eliminar-materia-cursando", methods=["POST"])
@@ -104,13 +106,16 @@ def agregar_materias_aprobadas(padron):
         materias_seleccionadas.append(codigo_nueva_materia)
 
     for codigo_materia in materias_seleccionadas:
+        cursor.execute("SELECT * FROM materias_usuarios WHERE padron = %s AND materia_codigo = %s AND estado = 'cursando'", (padron, codigo_materia))
+        if cursor.fetchone():
+            cursor.execute("DELETE FROM materias_usuarios WHERE padron = %s AND materia_codigo = %s AND estado = 'cursando'", (padron, codigo_materia))
         cursor.execute("INSERT INTO materias_usuarios (padron, materia_codigo, estado) VALUES (%s, %s, 'aprobada')", (padron, codigo_materia))
 
     conn.commit()
 
     cursor.close()
     conn.close()
-    return "Materias aprobadas actualizadas", 200
+    return jsonify({"message": "Materias aprobadas actualizadas"}), 200
 
 
 @materias_bp.route("/usuario/<int:padron>/eliminar-materia-aprobada", methods=["POST"])
@@ -128,3 +133,4 @@ def eliminar_materia_aprobada(padron):
     conn.close()
     
     return "Materia eliminada", 200
+

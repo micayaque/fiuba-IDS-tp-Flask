@@ -1,9 +1,9 @@
-from flask import Blueprint, jsonify, request, render_template
+from flask import Blueprint, jsonify, request
 from db import get_connection
 
-perfil_usuario_bp = Blueprint("perfil_usuario", __name__)
+usuarios_bp = Blueprint("usuarios", __name__)
 
-@perfil_usuario_bp.route('/usuarios', methods=['POST'])
+@usuarios_bp.route('/usuarios', methods=['POST'])
 def registrarse():
     data = request.get_json()
     padron = data['padron']
@@ -34,7 +34,7 @@ def registrarse():
     return jsonify({"message": "Usuario registrado correctamente"}), 200
 
 
-@perfil_usuario_bp.route("/usuarios/<int:padron>", methods=["GET"])
+@usuarios_bp.route("/usuarios/<int:padron>", methods=["GET"])
 def perfil_usuario(padron):
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
@@ -138,7 +138,7 @@ def perfil_usuario(padron):
     return jsonify(data), 200 
 
 
-@perfil_usuario_bp.route("/usuarios/<int:padron>", methods=["PATCH"])
+@usuarios_bp.route("/usuarios/<int:padron>", methods=["PATCH"])
 def editar_perfil_usuario(padron):
     data = request.get_json()
     campo = data.get("campo")
@@ -159,7 +159,7 @@ def editar_perfil_usuario(padron):
     return jsonify({"message": "Perfil actualizado"}), 200
 
 
-@perfil_usuario_bp.route("/usuarios/<int:padron>/horarios", methods=["PATCH"])
+@usuarios_bp.route("/usuarios/<int:padron>/horarios", methods=["PATCH"])
 def editar_horarios_usuario(padron):
     data = request.get_json()
     horarios = data.get("horarios", [])  # lista de diccionarios: {"dia": [<turno>], ...}

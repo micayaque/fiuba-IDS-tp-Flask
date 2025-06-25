@@ -2,8 +2,14 @@ from flask import Flask, render_template, session, redirect, url_for, request, j
 import requests
 from flasgger import Swagger
 
+from flask_mail import Mail, Message
+from config_mail import MAIL_SETTINGS
+
 app = Flask(__name__)
 swagger = Swagger(app)
+
+app.config.update(MAIL_SETTINGS)
+mail = Mail(app)
 
 app.secret_key = 'clave-secreta'  # necesaria para usar session
 
@@ -347,6 +353,28 @@ def inicio():
     error = request.args.get("error")
 
     return render_template("index.html", data=data, error=error)
+
+
+
+@app.route('/contacto', methods=['POST'])
+def contacto():
+    email = request.form['email']
+    mensaje = request.form['mensaje']
+
+    destinatarios = ['myaque@fi.uba.ar']
+
+    msg = Message(
+        subject='Nuevo mensaje del sitio',
+        recipients=destinatarios,
+        body=f"Email: {email}\nMensaje:\n{mensaje}",
+        reply_to=email
+    )
+    
+    try:
+        mail.send(msg)
+        return redirect(url_for('inicio', error="¡Mensaje enviado!"))
+    except:
+        return redirect(url_for('inicio', error="Ocurrió un error al enviar el mensaje"))
 
 
 

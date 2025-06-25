@@ -208,14 +208,14 @@
                             <div class="mail text-center p-2 fw-lighter rounded-2">sbardina@fi.uba.ar</div>
                             <div class="mail text-center p-2 fw-lighter rounded-2">samartin@fi.uba.ar</div>
                         </div>
-                        <form>
+                        <form id="form-contacto" method="POST" action="/contacto">
                             <div class="mb-3">
                                 <label for="email" class="form-label mb-2">Ingrese su correo:</label>
-                                <input type="email" class="w-100 rounded-4 align-content-center p-2" name="email" id="email" autocomplete="email" placeholder="tu@email.com">
+                                <input type="email" class="w-100 rounded-4 align-content-center p-2" name="email" id="email" autocomplete="email" placeholder="tu@email.com" required>
                             </div>
                             <div class="mb-3">
                                 <label for="mensaje" class="form-label mb-2">Mensaje:</label>
-                                <textarea class="w-100 rounded-4 align-content-center ps-4" name="mensaje" id="mensaje" placeholder="Escribí tu mensaje..."></textarea>
+                                <textarea class="w-100 rounded-4 align-content-center ps-4" name="mensaje" id="mensaje" placeholder="Escribí tu mensaje..." required></textarea>
                             </div>
                             <div class="d-grid w-100">
                                 <button type="submit" class="btn btn-dark btn-submit">Enviar</button>

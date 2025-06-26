@@ -6,7 +6,7 @@
 
   
 
-   <div class="align-items-center d-flex flex-column my-5">
+   <div class="align-items-center d-flex flex-column">
       <h2 class="text-center">Grupos disponibles</h2>
    </div>
 
@@ -62,14 +62,6 @@
 
 
   <div class="contentido_bottom_buscador_grupos row g-4 justify-content-center">
-    {% if data['grupos']|length == 0 %}
-      <div class="alert alert-warning text-center" role="alert">
-        <div class="d-flex justify-content-center align-items-center mt-3">
-          <div class="border-0 w-50 alert alert-danger text-white text-center mx-5 px-0">No hay grupos disponibles.</div>
-        </div>
-        <a href="{{ url_for('inicio') }}" class="btn btn-primary mt-2"> Volver al Inicio </a>
-      </div>
-    {% endif %}
     {% for grupo in data['grupos'] %}
       <div class="justify-content-center col-12 col-md-6 col-lg-4 grupo-carta" data-horarios='{{ grupo.horarios | tojson | safe }}'>
         <div class="carta card h-100 shadow">

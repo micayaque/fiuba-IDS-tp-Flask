@@ -15,11 +15,22 @@ app.secret_key = 'clave-secreta'  # necesaria para usar session
 
 API_BASE = "http://localhost:5000"
 
+@app.errorhandler(500)
+def error_interno_servidor(error):
+    return render_template('errores.html'), 500
+
+@app.errorhandler(404)
+def error404(error):
+    return render_template("errores.html"), 404
+
 
 @app.route("/inicio-sesion", methods=["POST"])
 def iniciar_sesion():
     padron = request.form['padron']
     password = request.form['password']
+
+    if not padron.isdigit():
+        return inicio(error="El padrón solo puede ser un número")
 
     response = requests.post(f"{API_BASE}/sesiones", json={ "padron": padron, "password": password })
 
@@ -27,7 +38,7 @@ def iniciar_sesion():
         session['usuario'] = padron
         return usuario(padron)
     else:
-        return redirect(url_for("inicio", error="Padron o contraseña incorrectos"))
+        return inicio(error="Padron o contraseña incorrectos")
 
 
 @app.route("/cerrar-sesion", methods=["POST"])
@@ -43,6 +54,10 @@ def registrarse():
     password = request.form['password']
     nombre = request.form['nombre']
     apellido = request.form['apellido']
+
+    if not padron.isdigit():
+        return redirect(url_for('inicio', error="El padrón solo puede ser un número"))
+
     response = requests.post(f"{API_BASE}/usuarios", json={ "padron": padron, "password": password, "nombre": nombre, "apellido": apellido })
     res = response.json()
 
@@ -157,7 +172,12 @@ def usuarios_sin_grupo_por_materia(codigo):
 
     data['companierxs'] = [c for c in data["companierxs"] if str(c["padron"]) != str(padron_usuario)]
 
-    return render_template("compañerxs_sin_grupo.html", data=data, error=request.args.get("error"))
+    if not data['companierxs']:
+        error = "No hay compañerxs buscando grupo en este momento. Busca un grupo formado y pide para unirte."
+    else:
+        error = ""
+
+    return render_template("compañerxs_sin_grupo.html", data=data, error=error)
 
 
 @app.route("/materias", methods=["GET"])
@@ -190,7 +210,13 @@ def grupos_por_materia(codigo):
     data['solicitudes_pendientes'] = solicitudes_pendientes(session.get('usuario'))
     session['notificacion'] = len(data['solicitudes_pendientes']) > 0
 
-    return render_template("grupos_por_materia.html", data=data)
+    if not data['grupos']:
+        error = "Aún no hay grupos formados para esta materia. Podes ver a los compañeros sin grupo para formar uno."
+    else:
+        error = ""
+
+    return render_template("grupos_por_materia.html", data=data, error=error)
+
 
 
 
@@ -210,7 +236,12 @@ def grupos():
             grupos_filtrados.append(grupo)
     data['grupos'] = grupos_filtrados
 
-    return render_template("grupos.html", data=data)
+    if not data['grupos']:
+        error = "No hay grupos disponibles. Crea el tuyo o invita a gente que no tenga en la sección materias."
+    else:
+        error = ""
+    
+    return render_template("grupos.html", data=data, error=error)
 
 
 @app.route("/grupos/<int:padron>/agregar-grupo", methods=["POST"])

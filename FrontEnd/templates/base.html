@@ -42,7 +42,7 @@
                     {% if session['usuario'] %}
                         <a  href="{{ url_for('usuario', padron=session['usuario']) }}"><img src="{{ url_for('static', filename='img/iconos/perfil.png') }}" alt="Perfil" width="30" height="30"></a>
                         <a href="{{ url_for('usuario', padron=session['usuario']) }}" class="btn btn-sm">MI PERFIL</a>
-                            {% if session['notificacion'] %}
+                            {% if data['solicitudes_pendientes'] %}
                                 <a href="#" data-bs-toggle="modal" data-bs-target="#modalSolicitudesPendientes">
                                 <img src="{{ url_for('static', filename='img/iconos/notificacion.png') }}" alt="Notificaciones" width="30" height="30">
                             {% endif %}

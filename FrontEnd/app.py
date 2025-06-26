@@ -309,12 +309,10 @@ def cambiar_estado_tp(grupo_id):
 
 @app.route("/solicitudes/<int:padron>/solicitudes-pendientes", methods=["GET"])
 def solicitudes_pendientes(padron):
-    if padron:
-        response = requests.get(f"{API_BASE}/solicitudes/{padron}")
-        data = response.json()
-        solicitudes_pendientes = data.get("solicitudes_pendientes", [])
-    else:
-        solicitudes_pendientes = []
+    response = requests.get(f"{API_BASE}/solicitudes/{padron}")
+    data = response.json()
+    solicitudes_pendientes = data.get("solicitudes_pendientes", [])
+
     return solicitudes_pendientes
 
 
@@ -370,9 +368,10 @@ def enviar_solicitud_companierx(materia_codigo, padron_emisor, padron_receptor):
 def inicio():
     response = requests.get(f"{API_BASE}/cantidad-grupos")
     data = response.json() 
-    data['solicitudes_pendientes'] = solicitudes_pendientes(session.get('usuario'))
-    session['notificacion'] = len(data['solicitudes_pendientes']) > 0
-    # session['usuario'] = session.get('usuario')
+    session['usuario'] = session.get('usuario')
+    if session.get('usuario'):
+        data['solicitudes_pendientes'] = solicitudes_pendientes(session['usuario'])
+    session['notificacion'] = len(data.get('solicitudes_pendientes', [])) > 0
 
     error = request.args.get("error")
 

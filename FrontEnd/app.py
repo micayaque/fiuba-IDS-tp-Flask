@@ -24,7 +24,7 @@ def iniciar_sesion():
     password = request.form['password']
 
     if not padron.isdigit():
-        return redirect(url_for('inicio', error="El padrón solo puede ser un número"))
+        return inicio(error="El padrón solo puede ser un número")
 
     response = requests.post(f"{API_BASE}/sesiones", json={ "padron": padron, "password": password })
 
@@ -32,7 +32,7 @@ def iniciar_sesion():
         session['usuario'] = padron
         return usuario(padron)
     else:
-        return redirect(url_for("inicio", error="Padron o contraseña incorrectos"))
+        return inicio(error="Padron o contraseña incorrectos")
 
 
 @app.route("/cerrar-sesion", methods=["POST"])
@@ -60,9 +60,9 @@ def registrarse():
         session['usuario'] = padron
         return usuario(padron)
     elif res.get("error") == "El usuario ya existe":
-        return redirect(url_for('inicio', error="El usuario ya existe"))
+        return inicio(error="El usuario ya existe")
     else:
-        return redirect(url_for('inicio', error="Error al registrar el usuario"))
+        return inicio(error="Error al registrar el usuario")
 
 
 @app.route("/usuarios/<int:padron>", methods=["GET"])
@@ -328,8 +328,7 @@ def aceptar_solicitud(solicitud_id):
 @app.route('/solicitud/<int:solicitud_id>/rechazar', methods=['POST'])
 def rechazar_solicitud(solicitud_id):
 
-    requests.post(f"{API_BASE}/solicitudes/{solicitud_id}/actualizar", 
-        json={"estado": "rechazada"})
+    requests.post(f"{API_BASE}/solicitudes/{solicitud_id}/actualizar", json={"estado": "rechazada"})
 
     return usuario(session.get("usuario"))
 

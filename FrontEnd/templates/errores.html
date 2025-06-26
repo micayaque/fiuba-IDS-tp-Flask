@@ -10,21 +10,15 @@
         <!-- link CSS -->
         <link rel="stylesheet" href="{{ url_for('static', filename='/css/error.css') }}"/>
 	</head>
-	<body>
 
-        <!-- Header -->
-		<header>
-			<div class="brand">
-				<a href="#"><img src=""></a>
-			</div>
-		</header>
+	<body>
 
         <!-- Main -->
 		<main class="content container-fluid">
 			<div id="bloc404">
 				<div class=" row d-flex justify-content-center align-items-center">
 					<p class="four">4</p>
-			        <!-- Gif  ↓ -->
+			        <!-- Gif -->
 					<div class="travolta mx-5 d-flex justify-content-center align-items-center">
 						<img src="{{ url_for('static', filename='/img/gif_error_travolta.gif') }}" class="gif" alt="Travolta is lost" title="¿¡Dónde está mi página?!">
 					</div>
@@ -32,13 +26,10 @@
 				</div>
 				<p class="oops mt-4">Oops! No pudimos encontrar la página que estas buscando! O tal vez solo sea un error del servidor!</p>
                 <div class="d-flex justify-content-center mt-4">
-    				<a class="btn btn-outline-primary" href="javascript:history.back()"> Presiona para volver a la página anterior</a>
+    				<a class="btn btn-outline-primary" href={{ url_for('inicio') }}> Presiona para volver al inicio</a>
 				</div>
 			</div>
 		</main>
-
-        <!-- Api Google -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 
 	</body>
 </html>

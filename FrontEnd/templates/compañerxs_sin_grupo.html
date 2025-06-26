@@ -9,7 +9,7 @@
     <div class="contentido_top_buscador_grupos d-flex flex-column justify-content-center align-items-center gap-3 mb-4">
         <h2 class="titulo_nombre_materia">{{ data['materia'].nombre }}</h2>
 
-        <a class="btn boton_compañeros" href="{{ url_for('grupos_por_materia', codigo=data['materia'].materia_codigo) }}">VER GRUPOS FORMADOS</a>
+        <a class="btn boton_compañeros" href="{{ url_for('grupos_por_materia', codigo=data['materia'].codigo) }}">VER GRUPOS FORMADOS</a>
 
     </div>
 

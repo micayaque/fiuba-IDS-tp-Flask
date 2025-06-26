@@ -20,7 +20,7 @@
 
     <div id="datos-usuario" class="mt-4 px-3">
         <div class="d-flex">
-            <h4 class="titulo-datos-usuario my-4">{{ data['datos_usuario'].nombre }}</h4>
+            <h4 class="titulo-datos-usuario my-4">{{ data['datos_usuario'].nombre }} {{ data['datos_usuario'].apellido }}</h4>
                 <button type="button" class="btn p-0 icono-lapiz border-0 ms-3" data-bs-toggle="modal" data-bs-target="#modalEditarNombre">
                     <img src="{{ url_for('static', filename='img/iconos/lapiz.png') }}" alt="Editar" width="16">
                 </button>
@@ -154,7 +154,7 @@
                                     <ul class="list-unstyled">
                                         <li class="fw-light">Integrantes <img src="{{ url_for('static', filename='img/iconos/integrantes.png') }}" alt="Integrantes" width="30" height="30">  </li>
                                         {% for integrante in grupo.integrantes %}
-                                            <li class="fw-bold my-1">{{ integrante.nombre }}</li>
+                                            <li class="fw-bold my-1">{{ integrante.nombre }} {{ integrante.apellido }} </li>
                                         {% endfor %}
                                     </ul>
                                 </div>
@@ -230,13 +230,19 @@
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header border-0">
-                    <h5 class="modal-title fw-bold">Editar nombre</h5>
+                    <h5 class="modal-title fw-bold">Editar nombre y apellido</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <form method="POST" action="{{ url_for('editar_perfil_usuario', padron=data['padron']) }}">
                     <div class="modal-body d-flex flex-column align-items-center w-100">
-                        <input type="hidden" name="campo" value="nombre" class="inputEditarCampo w-100"></input>
-                        <input type="text" name="valor" value="{{ data['datos_usuario'].nombre }}" class="w-100"></input>
+                        <label for="nombre" class="form-label text-center">Nombre:</label>
+                        <input type="text" id="nombre" name="nombre" value="{{ data['datos_usuario'].nombre }}" 
+                               class="form-control w-100" placeholder="Nombre" required>
+                    </div>
+                    <div class="modal-body d-flex flex-column align-items-center w-100">
+                        <label for="apellido" class="form-label text-center">Apellido:</label>
+                        <input type="text" id="apellido" name="apellido" value="{{ data['datos_usuario'].apellido }}" 
+                               class="form-control w-100" placeholder="Apellido" required>
                     </div>
                     <div class="modal-footer border-0 justify-content-center">
                         <button type="submit" data-bs-dismiss="modal" class="btn btn-guardar">GUARDAR</button>
@@ -297,7 +303,7 @@
                         <li class="list-group-item d-flex justify-content-between materia-background align-items-center fw-normal">
                             {{ materia.nombre }}
                             <form method="POST" action="{{ url_for('eliminar_materia_cursando', padron=data['padron']) }}">
-                                <input type="hidden" name="materia_codigo" value="{{ materia.materia_codigo }}">
+                                <input type="hidden" name="materia_codigo" value="{{ materia.codigo_materia }}">
                                 <button type="submit" class="btn btn-sm" title="Eliminar">
                                     <img src="{{ url_for('static', filename='img/iconos/eliminar.png') }}" alt="Eliminar" width="26" height="26">
                                 </button>
@@ -311,7 +317,7 @@
                             {% for materia in data['materias_para_elegir_cursando'] %}
                             <div class="d-flex align-items-center gap-3">
                                 <label class="check-input-materia form-label">
-                                    <input type="checkbox" name="materias" value="{{ materia.materia_codigo }}" class="d-none">
+                                    <input type="checkbox" name="materias" value="{{ materia.codigo }}" class="d-none">
                                     <div class="materia-box p-2">{{ materia.nombre }}</div>
                                 </label>
                             </div>
@@ -346,7 +352,7 @@
                         <li class="list-group-item d-flex justify-content-between materia-background align-items-center fw-normal">
                             {{ materia.nombre }}
                             <form method="POST" action="{{ url_for('eliminar_materia_aprobada', padron=data['padron']) }}">
-                                <input type="hidden" name="materia_codigo" value="{{ materia.materia_codigo }}">
+                                <input type="hidden" name="materia_codigo" value="{{ materia.codigo_materia }}">
                                 <button type="submit" class="btn btn-sm" title="Eliminar">
                                     <img src="{{ url_for('static', filename='img/iconos/eliminar.png') }}" alt="Eliminar" width="26" height="26">
                                 </button>
@@ -360,7 +366,7 @@
                             {% for materia in data['materias_para_elegir_aprobadas'] %}
                             <div class="d-flex align-items-center gap-3">
                                 <label class="check-input-materia form-label">
-                                    <input type="checkbox" name="materias" value="{{ materia.materia_codigo }}" class="d-none">
+                                    <input type="checkbox" name="materias" value="{{ materia.codigo }}" class="d-none">
                                     <div class="materia-box p-2">{{ materia.nombre }}</div>
                                 </label>
                             </div>

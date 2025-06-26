@@ -16,7 +16,7 @@ app.secret_key = 'clave-secreta'  # necesaria para usar session
 API_BASE = "http://localhost:5000"
 
 
-@app.route("/sesiones", methods=["POST"])
+@app.route("/inicio-sesion", methods=["POST"])
 def iniciar_sesion():
     padron = request.form['padron']
     password = request.form['password']
@@ -37,17 +37,16 @@ def cerrar_sesion():
 
 
 
-
-
 @app.route("/usuarios", methods=["POST"])
 def registrarse():
     padron = request.form['padron']
     password = request.form['password']
     nombre = request.form['nombre']
-    response = requests.post(f"{API_BASE}/usuarios", json={ "padron": padron, "password": password, "nombre": nombre, })
+    apellido = request.form['apellido']
+    response = requests.post(f"{API_BASE}/usuarios", json={ "padron": padron, "password": password, "nombre": nombre, "apellido": apellido })
     res = response.json()
 
-    if response.status_code == 200:
+    if response.status_code == 201:
         session['usuario'] = padron
         return usuario(padron)
     elif res.get("error") == "El usuario ya existe":
@@ -69,19 +68,26 @@ def usuario(padron):
     return render_template("perfil_de_usuario.html", data=data, error=request.args.get("error"))
 
 
-@app.route("/usuarios/<int:padron>/editar-dato-perfil", methods=["POST"])
+@app.route("/usuarios/<int:padron>/editar-perfil", methods=["POST"])
 def editar_perfil_usuario(padron):
-    campo = request.form.get("campo")
-    valor = request.form.get("valor")
-
-    response = requests.patch(f"{API_BASE}/usuarios/{padron}", json={"campo": campo, "valor": valor})
-    if response.status_code == 200:
-        return usuario(padron)
+    if 'nombre' in request.form and 'apellido' in request.form:
+        nombre = request.form.get("nombre")
+        apellido = request.form.get("apellido")
+        
+        requests.patch(f"{API_BASE}/usuarios/{padron}", 
+                                       json={"campo": "nombre", "valor": nombre})        
+        requests.patch(f"{API_BASE}/usuarios/{padron}", 
+                                         json={"campo": "apellido", "valor": apellido})
     else:
-        return jsonify({"error": "Error al editar el perfil"}), 400
+        campo = request.form.get("campo")
+        valor = request.form.get("valor")
+        
+        requests.patch(f"{API_BASE}/usuarios/{padron}", 
+                                json={"campo": campo, "valor": valor})
+    return usuario(padron)
 
 
-@app.route("/usuarios/<int:padron>/horarios", methods=["POST"])
+@app.route("/usuarios/<int:padron>/editar-horarios", methods=["POST"])
 def editar_horarios_usuario(padron):
     dias = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo']
     turnos = ['mañana', 'tarde', 'noche']
@@ -103,19 +109,20 @@ def agregar_materias_cursando(padron):
     nueva_materia = request.form.get("nueva_materia")
     codigo_nueva_materia = request.form.get("codigo_nueva_materia")
 
-    requests.post(f"{API_BASE}/usuario/{padron}/agregar-materias-cursando",
-        json={"materias_seleccionadas": materias_seleccionadas, "nueva_materia": nueva_materia, "codigo_nueva_materia": codigo_nueva_materia})
+    requests.post(f"{API_BASE}/usuarios/{padron}/materias",
+        json={"materias_seleccionadas": materias_seleccionadas, "nueva_materia": nueva_materia, 
+              "codigo_nueva_materia": codigo_nueva_materia, "estado_materia": "cursando"})
  
-    return redirect(url_for("usuario", padron=padron))
+    return usuario(padron)
 
 
 @app.route("/usuario/<int:padron>/eliminar-materia-cursando", methods=["POST"])
 def eliminar_materia_cursando(padron):
     materia_codigo = request.form.get("materia_codigo")
 
-    requests.post(f"{API_BASE}/usuario/{padron}/eliminar-materia-cursando", json={"materia_codigo": materia_codigo})
+    requests.delete(f"{API_BASE}/usuario/{padron}/materias/{materia_codigo}", json={"estado_materia": "cursando"})
 
-    return redirect(url_for("usuario", padron=padron))
+    return usuario(padron)
 
 
 @app.route("/usuario/<int:padron>/agregar-materias-aprobadas", methods=["POST"])
@@ -124,19 +131,21 @@ def agregar_materias_aprobadas(padron):
     nueva_materia = request.form.get("nueva_materia")
     codigo_nueva_materia = request.form.get("codigo_nueva_materia")
 
-    requests.post(f"{API_BASE}/usuario/{padron}/agregar-materias-aprobadas",
-        json={"materias_seleccionadas": materias_seleccionadas, "nueva_materia": nueva_materia, "codigo_nueva_materia": codigo_nueva_materia})
+    requests.post(f"{API_BASE}/usuarios/{padron}/materias",
+        json={"materias_seleccionadas": materias_seleccionadas, "nueva_materia": nueva_materia, 
+              "codigo_nueva_materia": codigo_nueva_materia, "estado_materia": "aprobada"})
 
-    return redirect(url_for("usuario", padron=padron))
+    return usuario(padron)
+
 
 
 @app.route("/usuario/<int:padron>/eliminar-materia-aprobada", methods=["POST"])
 def eliminar_materia_aprobada(padron):
     materia_codigo = request.form.get("materia_codigo")
 
-    requests.post(f"{API_BASE}/usuario/{padron}/eliminar-materia-aprobada", json={"materia_codigo": materia_codigo})
+    requests.delete(f"{API_BASE}/usuario/{padron}/materias/{materia_codigo}", json={"estado_materia": "aprobada"})
 
-    return redirect(url_for("usuario", padron=padron))
+    return usuario(padron)
 
 
 @app.route("/materias/<string:codigo>/sin-grupo", methods=["GET"])
@@ -151,9 +160,6 @@ def usuarios_sin_grupo_por_materia(codigo):
     return render_template("compañerxs_sin_grupo.html", data=data, error=request.args.get("error"))
 
 
-        
-
-
 @app.route("/materias", methods=["GET"])
 def materias():
     response = requests.get(f"{API_BASE}/materias")
@@ -164,9 +170,6 @@ def materias():
     session['notificacion'] = len(data['solicitudes_pendientes']) > 0
 
     return render_template('materias.html', data=data)
-
-
-
 
 
 @app.route("/materias/<string:codigo>/grupos", methods=["GET"])
@@ -190,6 +193,7 @@ def grupos_por_materia(codigo):
     return render_template("grupos_por_materia.html", data=data)
 
 
+
 @app.route("/grupos", methods=["GET"])
 def grupos():
     response = requests.get(f"{API_BASE}/grupos")
@@ -209,7 +213,7 @@ def grupos():
     return render_template("grupos.html", data=data)
 
 
-@app.route("/usuario/<int:padron>/agregar-grupo", methods=["POST"])
+@app.route("/grupos/<int:padron>/agregar-grupo", methods=["POST"])
 def agregar_grupo(padron):
     materia_codigo = request.form.get("materiaGrupo")
     nombre_grupo = request.form.get("nombreGrupo")
@@ -232,7 +236,7 @@ def agregar_grupo(padron):
             if request.form.get(f"grupo_horario_{dia}_{turno}"):
                 horarios.append({"dia": dia, "turno": turno})
 
-    response = requests.post(f"{API_BASE}/agregar-grupo", json={ "materia_codigo": materia_codigo, "nombre": nombre_grupo, "maximo_integrantes": max_integrantes,
+    response = requests.post(f"{API_BASE}/grupos", json={ "materia_codigo": materia_codigo, "nombre": nombre_grupo, "maximo_integrantes": max_integrantes,
         "integrantes": integrantes, "padron_creador": padron, "horarios": horarios})
     
     if response.status_code == 400:
@@ -242,7 +246,7 @@ def agregar_grupo(padron):
     return usuario(padron)
 
 
-@app.route("/usuario/<int:grupo_id>/editar-grupo", methods=["POST"])
+@app.route("/grupos/<int:grupo_id>/editar-grupo", methods=["POST"])
 def editar_grupo(grupo_id):
     nombre = request.form.get("nombreGrupo")
     integrantes = request.form.get("padrones_integrantes", "").split(",")
@@ -257,7 +261,7 @@ def editar_grupo(grupo_id):
             if request.form.get(f"grupo_horario_{dia}_{turno}"):
                 horarios.append({"dia": dia, "turno": turno})
 
-    response = requests.patch(f"{API_BASE}/usuario/{grupo_id}/editar-grupo", json={
+    response = requests.patch(f"{API_BASE}/grupo/{grupo_id}/", json={
         "nombre": nombre,
         "maximo_integrantes": maximo_integrantes,
         "integrantes": integrantes,
@@ -272,20 +276,18 @@ def editar_grupo(grupo_id):
     return usuario(padron_editor)
 
 
-@app.route('/usuario/estado-tp/<int:grupo_id>', methods=['POST'])
+@app.route('/grupos/<int:grupo_id>/estado-tp/', methods=['POST'])
 def cambiar_estado_tp(grupo_id):
-    requests.patch(f"{API_BASE}/usuario/estado-tp/{grupo_id}")
+    requests.patch(f"{API_BASE}/grupo/{grupo_id}/estado-tp")
 
     return usuario(session.get('usuario'))
 
 
 
-
-
-@app.route("/usuarios/<int:padron>/solicitudes-pendientes", methods=["GET"])
+@app.route("/solicitudes/<int:padron>/solicitudes-pendientes", methods=["GET"])
 def solicitudes_pendientes(padron):
     if padron:
-        response = requests.get(f"{API_BASE}/usuarios/{padron}/solicitudes-pendientes")
+        response = requests.get(f"{API_BASE}/solicitudes/{padron}")
         data = response.json()
         solicitudes_pendientes = data.get("solicitudes_pendientes", [])
     else:
@@ -293,28 +295,28 @@ def solicitudes_pendientes(padron):
     return solicitudes_pendientes
 
 
-@app.route('/solicitud/<int:solicitud_id>/aceptar', methods=['POST'])
+@app.route('/solicitudes/<int:solicitud_id>/aceptar', methods=['POST'])
 def aceptar_solicitud(solicitud_id):
 
-    requests.post(f"{API_BASE}/solicitudes/{solicitud_id}/actualizar", json={"estado": "aceptada"})
+    requests.patch(f"{API_BASE}/solicitudes/{solicitud_id}", json={"estado": "aceptada"})
 
     return usuario(session.get("usuario"))
     
 
-@app.route('/solicitud/<int:solicitud_id>/rechazar', methods=['POST'])
+@app.route('/solicitudes/<int:solicitud_id>/rechazar', methods=['POST'])
 def rechazar_solicitud(solicitud_id):
 
-    requests.post(f"{API_BASE}/solicitudes/{solicitud_id}/actualizar", 
+    requests.patch(f"{API_BASE}/solicitudes/{solicitud_id}", 
         json={"estado": "rechazada"})
 
     return usuario(session.get("usuario"))
 
 
-@app.route('/solicitar-unirse-grupo/<int:grupo_id>', methods=['POST'])
+@app.route('/solicitudes/<int:grupo_id>', methods=['POST'])
 def solicitar_unirse_grupo(grupo_id):
     if session.get('usuario'):
         padron = session['usuario']
-        response = requests.post(f"{API_BASE}/grupos/{grupo_id}/solicitar-unirse-grupo", json={"padron_emisor": padron, "tipo": "usuario_a_grupo"})
+        response = requests.post(f"{API_BASE}/solicitudes/{grupo_id}", json={"padron_emisor": padron, "tipo": "usuario_a_grupo"})
         if response.status_code == 201:
             return redirect(request.referrer or url_for('usuario', padron=padron))
         elif response.status_code == 400:
@@ -326,12 +328,13 @@ def solicitar_unirse_grupo(grupo_id):
         return inicio(error="Debes iniciar sesión para enviar solicitudes")
 
 
-@app.route('/enviar-solicitud-companierx/<string:materia_codigo>/<int:padron_emisor>/<int:padron_receptor>', methods=['POST'])
+@app.route('/solicitudes/enviar-solicitud-companierx/<string:materia_codigo>/<int:padron_emisor>/<int:padron_receptor>', methods=['POST'])
 def enviar_solicitud_companierx(materia_codigo, padron_emisor, padron_receptor):
     if not session.get('usuario'):
         return inicio(error="Debes iniciar sesión para enviar solicitudes")
 
-    response = requests.post(f"{API_BASE}/enviar-solicitud-companierx/{materia_codigo}/{padron_emisor}/{padron_receptor}")
+    response = requests.post(f"{API_BASE}/solicitudes/{padron_receptor}", 
+        json={"materia_codigo": materia_codigo, "padron_emisor": padron_emisor})
 
     if response.status_code == 201:
         return usuario(padron_emisor)
@@ -341,19 +344,17 @@ def enviar_solicitud_companierx(materia_codigo, padron_emisor, padron_receptor):
 
 
 
-
-
 @app.route("/", methods=["GET"])
 def inicio():
     response = requests.get(f"{API_BASE}/cantidad-grupos")
     data = response.json() 
     data['solicitudes_pendientes'] = solicitudes_pendientes(session.get('usuario'))
     session['notificacion'] = len(data['solicitudes_pendientes']) > 0
+    # session['usuario'] = session.get('usuario')
 
     error = request.args.get("error")
 
     return render_template("index.html", data=data, error=error)
-
 
 
 @app.route('/contacto', methods=['POST'])

@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify
 from db import get_connection
 
 grupos_bp = Blueprint("grupos", __name__)
@@ -9,7 +9,7 @@ def cantidad_grupos():
     cursor = conn.cursor(dictionary=True)
     data = {}
     
-    cursor.execute("SELECT MAX(grupo_id) AS max_grupo_id FROM grupos")
+    cursor.execute("SELECT MAX(id) AS max_grupo_id FROM grupos")
     res = cursor.fetchone()
 
     if res['max_grupo_id'] is None:
@@ -23,7 +23,7 @@ def cantidad_grupos():
     return jsonify(data)
 
 @grupos_bp.route("/grupos", methods=["GET"])
-def get_grupos():
+def grupos():
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
     data = {}
@@ -31,16 +31,16 @@ def get_grupos():
     cursor.execute("""
         SELECT grupos.*, materias.nombre AS nombre_materia
         FROM grupos
-        JOIN materias ON grupos.materia_codigo = materias.materia_codigo
+        JOIN materias ON grupos.codigo_materia = materias.codigo
         WHERE NOT grupos.tp_terminado
     """)
     data['grupos'] = cursor.fetchall()
 
     for grupo in data['grupos']:
-        cursor.execute("SELECT dia, turno FROM horarios_grupos WHERE grupo_id = %s", (grupo['grupo_id'],))
+        cursor.execute("SELECT dia, turno FROM horarios_grupos WHERE id_grupo = %s", (grupo['id'],))
         grupo['horarios'] = cursor.fetchall()
 
-        cursor.execute("SELECT u.padron, u.nombre FROM grupos_usuarios g_u JOIN usuarios u ON g_u.padron = u.padron WHERE g_u.grupo_id = %s", (grupo['grupo_id'],))
+        cursor.execute("SELECT u.padron, u.nombre FROM grupos_usuarios g_u JOIN usuarios u ON g_u.padron = u.padron WHERE g_u.id_grupo = %s", (grupo['id'],))
         grupo['integrantes'] = cursor.fetchall()
         grupo['cant_integrantes'] = len(grupo['integrantes'])
 
@@ -49,77 +49,7 @@ def get_grupos():
     return jsonify(data)
 
 
-@grupos_bp.route("/materias/<string:codigo>/grupos", methods=["GET"])
-def grupos_por_materia(codigo):
-    conn = get_connection()
-    cursor = conn.cursor(dictionary=True)
-    data = {}
-
-    cursor.execute("SELECT * FROM materias WHERE materia_codigo = %s", (codigo,))
-    materia = cursor.fetchone()
-    data['materia'] = materia
-
-    cursor.execute(
-        """
-        SELECT grupos.*
-        FROM grupos
-        INNER JOIN materias ON grupos.materia_codigo = materias.materia_codigo
-        WHERE grupos.materia_codigo = %s AND NOT grupos.tp_terminado
-        """, (codigo,)
-    )
-    data['grupos'] = cursor.fetchall()
-
-    for grupo in data['grupos']:
-        cursor.execute(
-            "SELECT dia, turno FROM horarios_grupos WHERE grupo_id = %s",
-            (grupo['grupo_id'],)
-        )
-        grupo['horarios'] = cursor.fetchall()
-
-        cursor.execute(
-            "SELECT u.padron, u.nombre FROM grupos_usuarios g_u JOIN usuarios u ON g_u.padron = u.padron WHERE g_u.grupo_id = %s",
-            (grupo['grupo_id'],)
-        )
-        grupo['integrantes'] = cursor.fetchall()
-        grupo['cantidad_integrantes'] = len(grupo['integrantes'])
-
-    cursor.close()
-    conn.close()
-
-    return jsonify(data), 200
-
-
-@grupos_bp.route("/materias/<string:codigo>/sin-grupo", methods=["GET"])
-def companierxs_sin_grupo(codigo):
-    conn = get_connection()
-    cursor = conn.cursor(dictionary=True)
-    data = {}
-
-    cursor.execute("SELECT * FROM materias WHERE materia_codigo = %s", (codigo,))
-    data['materia'] = cursor.fetchone()
-
-    cursor.execute("""
-    SELECT u.padron, u.nombre, u.carrera
-    FROM usuarios u
-    JOIN materias_usuarios mu ON u.padron = mu.padron
-    WHERE mu.materia_codigo = %s
-    AND mu.estado = 'cursando'
-    AND u.padron NOT IN (
-        SELECT g_u.padron
-        FROM grupos_usuarios g_u
-        JOIN grupos g ON g_u.grupo_id = g.grupo_id
-        WHERE g.materia_codigo = %s
-    )
-    """, (codigo, codigo))
-    data['companierxs'] = cursor.fetchall()
-
-    cursor.close()
-    conn.close()
-
-    return jsonify(data), 200
-
-
-@grupos_bp.route("/agregar-grupo", methods=["POST"])
+@grupos_bp.route("/grupos", methods=["POST"])
 def agregar_grupo():
     data = request.get_json()
     materia_codigo = data.get("materia_codigo")
@@ -135,16 +65,16 @@ def agregar_grupo():
     if int(maximo_integrantes) < len(integrantes):
         return jsonify({"error": "La cantidad de integrantes ingresados supera la cantidad máxima permitida"}), 400
 
-    cursor.execute("INSERT INTO grupos (materia_codigo, nombre, maximo_integrantes) VALUES (%s, %s, %s)", (materia_codigo, nombre, maximo_integrantes))
+    cursor.execute("INSERT INTO grupos (codigo_materia, nombre, maximo_integrantes) VALUES (%s, %s, %s)", (materia_codigo, nombre, maximo_integrantes))
     grupo_id = cursor.lastrowid
-    cursor.execute("INSERT INTO grupos_usuarios (grupo_id, padron, materia_codigo) VALUES (%s, %s, %s)", (grupo_id, creador, materia_codigo))
+    cursor.execute("INSERT INTO grupos_usuarios (id_grupo, padron, codigo_materia) VALUES (%s, %s, %s)", (grupo_id, creador, materia_codigo))
 
     for horario in horarios:
-        cursor.execute("INSERT INTO horarios_grupos (grupo_id, dia, turno) VALUES (%s, %s, %s)", (grupo_id, horario["dia"], horario["turno"]))
+        cursor.execute("INSERT INTO horarios_grupos (id_grupo, dia, turno) VALUES (%s, %s, %s)", (grupo_id, horario["dia"], horario["turno"]))
 
     integrantes = [padron for padron in integrantes if str(padron) != str(creador)]
     for padron in integrantes:
-        cursor.execute("SELECT * FROM grupos_usuarios WHERE padron = %s AND materia_codigo = %s", (padron, materia_codigo))
+        cursor.execute("SELECT * FROM grupos_usuarios WHERE padron = %s AND codigo_materia = %s", (padron, materia_codigo))
         invitado = cursor.fetchone()
         if invitado:
             conn.commit()
@@ -153,7 +83,7 @@ def agregar_grupo():
             return jsonify({"error": f"El usuario {padron} ya tiene grupo"}), 400
 
 
-        cursor.execute("SELECT materia_codigo FROM materias_usuarios WHERE padron = %s AND estado = 'cursando'", (padron,))
+        cursor.execute("SELECT codigo_materia FROM materias_usuarios WHERE padron = %s AND estado = 'cursando'", (padron,))
         materias = cursor.fetchall()
         if materia_codigo not in [m['materia_codigo'] for m in materias]:
             conn.commit()
@@ -162,7 +92,7 @@ def agregar_grupo():
             return jsonify({"error": f"El usuario {padron} no está cursando la materia {materia_codigo}"}), 400
  
         
-        cursor.execute("INSERT INTO solicitudes_grupos (grupo_id, padron_emisor, padron_receptor, tipo) VALUES (%s, %s, %s, 'grupo_a_usuario')", (grupo_id, creador, padron))
+        cursor.execute("INSERT INTO solicitudes_grupos (id_grupo, padron_emisor, padron_receptor, tipo) VALUES (%s, %s, %s, 'grupo_a_usuario')", (grupo_id, creador, padron))
 
     conn.commit()
     cursor.close()
@@ -170,7 +100,7 @@ def agregar_grupo():
     return jsonify({"grupo_id": grupo_id}), 201
 
 
-@grupos_bp.route("/usuario/<int:grupo_id>/editar-grupo", methods=["PATCH"])
+@grupos_bp.route("/grupo/<int:grupo_id>/", methods=["PATCH"])
 def editar_grupo(grupo_id):
     data = request.get_json()
     nombre = data.get("nombre")
@@ -188,26 +118,26 @@ def editar_grupo(grupo_id):
 
     integrantes = [padron for padron in integrantes if str(padron).strip()]
     if not integrantes:
-        cursor.execute("DELETE FROM grupos WHERE grupo_id = %s", (grupo_id,))
-        cursor.execute("DELETE FROM grupos_usuarios WHERE grupo_id = %s", (grupo_id,))
-        cursor.execute("DELETE FROM horarios_grupos WHERE grupo_id = %s", (grupo_id,))
-        cursor.execute("DELETE FROM solicitudes_grupos WHERE grupo_id = %s", (grupo_id,))
+        cursor.execute("DELETE FROM grupos WHERE id = %s", (grupo_id,))
+        cursor.execute("DELETE FROM grupos_usuarios WHERE id_grupo = %s", (grupo_id,))
+        cursor.execute("DELETE FROM horarios_grupos WHERE id_grupo = %s", (grupo_id,))
+        cursor.execute("DELETE FROM solicitudes_grupos WHERE id_grupo = %s", (grupo_id,))
         conn.commit()
         cursor.close()
         conn.close()
         return jsonify({"message": "Grupo eliminado"}), 200
 
 
-    cursor.execute("UPDATE grupos SET nombre = %s, maximo_integrantes = %s WHERE grupo_id = %s", (nombre, maximo_integrantes, grupo_id))
-    cursor.execute("DELETE FROM grupos_usuarios WHERE grupo_id = %s", (grupo_id,))
-    cursor.execute("SELECT materia_codigo FROM grupos WHERE grupo_id = %s", (grupo_id,))
+    cursor.execute("UPDATE grupos SET nombre = %s, maximo_integrantes = %s WHERE id = %s", (nombre, maximo_integrantes, grupo_id))
+    cursor.execute("DELETE FROM grupos_usuarios WHERE id_grupo = %s", (grupo_id,))
+    cursor.execute("SELECT codigo_materia FROM grupos WHERE id = %s", (grupo_id,))
 
-    materia_codigo = cursor.fetchone()['materia_codigo']
-    cursor.execute("INSERT INTO grupos_usuarios (grupo_id, padron, materia_codigo) VALUES (%s, %s, %s)", (grupo_id, padron_editor, materia_codigo))
-    
+    materia_codigo = cursor.fetchone()['codigo_materia']
+    cursor.execute("INSERT INTO grupos_usuarios (id_grupo, padron, codigo_materia) VALUES (%s, %s, %s)", (grupo_id, padron_editor, materia_codigo))
+
     integrantes = [padron for padron in integrantes if str(padron) != str(padron_editor)]
     for padron in integrantes:
-        cursor.execute("SELECT * FROM grupos_usuarios WHERE padron = %s AND materia_codigo = %s", (padron, materia_codigo))
+        cursor.execute("SELECT * FROM grupos_usuarios WHERE padron = %s AND codigo_materia = %s", (padron, materia_codigo))
         invitado = cursor.fetchone()
         if invitado:
             cursor.close()
@@ -215,44 +145,44 @@ def editar_grupo(grupo_id):
             return jsonify({"error": f"El usuario {padron} ya tiene grupo"}), 400
 
 
-        cursor.execute("SELECT materia_codigo FROM materias_usuarios WHERE padron = %s AND estado = 'cursando'", (padron,))
+        cursor.execute("SELECT codigo_materia FROM materias_usuarios WHERE padron = %s AND estado = 'cursando'", (padron,))
         materias = cursor.fetchall()
-        if materia_codigo not in [m['materia_codigo'] for m in materias]:
+        if materia_codigo not in [m['codigo_materia'] for m in materias]:
             conn.commit()
             cursor.close()
             conn.close()
             return jsonify({"error": f"El usuario {padron} no está cursando la materia {materia_codigo}"}), 400
 
 
-        cursor.execute("SELECT * FROM solicitudes_grupos WHERE grupo_id = %s AND padron_receptor = %s", (grupo_id, padron))
+        cursor.execute("SELECT * FROM solicitudes_grupos WHERE id_grupo = %s AND padron_receptor = %s", (grupo_id, padron))
         solicitud = cursor.fetchone()
         if not solicitud or solicitud['estado'] == 'rechazada':
-            cursor.execute("INSERT INTO solicitudes_grupos (grupo_id, padron_emisor, padron_receptor, tipo) VALUES (%s, %s, %s, 'grupo_a_usuario')", (grupo_id, padron_editor, padron))
+            cursor.execute("INSERT INTO solicitudes_grupos (id_grupo, padron_emisor, padron_receptor, tipo) VALUES (%s, %s, %s, 'grupo_a_usuario')", (grupo_id, padron_editor, padron))
         elif solicitud['estado'] == 'pendiente':
             return jsonify({"error": "Ya enviaste una solicitud antes a uno de los usuarios ingresados"}), 400 
         elif solicitud['estado'] == 'aceptada':
-            cursor.execute("INSERT INTO grupos_usuarios (grupo_id, padron, materia_codigo) VALUES (%s, %s, %s)", (grupo_id, padron, materia_codigo))
+            cursor.execute("INSERT INTO grupos_usuarios (id_grupo, padron, codigo_materia) VALUES (%s, %s, %s)", (grupo_id, padron, materia_codigo))
 
-    cursor.execute("DELETE FROM horarios_grupos WHERE grupo_id = %s", (grupo_id,))
+    cursor.execute("DELETE FROM horarios_grupos WHERE id_grupo = %s", (grupo_id,))
     for horario in horarios:
-        cursor.execute("INSERT INTO horarios_grupos (grupo_id, dia, turno) VALUES (%s, %s, %s)", (grupo_id, horario["dia"], horario["turno"]))
-        
+        cursor.execute("INSERT INTO horarios_grupos (id_grupo, dia, turno) VALUES (%s, %s, %s)", (grupo_id, horario["dia"], horario["turno"]))
+
     conn.commit()
     cursor.close()
     conn.close()
     return jsonify({"message": "Grupo actualizado"}), 200
 
 
-@grupos_bp.route('/usuario/estado-tp/<int:grupo_id>', methods=['PATCH'])
+@grupos_bp.route('/grupo/<int:grupo_id>/estado-tp', methods=['PATCH'])
 def cambiar_estado_tp(grupo_id):
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
 
-    cursor.execute("SELECT tp_terminado FROM grupos WHERE grupo_id = %s", (grupo_id,))
+    cursor.execute("SELECT tp_terminado FROM grupos WHERE id = %s", (grupo_id,))
     tp_terminado = cursor.fetchone()
     nuevo_estado = not tp_terminado['tp_terminado']
 
-    cursor.execute("UPDATE grupos SET tp_terminado = %s WHERE grupo_id = %s", (nuevo_estado, grupo_id))
+    cursor.execute("UPDATE grupos SET tp_terminado = %s WHERE id = %s", (nuevo_estado, grupo_id))
 
     conn.commit()
 

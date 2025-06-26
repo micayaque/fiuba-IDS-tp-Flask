@@ -3,7 +3,7 @@ CREATE DATABASE IF NOT EXISTS tpbuddy;
 USE tpbuddy;
 
 CREATE TABLE materias (
-    materia_codigo VARCHAR(6) PRIMARY KEY,
+    codigo VARCHAR(6) PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL UNIQUE
 );
 
@@ -18,16 +18,16 @@ CREATE TABLE usuarios (
 );
 
 CREATE TABLE materias_usuarios (
-    padron INT,
-    materia_codigo VARCHAR(6),
+    padron INT NOT NULL,
+    codigo_materia VARCHAR(6) NOT NULL,
     estado ENUM('cursando', 'aprobada'),
-    PRIMARY KEY (padron, materia_codigo),
+    PRIMARY KEY (padron, codigo_materia),
     FOREIGN KEY (padron) REFERENCES usuarios(padron) ON DELETE CASCADE,
-    FOREIGN KEY (materia_codigo) REFERENCES materias(materia_codigo) ON DELETE CASCADE
+    FOREIGN KEY (codigo_materia) REFERENCES materias(codigo) ON DELETE CASCADE
 );
 
 CREATE TABLE horarios_usuarios (
-    padron INT,
+    padron INT NOT NULL,
     dia ENUM('lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo') NOT NULL,
     turno ENUM('mañana', 'tarde', 'noche') NOT NULL,
     PRIMARY KEY (padron, dia, turno),
@@ -35,43 +35,42 @@ CREATE TABLE horarios_usuarios (
 );
 
 CREATE TABLE grupos (
-    grupo_id INT AUTO_INCREMENT PRIMARY KEY,
-    materia_codigo VARCHAR(6) NOT NULL,
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    codigo_materia VARCHAR(6) NOT NULL,
     nombre VARCHAR(50),
     tp_terminado BOOLEAN DEFAULT FALSE,
     maximo_integrantes INT DEFAULT 10,
-    UNIQUE (materia_codigo, nombre),
-    FOREIGN KEY (materia_codigo) REFERENCES materias(materia_codigo) ON DELETE CASCADE
+    UNIQUE (codigo_materia, nombre),
+    FOREIGN KEY (codigo_materia) REFERENCES materias(codigo) ON DELETE CASCADE
 );
 
-CREATE TABLE grupos_usuarios
-(
-    grupo_id       INT,
-    padron         INT,
-    materia_codigo VARCHAR(6),
-    PRIMARY KEY (grupo_id, padron),
-    UNIQUE (padron, materia_codigo),
-    FOREIGN KEY (grupo_id) REFERENCES grupos (grupo_id) ON DELETE CASCADE,
+CREATE TABLE grupos_usuarios (
+    id_grupo INT NOT NULL,
+    padron INT NOT NULL,
+    codigo_materia VARCHAR(6) NOT NULL,
+    PRIMARY KEY (id_grupo, padron),
+    UNIQUE (padron, codigo_materia),
+    FOREIGN KEY (id_grupo) REFERENCES grupos (id) ON DELETE CASCADE,
     FOREIGN KEY (padron) REFERENCES usuarios (padron) ON DELETE CASCADE,
-    FOREIGN KEY (materia_codigo) REFERENCES materias (materia_codigo) ON DELETE CASCADE
+    FOREIGN KEY (codigo_materia) REFERENCES materias (codigo) ON DELETE CASCADE
 );
 
 CREATE TABLE horarios_grupos (
-    grupo_id INT,
+    id_grupo INT NOT NULL,
     dia ENUM('lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo') NOT NULL,
     turno ENUM('mañana', 'tarde', 'noche') NOT NULL,
-    PRIMARY KEY (grupo_id, dia, turno),
-    FOREIGN KEY (grupo_id) REFERENCES grupos(grupo_id) ON DELETE CASCADE
+    PRIMARY KEY (id_grupo, dia, turno),
+    FOREIGN KEY (id_grupo) REFERENCES grupos(id) ON DELETE CASCADE
 );
 
 CREATE TABLE solicitudes_grupos (
-    solicitud_id INT AUTO_INCREMENT PRIMARY KEY,
-    grupo_id INT NOT NULL,
+    id_solicitud INT AUTO_INCREMENT PRIMARY KEY,
+    id_grupo INT NOT NULL,
     padron_emisor INT,
     padron_receptor INT,
     estado ENUM('pendiente', 'aceptada', 'rechazada') DEFAULT 'pendiente',
     tipo ENUM('usuario_a_grupo', 'grupo_a_usuario', 'usuario_a_usuario') NOT NULL,
-    FOREIGN KEY (grupo_id) REFERENCES grupos(grupo_id) ON DELETE CASCADE,
+    FOREIGN KEY (id_grupo) REFERENCES grupos(id) ON DELETE CASCADE,
     FOREIGN KEY (padron_emisor) REFERENCES usuarios(padron) ON DELETE CASCADE,
     FOREIGN KEY (padron_receptor) REFERENCES usuarios(padron) ON DELETE CASCADE
 );

@@ -1,10 +1,10 @@
 from flask import Blueprint, jsonify, request  
 from db import get_connection
 
-registrar_iniciar_sesion_bp = Blueprint('registrar_iniciar_sesion', __name__)
+sesiones_bp = Blueprint('sesiones', __name__)
 
 
-@registrar_iniciar_sesion_bp.route('/sesiones', methods=['POST'])
+@sesiones_bp.route('/sesiones', methods=['POST'])
 def iniciar_sesion():
     data = request.get_json()
     padron = data['padron']

@@ -65,9 +65,9 @@ def registrarse():
         session['usuario'] = padron
         return usuario(padron)
     elif res.get("error") == "El usuario ya existe":
-        return inicio(error="El usuario ya existe")
+        return redirect(url_for('inicio', error="El usuario ya existe"))
     else:
-        return inicio(error="Error al registrar el usuario")
+        return redirect(url_for('inicio', error="Error al registrar el usuario"))
 
 
 @app.route("/usuarios/<int:padron>", methods=["GET"])

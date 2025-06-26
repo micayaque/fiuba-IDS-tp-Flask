@@ -49,17 +49,35 @@ main {
     font-weight: bold
 }
 
-#opciones-menu a:hover {
-    cursor: pointer;
-    font-weight: bold;
-    color: #c8c5f5;
-    font-size: large;
-}
-
 #opciones-menu a {
     text-decoration: none;
     color: #AEABD4;
     font-family: 'Poppins', sans-serif;
+}
+
+.navbar-nav .nav-link {
+    font-size: clamp(0.8rem, 2.5vw, 1.1rem);
+    white-space: nowrap;
+}
+
+.navbar-nav .nav-link:hover {
+    background-color: rgba(138, 43, 226, 0.1);
+}
+
+@media (max-width: 576px) {
+    .navbar-nav .nav-link {
+        font-size: 0.85rem;
+        padding: 0.4rem 0.8rem;
+        margin: 0.2rem 0;
+    }
+    
+    .nav-item {
+        margin: 0 0.5rem !important;
+    }
+    
+    .navbar-collapse {
+        text-align: center;
+    }
 }
 
 footer {

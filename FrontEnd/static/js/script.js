@@ -25,8 +25,22 @@ function filtrarPorHorarios(selectorCartas, selectorModal) {
             carta.style.display = '';
             return;
         }
-        const coincide = horarios.some(h => horariosSeleccionados.some(sel => h.dia === sel.dia && h.turno === sel.turno)
-        );
+        let coincide = true;
+        for (let m = 0; m < horariosSeleccionados.length; m++) {
+            const sel = horariosSeleccionados[m];
+            let encontrado = false;
+            for (let n = 0; n < horarios.length; n++) {
+                const h = horarios[n];
+                if (h.dia === sel.dia && h.turno === sel.turno) {
+                    encontrado = true;
+                    break;
+                }
+            }
+            if (!encontrado) {
+                coincide = false;
+                break;
+            }
+        }
         carta.style.display = coincide ? '' : 'none';
     });
 
@@ -152,7 +166,7 @@ function abrirModalEditarGrupo(btn) {
     integrantesEditar = [...integrantes];
     actualizarIntegrantesEditar();
 
-    document.getElementById('formEditarGrupo').action = `/usuario/${grupoId}/editar-grupo`;
+    document.getElementById('formEditarGrupo').action = `/grupos/${grupoId}/editar`;
     document.getElementById('editarNombreGrupo').value = nombre;
     document.getElementById('editarCantidadMaxIntegrantes').value = maxIntegrantes;
 

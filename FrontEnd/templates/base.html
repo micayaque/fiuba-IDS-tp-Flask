@@ -14,7 +14,7 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='css/materias.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/grupos.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/compañerxs_sin_grupo.css') }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/perfil_usuario.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/perfil-usuario.css') }}">
 
         <!--Fuentes de texto, las agregamos online porque es muy dificil que se caiga GoogleFonts, ¿aún así tenemos que descargarlas?-->
         <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
@@ -59,7 +59,7 @@
         </header>
 
         <div>
-            <nav class="navbar navbar-expand-md px-3">
+            <nav class="navbar navbar-expand-md mt-4 px-3">
                 <div class="container-fluid justify-content-center">
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu"
                         aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation">
@@ -297,11 +297,11 @@
                             {% endif %}
                         </div>
                         <div class="col-12 col-md-4 text-center">
-                            <form method="POST" action="{{ url_for('aceptar_solicitud', solicitud_id=solicitud.solicitud_id) }}" class="d-inline">
-                            <button type="submit" class="btn btn-success btn-sm mb-1">Aceptar</button>
+                            <form method="POST" action="{{ url_for('aceptar_solicitud', solicitud_id=solicitud.id_solicitud) }}" class="d-inline">
+                                <button type="submit" class="btn btn-success btn-sm mb-1">Aceptar</button>
                             </form>
-                            <form method="POST" action="{{ url_for('rechazar_solicitud', solicitud_id=solicitud.solicitud_id) }}" class="d-inline">
-                            <button type="submit" class="btn btn-danger btn-sm mb-1">Rechazar</button>
+                            <form method="POST" action="{{ url_for('rechazar_solicitud', solicitud_id=solicitud.id_solicitud) }}" class="d-inline">
+                                <button type="submit" class="btn btn-danger btn-sm mb-1">Rechazar</button>
                             </form>
                         </div>
                         </div>

@@ -30,7 +30,7 @@ def iniciar_sesion():
     password = request.form['password']
 
     if not padron.isdigit():
-        return inicio(error="El padrón solo puede ser un número")
+        return redirect(url_for('inicio', error="El padrón solo puede ser un número"))
 
     response = requests.post(f"{API_BASE}/sesiones", json={ "padron": padron, "password": password })
 
@@ -38,7 +38,7 @@ def iniciar_sesion():
         session['usuario'] = padron
         return usuario(padron)
     else:
-        return inicio(error="Padron o contraseña incorrectos")
+        return redirect(url_for('inicio', error="Padrón o contraseña incorrectos"))
 
 
 @app.route("/cerrar-sesion", methods=["POST"])
@@ -77,8 +77,6 @@ def usuario(padron):
     data['solicitudes_pendientes'] = solicitudes_pendientes(padron)
 
     session['notificacion'] = len(data['solicitudes_pendientes']) > 0
-
-    data['padron'] = padron
  
     return render_template("perfil_de_usuario.html", data=data, error=request.args.get("error"))
 
@@ -277,13 +275,11 @@ def agregar_grupo(padron):
     return usuario(padron)
 
 
-@app.route("/grupos/<int:grupo_id>/editar-grupo", methods=["POST"])
+@app.route("/grupos/<int:grupo_id>/editar", methods=["POST"])
 def editar_grupo(grupo_id):
     nombre = request.form.get("nombreGrupo")
     integrantes = request.form.get("padrones_integrantes", "").split(",")
     maximo_integrantes = request.form.get("editarCantidadMaxIntegrantes")
-    if not maximo_integrantes:
-        maximo_integrantes = 10
     padron_editor = session.get('usuario')
 
     horarios = []
@@ -292,12 +288,8 @@ def editar_grupo(grupo_id):
             if request.form.get(f"grupo_horario_{dia}_{turno}"):
                 horarios.append({"dia": dia, "turno": turno})
 
-    response = requests.patch(f"{API_BASE}/grupo/{grupo_id}/", json={
-        "nombre": nombre,
-        "maximo_integrantes": maximo_integrantes,
-        "integrantes": integrantes,
-        "horarios": horarios,
-        "padron_editor": padron_editor
+    response = requests.patch(f"{API_BASE}/grupos/{grupo_id}", json={ "nombre": nombre, "maximo_integrantes": maximo_integrantes,
+        "integrantes": integrantes, "horarios": horarios, "padron_editor": padron_editor
     })
 
     if response.status_code == 400:
@@ -347,7 +339,7 @@ def rechazar_solicitud(solicitud_id):
 def solicitar_unirse_grupo(grupo_id):
     if session.get('usuario'):
         padron = session['usuario']
-        response = requests.post(f"{API_BASE}/solicitudes/{grupo_id}", json={"padron_emisor": padron, "tipo": "usuario_a_grupo"})
+        response = requests.post(f"{API_BASE}/solicitudes/grupos/{grupo_id}", json={"padron_emisor": padron, "tipo": "usuario_a_grupo"})
         if response.status_code == 201:
             return redirect(request.referrer or url_for('usuario', padron=padron))
         elif response.status_code == 400:
@@ -364,14 +356,13 @@ def enviar_solicitud_companierx(materia_codigo, padron_emisor, padron_receptor):
     if not session.get('usuario'):
         return inicio(error="Debes iniciar sesión para enviar solicitudes")
 
-    response = requests.post(f"{API_BASE}/solicitudes/{padron_receptor}", 
+    response = requests.post(f"{API_BASE}/solicitudes/usuarios/{padron_receptor}", 
         json={"materia_codigo": materia_codigo, "padron_emisor": padron_emisor})
 
     if response.status_code == 201:
         return usuario(padron_emisor)
     else:
-        error = response.json().get("error")
-        return usuarios_sin_grupo_por_materia(materia_codigo, error=error)
+        return redirect(url_for('usuarios_sin_grupo_por_materia', codigo=materia_codigo))
 
 
 

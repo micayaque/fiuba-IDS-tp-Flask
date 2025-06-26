@@ -71,7 +71,7 @@
 
   <div class="contentido_bottom_buscador_grupos row g-4 justify-content-center">
     {% for grupo in data['grupos'] %}
-      <div class="justify-content-center col-12 col-md-6 col-lg-4 grupo-carta" data-horarios='{{ grupo.horarios }}'>
+      <div class="justify-content-center col-12 col-md-6 col-lg-4 grupo-carta" data-horarios='[{% for h in grupo.horarios %}{"dia":"{{ h.dia }}", "turno":"{{ h.turno }}"}{% if not loop.last %},{% endif %}{% endfor %}]'>
         <div class="carta card h-100 shadow">
           <div class="card-body d-flex flex-column justify-content-between grupo_info">
             <div class="pb-3">
@@ -80,7 +80,7 @@
             </div>
 
             <button type="button" class="boton_info btn btn-primary" data-bs-toggle="modal"
-              data-bs-target="#modalGrupo{{ grupo.grupo_id }}">
+              data-bs-target="#modalGrupo{{ grupo.id }}">
               INFO
             </button>
           </div>
@@ -89,7 +89,7 @@
 
 
       <!-- Modal -->
-      <div class="modal fade" id="modalGrupo{{ grupo.grupo_id }}" tabindex="-1" aria-labelledby="modalGrupoLabel{{ grupo.grupo_id }}"
+      <div class="modal fade" id="modalGrupo{{ grupo.id }}" tabindex="-1" aria-labelledby="modalGrupoLabel{{ grupo.id }}"
           aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content bg-dark text-white rounded-4 p-4 border-0 position-relative">
@@ -99,7 +99,7 @@
                 data-bs-dismiss="modal" aria-label="Cerrar"></button>
 
               <!-- Título -->
-              <h5 class="nombre_del_grupo modal-title text-center text-lilac mb-4 fs-3" id="modalGrupoLabel{{ grupo.grupo_id }}"> {{ grupo.nombre }}</h5>
+              <h5 class="nombre_del_grupo modal-title text-center text-lilac mb-4 fs-3" id="modalGrupoLabel{{ grupo.id }}"> {{ grupo.nombre }}</h5>
 
               <div class="modal-body d-flex flex-row justify-content-between gap-5 flex-wrap">
 
@@ -152,7 +152,7 @@
               <!-- Botón solicitar -->
               <div class="modal-footer border-0 justify-content-end">
                 {% if grupo.cantidad_integrantes < grupo.maximo_integrantes %}
-                <form method="POST" action="{{ url_for('solicitar_unirse_grupo', grupo_id=grupo.grupo_id) }}">
+                <form method="POST" action="{{ url_for('solicitar_unirse_grupo', grupo_id=grupo.id) }}">
                   <button type="submit" class="boton_solicitar_unirse btn" style="background-color: #A020F0; color: white;">
                       SOLICITAR UNIRSE
                       <img src="{{ url_for('static', filename='img/iconos/send.png') }}" alt="Enviar solicitud" width="30" height="30">

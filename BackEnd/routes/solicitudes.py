@@ -8,15 +8,7 @@ def solicitudes_pendientes(padron):
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
 
-    cursor.execute("""
-        SELECT s_g.*, g.nombre AS grupo_nombre, g.codigo_materia, m.nombre AS materia_nombre,
-               u.nombre AS nombre_emisor
-        FROM solicitudes_grupos s_g
-        JOIN grupos g ON s_g.id_grupo = g.id
-        JOIN materias m ON g.codigo_materia = m.codigo
-        JOIN usuarios u ON s_g.padron_emisor = u.padron
-        WHERE s_g.padron_receptor = %s AND s_g.estado = 'pendiente'
-    """, (padron,))
+    cursor.execute("SELECT * FROM solicitudes_grupos WHERE padron_receptor = %s AND estado = 'pendiente'", (padron,))
     solicitudes = cursor.fetchall()
 
     for solicitud in solicitudes:
@@ -61,38 +53,22 @@ def actualizar_solicitud(solicitud_id):
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
 
-    cursor.execute(
-        """
-        SELECT s_g.*, g.codigo_materia
-        FROM solicitudes_grupos s_g
-        JOIN grupos g ON s_g.id_grupo = g.id
-        WHERE s_g.solicitud_id = %s
-        """,
-        (solicitud_id,)
-    )
+    cursor.execute("SELECT * FROM solicitudes_grupos WHERE id_solicitud = %s", (solicitud_id,))
     solicitud = cursor.fetchone()
 
-    if solicitud['tipo'] == 'usuario_a_grupo':
-        if nuevo_estado == 'aceptada':
-            cursor.execute(
-                """
-                INSERT INTO grupos_usuarios (id_grupo, padron, codigo_materia)
-                VALUES (%s, %s, %s)
-                """,
-                (solicitud['id_grupo'], solicitud['padron_emisor'], solicitud['codigo_materia'])
-            )
-        cursor.execute(" UPDATE solicitudes_grupos SET estado = %s WHERE id_grupo = %s AND padron_emisor = %s", (nuevo_estado, solicitud['id_grupo'], solicitud['padron_emisor']))
+    cursor.execute("SELECT codigo_materia FROM grupos WHERE id = %s", (solicitud['id_grupo'],))
+    codigo_materia = cursor.fetchone()['codigo_materia']
 
-    elif solicitud['tipo'] == 'grupo_a_usuario' or solicitud['tipo'] == 'usuario_a_usuario':
-        if nuevo_estado == 'aceptada':
-            cursor.execute(
-                """
-                INSERT INTO grupos_usuarios (id_grupo, padron, codigo_materia)
-                VALUES (%s, %s, %s)
-                """,
-                (solicitud['id_grupo'], solicitud['padron_receptor'], solicitud['codigo_materia'])
-            )
-        cursor.execute("UPDATE solicitudes_grupos SET estado = %s WHERE id_solicitud = %s", (nuevo_estado, solicitud_id))
+    tipo = solicitud['tipo']
+    if nuevo_estado == 'aceptada':
+        if tipo == 'usuario_a_grupo':
+            cursor.execute("INSERT INTO grupos_usuarios (id_grupo, padron, codigo_materia) VALUES (%s, %s, %s)", (solicitud['id_grupo'], solicitud['padron_emisor'], codigo_materia))
+            cursor.execute("UPDATE solicitudes_grupos SET estado = 'aceptada' WHERE id_grupo = %s AND padron_emisor = %s", (solicitud['id_grupo'], solicitud['padron_emisor']))
+        else:
+            cursor.execute("INSERT INTO grupos_usuarios (id_grupo, padron, codigo_materia) VALUES (%s, %s, %s)", (solicitud['id_grupo'], solicitud['padron_receptor'], codigo_materia))
+            cursor.execute("UPDATE solicitudes_grupos SET estado = 'aceptada' WHERE id_grupo = %s AND padron_receptor = %s", (solicitud['id_grupo'], solicitud['padron_receptor']))
+
+    cursor.execute("UPDATE solicitudes_grupos SET estado = %s WHERE id_solicitud = %s", (nuevo_estado, solicitud_id))
 
     conn.commit()
 
@@ -101,7 +77,7 @@ def actualizar_solicitud(solicitud_id):
     return jsonify({"message": "Solicitud actualizada"}), 200
 
 
-@solicitudes_bp.route('/solicitudes/<int:grupo_id>', methods=['POST'])
+@solicitudes_bp.route('/solicitudes/grupos/<int:grupo_id>', methods=['POST'])
 def solicitar_unirse_grupo(grupo_id):
     data = request.get_json()
     padron_emisor = data.get('padron_emisor')
@@ -158,7 +134,7 @@ def solicitar_unirse_grupo(grupo_id):
     return jsonify({"message": "Solicitud enviada"}), 201
 
 
-@solicitudes_bp.route('/solicitudes/<int:padron_receptor>', methods=['POST'])
+@solicitudes_bp.route('/solicitudes/usuarios/<int:padron_receptor>', methods=['POST'])
 def enviar_solicitud_companierx(padron_receptor):
     data = request.get_json()
     padron_emisor = data.get('padron_emisor')

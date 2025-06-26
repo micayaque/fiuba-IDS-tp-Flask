@@ -72,7 +72,7 @@
             </div>
 
             <button type="button" class="boton_info btn btn-primary" data-bs-toggle="modal"
-              data-bs-target="#modalGrupo{{ grupo.grupo_id }}">
+              data-bs-target="#modalGrupo{{ grupo.id }}">
               INFO
             </button>
           </div>
@@ -81,7 +81,7 @@
 
 
       <!-- Modal -->
-      <div class="modal fade" id="modalGrupo{{ grupo.grupo_id }}" tabindex="-1" aria-labelledby="modalGrupoLabel{{ grupo.grupo_id }}"
+      <div class="modal fade" id="modalGrupo{{ grupo.id }}" tabindex="-1" aria-labelledby="modalGrupoLabel{{ grupo.grupo_id }}"
           aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content bg-dark text-white rounded-4 p-4 border-0 position-relative">
@@ -142,7 +142,7 @@
               </div>
               <div class="modal-footer border-0 justify-content-end">
                 {% if grupo.cant_integrantes < grupo.maximo_integrantes %}
-                  <form method="POST" action="{{ url_for('solicitar_unirse_grupo', grupo_id=grupo.grupo_id) }}">
+                  <form method="POST" action="{{ url_for('solicitar_unirse_grupo', grupo_id=grupo.id) }}">
                     <button type="submit" class="boton_solicitar_unirse btn" style="background-color: #A020F0; color: white;">
                         SOLICITAR UNIRSE
                         <img src="{{ url_for('static', filename='img/iconos/send.png') }}" alt="Enviar solicitud" width="30" height="30">

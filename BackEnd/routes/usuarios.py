@@ -37,9 +37,10 @@ def registrarse():
 
 @usuarios_bp.route("/usuarios/<int:padron>", methods=["GET"])
 def perfil(padron):
+    data = {}
+
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
-    data = {}
 
     cursor.execute("SELECT * FROM usuarios WHERE padron = %s", (padron,))
     data['datos_usuario'] = cursor.fetchone()
@@ -130,6 +131,8 @@ def perfil(padron):
             "companierxs": companierxs
         })
     data['materias_para_select'] = materias_para_select
+
+    data['padron'] = padron
 
     cursor.close()
     conn.close()

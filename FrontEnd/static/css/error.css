@@ -1,7 +1,7 @@
 body {
   font-family: 'Kanit', Arial,Helvetica, sans-serif;
-  color: #424242;
-  background: linear-gradient(#ff6f51, #ef4e34, #ff6f51); 
+  color: white;
+  background-color: rgb(1, 1, 63); 
 }
 
 header {

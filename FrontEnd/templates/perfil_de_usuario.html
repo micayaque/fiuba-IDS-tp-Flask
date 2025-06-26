@@ -116,7 +116,7 @@
                             <button class="btn border-0 icono-lapiz position-absolute m-2 p-0"
                                 data-bs-toggle="modal"
                                 data-bs-target="#modalEditarGrupo"
-                                data-grupo-id="{{ grupo.grupo_id }}"    
+                                data-grupo-id="{{ grupo.id }}"    
                                 data-nombre="{{ grupo.nombre }}"
                                 data-maximo-integrantes="{{ grupo.maximo_integrantes }}"
                                 data-integrantes='{{ grupo.integrantes | tojson }}'
@@ -130,10 +130,10 @@
                             <span>{{ grupo.cantidad_integrantes }} integrantes</span>
                         </div>
                         <div class="mt-2 d-block justify-content-center">
-                            <button type="button" class="btn-info-grupo btn-info-grupo w-100" data-bs-toggle="modal" data-bs-target="#modalGrupo{{ grupo.grupo_id }}">
+                            <button type="button" class="btn-info-grupo btn-info-grupo w-100" data-bs-toggle="modal" data-bs-target="#modalGrupo{{ grupo.id }}">
                                 INFO
                             </button>
-                            <form method="POST" action="{{ url_for('cambiar_estado_tp', grupo_id=grupo.grupo_id) }}">
+                            <form method="POST" action="{{ url_for('cambiar_estado_tp', grupo_id=grupo.id) }}">
                                 {% if grupo.tp_terminado %}
                                     <button type="submit" class="btn-estado-entregado btn btn-sm w-100 my-1">ENTREGADO</button>
                                 {% else %}
@@ -143,12 +143,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal fade" id="modalGrupo{{ grupo.grupo_id }}" tabindex="-1" aria-labelledby="modalGrupoLabel{{ grupo.grupo_id }}" aria-hidden="true">
+                <div class="modal fade" id="modalGrupo{{ grupo.id }}" tabindex="-1" aria-labelledby="modalGrupoLabel{{ grupo.id }}" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content bg-dark text-white rounded-4 p-4 border-0 position-relative">
                             <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3"
                             data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                            <h5 class="nombre_del_grupo modal-title text-center text-lilac mb-4 fs-3" id="modalGrupoLabel{{ grupo.grupo_id }}"> {{ grupo.nombre }}</h5>
+                            <h5 class="nombre_del_grupo modal-title text-center text-lilac mb-4 fs-3" id="modalGrupoLabel{{ grupo.id }}"> {{ grupo.nombre }}</h5>
                             <div class="modal-body d-flex flex-row justify-content-between gap-5 flex-wrap">
                                 <div class="me-5 ms-0 align-text-start">
                                     <ul class="list-unstyled">

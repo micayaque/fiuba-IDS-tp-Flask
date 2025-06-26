@@ -67,8 +67,11 @@ def actualizar_solicitud(solicitud_id):
         else:
             cursor.execute("INSERT INTO grupos_usuarios (id_grupo, padron, codigo_materia) VALUES (%s, %s, %s)", (solicitud['id_grupo'], solicitud['padron_receptor'], codigo_materia))
             cursor.execute("UPDATE solicitudes_grupos SET estado = 'aceptada' WHERE id_grupo = %s AND padron_receptor = %s", (solicitud['id_grupo'], solicitud['padron_receptor']))
-
-    cursor.execute("UPDATE solicitudes_grupos SET estado = %s WHERE id_solicitud = %s", (nuevo_estado, solicitud_id))
+    else:
+        if tipo == 'usuario_a_grupo':
+            cursor.execute("UPDATE solicitudes_grupos SET estado = 'rechazada' WHERE id_grupo = %s AND padron_emisor = %s", (solicitud['id_grupo'], solicitud['padron_emisor']))
+        else:
+            cursor.execute("UPDATE solicitudes_grupos SET estado = 'rechazada' WHERE id_grupo = %s AND padron_receptor = %s", (solicitud['id_grupo'], solicitud['padron_receptor']))
 
     conn.commit()
 
